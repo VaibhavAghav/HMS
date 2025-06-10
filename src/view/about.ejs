@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | HMS</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      background-color: #f9f9f9;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .about-header {
+      background: linear-gradient(to right, #0d6efd, #00bcd4);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .about-header h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+    }
+
+    .about-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.08);
+      margin-top: -40px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .about-section h3 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .mission-values {
+      margin-top: 40px;
+    }
+
+    .value-box {
+      background: #f1f1f1;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .value-box h5 {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<%- include('navbar') %>
+
+<!-- Header -->
+<div class="about-header">
+  <h1>About GlobalCare Multispecialty Hospital</h1>
+  <p>Excellence in Healthcare. Compassion in Service.</p>
+</div>
+
+<!-- Main Section -->
+<div class="container">
+  <div class="about-section mt-5">
+    <h3>Who We Are</h3>
+    <p>
+      GlobalCare Multispecialty Hospital is a premier healthcare institution dedicated to providing world-class medical services to patients around the globe. With over two decades of experience, we combine advanced medical technologies with a compassionate approach to healing.
+    </p>
+
+    <h3>Our Mission</h3>
+    <p>
+      To deliver exceptional healthcare services that enhance the quality of life, foster healing, and uphold human dignity, regardless of geographic or economic boundaries.
+    </p>
+
+    <h3>Our Vision</h3>
+    <p>
+      To be recognized as a global leader in healthcare — where innovation meets compassion, and every patient matters.
+    </p>
+
+    <div class="row mission-values">
+      <div class="col-md-4">
+        <div class="value-box">
+          <h5>24/7 Emergency</h5>
+          <p>Always ready with fully equipped trauma and emergency care units for immediate response.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="value-box">
+          <h5>World-Class Specialists</h5>
+          <p>Our team includes highly skilled doctors and surgeons trained in the world's leading institutions.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="value-box">
+          <h5>Advanced Technology</h5>
+          <p>Equipped with cutting-edge diagnostic and surgical tools ensuring precise and efficient care.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('fotter') %>
+
+</body>
+</html>
