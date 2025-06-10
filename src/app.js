@@ -1,8 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+
 const router = require("./routes/userRouter"); // correct route file
 const rootRouter = require("./routes/rootRouter");
-const rootRouter = require("./routes/rootRouter");
+
 const adminRouter = require("./routes/adminRouter");
 let path = require("path");
 // express static
@@ -19,7 +20,6 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "view"));
 
 const session = require("express-session");
-const { count } = require("console");
 
 app.use(
   session({
@@ -33,5 +33,6 @@ app.use(
 app.use("/", router);
 app.use("/", rootRouter);
 app.use("/admin", adminRouter);
+
 
 module.exports = app;
