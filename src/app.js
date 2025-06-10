@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const router = require("./routes/userRouter"); // correct route file
 const rootRouter = require("./routes/rootRouter");
+const rootRouter = require("./routes/rootRouter");
 const adminRouter = require("./routes/adminRouter");
 let path = require("path");
 // express static
