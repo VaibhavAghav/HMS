@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const router = require("./routes/userRouter"); // correct route file
+const rootRouter = require("./routes/rootRouter");
 let path = require("path");
 // express static
 
@@ -27,5 +28,5 @@ app.use(
 
 // Use routes
 app.use("/", router);
-
+app.use("/", rootRouter);
 module.exports = app;
