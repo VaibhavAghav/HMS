@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hospital Management System | Home</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Custom Styling -->
+  <style>
+    body {
+      background-color: #f0f2f5;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .hero-section {
+      background: linear-gradient(to right, #007bff, #00c6ff);
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .hero-section h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+    }
+
+    .hero-section p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #f1f1f1;
+    }
+
+    .action-buttons {
+      margin-top: 30px;
+    }
+
+    .action-buttons .btn {
+      padding: 10px 24px;
+      font-size: 1rem;
+      border-radius: 30px;
+    }
+
+    .info-section {
+      margin: 60px auto;
+      max-width: 900px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.07);
+      padding: 40px;
+    }
+
+    .info-section h3 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      background: #f8f9fa;
+      padding: 20px 0;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      margin-top: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('navbar') %>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <h1>Welcome to Global Care Hospital</h1>
+        <p>Streamlining hospital operations and patient care with smart, secure tools.</p>
+        <div class="action-buttons">
+          <a href="/login" class="btn btn-light me-2">Login</a>
+          <a href="/about" class="btn btn-outline-light">About Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Information Section -->
+    <section class="info-section container mt-5">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <img src="https://img.freepik.com/free-vector/hospital-building-concept-illustration_114360-8360.jpg"
+            alt="Hospital" class="img-fluid rounded">
+        </div>
+        <div class="col-md-6 mt-4 mt-md-0">
+          <h3>All-in-One Hospital Management</h3>
+          <p>
+            HMS is a comprehensive system designed to manage doctors, patients, appointments, billing, and records.
+            Whether you're a large hospital or a small clinic, our platform adapts to your needs, improves workflow, and
+            enhances care quality.
+          </p>
+          <ul>
+            <li>Secure and Scalable Architecture</li>
+            <li>Role-based Access Control</li>
+            <li>Efficient Appointment Scheduling</li>
+            <li>Digital Patient Records & Billing</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('fotter') %>
+
+</body>
+
+</html>

@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const rootRouter = require("./routes/rootRouter");
 const router = require("./routes/userRouter"); // correct route file
 let path = require("path");
 // express static
@@ -16,6 +17,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "view"));
 
 const session = require("express-session");
+const { count } = require("console");
 
 app.use(
   session({
@@ -27,5 +29,5 @@ app.use(
 
 // Use routes
 app.use("/", router);
-
+app.use("/", rootRouter);
 module.exports = app;
