@@ -75,15 +75,17 @@ exports.loginAdmin = (req, res) => {
     }
 
     req.session.admin = {
-      user_id: admin.user_id,
+      user_id: admin.admin_id,
       username: admin.username,
       role: admin.role,
     };
+    console.log("Admin logged in:", req.session.admin);
 
     // Redirect to add-page after successful login
     res.redirect("/admin");
   });
 };
+
 exports.addDoctor = (req, res) => {
   const adminSession = req.session.admin;
 
@@ -99,7 +101,7 @@ exports.addDoctor = (req, res) => {
     spelization: req.body.spelization,
     username: req.body.username,
     password: req.body.password,
-    admin_id: adminSession.user_id, 
+    admin_id: adminSession.user_id,
   };
 
   console.log(doctorData);
@@ -109,6 +111,78 @@ exports.addDoctor = (req, res) => {
       console.error("Error adding doctor:", err);
       return res.render("Admin/addDoctor", {
         message: "Doctor not added. Please try again.",
+      });
+    }
+
+    res.redirect("/admin");
+  });
+};
+
+// Controller for doctor list page
+exports.doctorListPage = (req, res) => {
+  const adminSession = req.session.admin;
+
+  if (!adminSession) {
+    return res.status(401).send("Unauthorized — Please login as admin.");
+  }
+
+  adminModel.getAllDoctors((err, doctors) => {
+    if (err) {
+      console.error("Error fetching doctors:", err);
+      return res.status(500).send("Internal server error");
+    }
+    console.log("Doctors fetched successfully:", doctors);
+
+    res.render("Admin/viewDoctors", { doctors });
+  });
+};
+
+exports.receptionistListPage = (req, res) => {
+  const adminSession = req.session.admin;
+
+  if (!adminSession) {
+    return res.status(401).send("Unauthorized — Please login as admin.");
+  }
+
+  adminModel.getAllReceptionists((err, receptionists) => {
+    if (err) {
+      console.error("Error fetching receptionists:", err);
+      return res.status(500).send("Internal server error");
+    }
+    console.log("Receptionists fetched successfully:", receptionists);
+    res.render("Admin/viewReceptionists", { receptionists });
+  });
+};
+
+// add receptionist page
+exports.addReceptionistPage = (req, res) => {
+  console.log("Inside add receptionist page");
+  res.render("Admin/addReceptionist");
+};
+
+// Controller for adding receptionist
+exports.addReceptionist = (req, res) => {
+  const adminSession = req.session.admin;
+
+  if (!adminSession) {
+    return res.status(401).send("Unauthorized — Please login as admin.");
+  }
+
+  const receptionistData = {
+    reception_name: req.body.reception_name,
+    reception_contact: req.body.reception_contact,
+    username: req.body.username,
+    password: req.body.password,
+    admin_id: adminSession.user_id,
+  };
+
+  console.log(receptionistData);
+
+  adminModel.addReceptionist(receptionistData, (err, result) => {
+    if (err) {
+      console.error("Error adding receptionist:", err);
+      return res.render("Admin/addReceptionist", {
+        message: "Receptionist not added. Please try again.",
       });
     }
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Receptionist</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <style>
+        .glow-card {
+            max-width: 650px;
+            margin: auto;
+            border: 2px solid orangered;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Sidebar link styles */
+        .nav-pills .nav-link,
+        .nav-pills .nav-link:focus,
+        .nav-pills .nav-link:active {
+            background-color: transparent !important;
+            color: #212529;
+            box-shadow: none;
+        }
+
+        .nav-pills .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .sidebar-sub-link,
+        .sidebar-sub-link:focus,
+        .sidebar-sub-link:active {
+            background-color: transparent !important;
+            color: #212529;
+        }
+
+        .sidebar-sub-link:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Navbar -->
+    <%- include('adminNavbar.ejs') %>
+
+        <!-- Sidebar & Main Content -->
+        <div class="d-flex">
+            <%- include('adminSidebar.ejs') %>
+
+                <!-- Page Content Area -->
+                <div class="container-fluid" style="margin-left: 250px; padding-top: 70px;">
+                    <div class="container my-4">
+                        <div class="glow-card">
+                            <h2 class="text-center mb-4">Add Receptionist</h2>
+
+                            <form action="add-receptionist" method="POST">
+                                <div class="mb-3">
+                                    <label for="reception_name" class="form-label">Receptionist Name</label>
+                                    <input type="text" class="form-control" id="reception_name" name="reception_name"
+                                        placeholder="Enter full name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="reception_contact" class="form-label">Contact Number</label>
+                                    <input type="text" class="form-control" id="reception_contact"
+                                        name="reception_contact" placeholder="Enter contact number" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username"
+                                        placeholder="Create username" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Create password" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Add Receptionist</button>
+                            </form>
+
+                            <% if (typeof message !=='undefined' ) { %>
+                                <div class="alert alert-danger text-center mt-3">
+                                    <%= message %>
+                                </div>
+                                <% } %>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <!-- Footer -->
+        <%- include('adminFotter') %>
+
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

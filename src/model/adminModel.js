@@ -93,6 +93,25 @@ exports.loginAdmin = (username, password, callback) => {
   });
 };
 
+// get all doctors
+exports.getAllDoctors = (callback) => {
+  const query = `
+    SELECT d.doctor_id, d.doctor_name, d.doctor_contact, d.doctor_experience, 
+           d.status, d.spelization, u.username 
+    FROM doctor d 
+    JOIN users u ON d.user_id = u.user_id
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching doctors:", err);
+      callback(err, null);
+      return;
+    }
+    callback(null, results);
+  });
+};
+
 exports.addDoctor = (doctorData, callback) => {
   // Step 1: Insert into users table
   const insertUserQuery =
@@ -141,4 +160,62 @@ exports.addDoctor = (doctorData, callback) => {
       );
     }
   );
+};
+
+exports.addReceptionist = (receptionistData, callback) => {
+  // Step 1: Insert into users table
+  const insertUserQuery =
+    "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+
+  db.query(
+    insertUserQuery,
+    [receptionistData.username, receptionistData.password, "receptionist"],
+    (err, userResult) => {
+      if (err) {
+        console.error("Error inserting user:", err);
+        callback(err, null);
+        return;
+      }
+
+      const user_id = userResult.insertId;
+      console.log("User inserted with ID:", user_id);
+
+      // Step 2: Insert into reception table
+      const insertReceptionQuery = `
+        INSERT INTO reception 
+        (reception_name, reception_contact, user_id, admin_id) 
+        VALUES (?, ?, ?, ?)
+      `;
+
+      db.query(
+        insertReceptionQuery,
+        [
+          receptionistData.reception_name,
+          receptionistData.reception_contact,
+          user_id,
+          receptionistData.admin_id,
+        ],
+        (err, receptionResult) => {
+          if (err) {
+            console.error("Error inserting receptionist:", err);
+            callback(err, null);
+            return;
+          }
+
+          callback(null, receptionResult);
+        }
+      );
+    }
+  );
+};
+
+exports.getAllReceptionists = (callback) => {
+  const query = "SELECT * FROM reception";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching receptionists:", err);
+      return callback(err, null);
+    }
+    callback(null, results);
+  });
 };
