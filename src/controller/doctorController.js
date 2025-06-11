@@ -1,12 +1,6 @@
-exports.AddDoctor = (req, res) => {
-  console.log("Doctor page");
-  res.render("addDoctor");
-};
 
-exports.SavedDoctor = (req, res) => {
-  console.log(" post Doctor page");
-    let {} = req.body;
+// exports medicine
+// view 
 
-  res.render("addDoctor");
-};
 
+// add to model
