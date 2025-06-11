@@ -27,9 +27,12 @@ const session = require("express-session");
 
 app.use(
   session({
-    secret: "your_secret_key",
+    secret: "your_secret_key", 
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60, // 1 hour
+    },
   })
 );
 
@@ -40,8 +43,6 @@ app.use("/admin", adminRouter);
 
 app.use("/medicine", medicineRouter);
 
-
 // router for medicine
-
 
 module.exports = app;

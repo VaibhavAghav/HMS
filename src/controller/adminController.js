@@ -1,3 +1,5 @@
+//adminController.js
+
 const adminModel = require("../model/adminModel");
 
 // Controller for admin homepage
@@ -7,9 +9,10 @@ exports.adminHomePage = (req, res) => {
 };
 
 // admin login page
+// admin login page
 exports.adminLoginPage = (req, res) => {
   console.log("Inside admin login page");
-  res.render("Admin/adminLogin");
+  res.render("Admin/adminLogin", { query: req.query });
 };
 
 // adding doctor page
@@ -22,6 +25,16 @@ exports.addDoctorPage = (req, res) => {
 exports.addAdminPage = (req, res) => {
   console.log("Inside add admin page");
   res.render("Admin/addAdmin");
+};
+
+exports.logoutAdmin = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Session destroy error:", err);
+      return res.status(500).send("Logout failed");
+    }
+    res.redirect("/login");
+  });
 };
 
 // Controller for adding admin
@@ -61,14 +74,23 @@ exports.loginAdmin = (req, res) => {
       return res.status(401).send("Invalid username or password");
     }
 
-    req.session.admin = admin;
+    req.session.admin = {
+      user_id: admin.user_id,
+      username: admin.username,
+      role: admin.role,
+    };
 
     // Redirect to add-page after successful login
     res.redirect("/admin");
   });
 };
-
 exports.addDoctor = (req, res) => {
+  const adminSession = req.session.admin;
+
+  if (!adminSession) {
+    return res.status(401).send("Unauthorized — Please login as admin.");
+  }
+
   const doctorData = {
     doctor_name: req.body.doctor_name,
     doctor_contact: req.body.doctor_contact,
@@ -77,20 +99,19 @@ exports.addDoctor = (req, res) => {
     spelization: req.body.spelization,
     username: req.body.username,
     password: req.body.password,
-    admin_id: req.body.admin_id,
+    admin_id: adminSession.user_id, 
   };
+
   console.log(doctorData);
 
   adminModel.addDoctor(doctorData, (err, result) => {
     if (err) {
       console.error("Error adding doctor:", err);
-      // Render a page (or redirect back to form) with a message
-      return res.render("addDoctor", {
+      return res.render("Admin/addDoctor", {
         message: "Doctor not added. Please try again.",
       });
     }
 
-    // Redirect to admin home page on success
     res.redirect("/admin");
   });
 };
