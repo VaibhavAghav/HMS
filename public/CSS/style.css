@@ -1,36 +1,45 @@
-/* General */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding-top: 70px; /* height of fixed navbar */
+}
+
 body {
   background-color: #f8f9fa;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Custom Navbar Brand */
-.custom-navbar-brand img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  margin-right: 10px;
+/* Footer clean styling */
+footer {
+  background-color: #d4edda;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.custom-navbar-brand span {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0;
-}
-
-/* Nav links */
+/* Navbar adjustments */
 .navbar-nav .nav-link {
-  color: #fff !important;
-  font-size: 1rem;
+  color: #000 !important;
 }
 
 .navbar-nav .nav-link:hover {
   text-decoration: underline;
 }
 
-/* Optional: Button styling */
-.navbar .btn-outline-light {
-  font-weight: 500;
-  border-radius: 20px;
+/* Remove active, focus, and click bg color from sidebar links */
+.nav-pills .nav-link,
+.nav-pills .nav-link:focus,
+.nav-pills .nav-link:active,
+.nav-pills .nav-link.show,
+.nav-pills .nav-link.active {
+  background-color: transparent !important;
+  color: #212529;
+  box-shadow: none;
+}
+
+/* Optional: give hover effect if you want */
+.nav-pills .nav-link:hover {
+  background-color: #f0f0f0;
+  color: #212529;
 }
