@@ -5,6 +5,10 @@ const router = require("./routes/userRouter"); // correct route file
 const rootRouter = require("./routes/rootRouter");
 
 const adminRouter = require("./routes/adminRouter");
+
+// declare/ required medicine
+const medicineRouter = require("./routes/medicineRouter");
+
 let path = require("path");
 // express static
 
@@ -33,6 +37,11 @@ app.use(
 app.use("/", router);
 app.use("/", rootRouter);
 app.use("/admin", adminRouter);
+
+app.use("/medicine", medicineRouter);
+
+
+// router for medicine
 
 
 module.exports = app;
