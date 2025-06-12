@@ -9,6 +9,4 @@ let doctorController = require("../controller/doctorController");
 
 router.get("/", doctorController.DoctorHomePage);
 
-
-
 module.exports = router;
