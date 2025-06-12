@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>All Patients</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin-top: 80px;
+            padding-left: 260px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <%- include('../Reception/receptionNavbar') %>
+        <%- include('../Reception/receptionSidebar') %>
+
+            <div class="container">
+                <h2 class="mb-4">All Patients</h2>
+
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Disease</th>
+                            <th>Doctor ID</th>
+                            <th>Room ID</th>
+                            <th>Nurse ID</th>
+                            <th>Receptionist ID</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% patients.forEach(patient=> { %>
+                            <tr>
+                                <td>
+                                    <%= patient.patient_id %>
+                                </td>
+                                <td>
+                                    <%= patient.patient_name %>
+                                </td>
+                                <td>
+                                    <%= patient.patient_age %>
+                                </td>
+                                <td>
+                                    <%= patient.patient_gender %>
+                                </td>
+                                <td>
+                                    <%= patient.patient_disease %>
+                                </td>
+                                <td>
+                                    <%= patient.doctor_id %>
+                                </td>
+                                <td>
+                                    <%= patient.room_id %>
+                                </td>
+                                <td>
+                                    <%= patient.nurse_id %>
+                                </td>
+                                <td>
+                                    <%= patient.receptionist_id %>
+                                </td>
+                                <td>
+                                    <%= patient.time_allocate ? patient.time_allocate : '-' %>
+                                </td>
+                                <td>
+                                    <%= patient.status %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <%- include('../fotter') %>
+
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

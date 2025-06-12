@@ -1,6 +1,9 @@
+//doctorController.js
+const adminModel = require("../model/adminModel");
 
-// exports medicine
-// view 
+// Controller for admin homepage
+exports.DoctorHomePage = (req, res) => {
+  console.log("Inside admin homepage");
+  res.render("Doctor/doctorHomePage");
+};
 
-
-// add to model
