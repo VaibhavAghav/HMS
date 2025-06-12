@@ -7,6 +7,8 @@ let patientController = require("../controller/patientController");
 
 let roomController = require("../controller/roomController");
 
+let nurseController = require("../controller/nurseController");
+
 // Receptionist homepage
 router.get("/", receptionistController.ReceptionHomePage);
 
@@ -22,5 +24,24 @@ router.get('/view-patients', patientController.viewAllPatients);
 
 router.get("/add-room", roomController.AddRoomPage);
 
+
+
+
+/////
+// Nurse api
+router.get("/add-nurse", nurseController.AddNursePage);
+router.post("/add-nurse", nurseController.AddNurse);
+
+// View all nurses
+router.get("/view-nurses", nurseController.ViewNurses);
+
+//update nurse
+router.get("/edit-nurse/:id", nurseController.UpdateNursePage);
+router.post("/edit-nurse/:id", nurseController.UpdateNurse);
+
+// Delete a nurse
+router.get("/delete-nurse/:id", nurseController.DeleteNursePage);
+//post delete nurse
+router.post("/delete-nurse/:id", nurseController.DeleteNurse);
 
 module.exports = router;
