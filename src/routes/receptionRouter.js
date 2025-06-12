@@ -17,17 +17,14 @@ router.get("/add-patient", patientController    .addPatientPage);
 router.get('/view-patients', patientController.viewAllPatients);
 
 
-
-
-////////////////////////////////
 /// Room api
-
+// Route to display add-room page
 router.get("/add-room", roomController.AddRoomPage);
+// Route to view all rooms
+// router.get("/view-rooms", roomController.viewAllRoom);
+router.post('/add-room', roomController.addRoom); 
 
 
-
-
-/////
 // Nurse api
 router.get("/add-nurse", nurseController.AddNursePage);
 router.post("/add-nurse", nurseController.AddNurse);
