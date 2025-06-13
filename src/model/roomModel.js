@@ -35,6 +35,14 @@ exports.getAllRooms = (callback) => {
   });
 };
 
+exports.getVacantRooms = (callback) => {
+  const query = "SELECT * FROM room WHERE room_status = 'Available'";
+  db.query(query, (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results);
+  });
+};
+
 // Get room by ID function
 exports.getRoomById = (roomId, callback) => {
   const query = "SELECT * FROM room WHERE room_no = ?";
