@@ -17,6 +17,12 @@ router.post("/add-doctor", isAdminAuthenticated, adminController.addDoctor);
 
 // doctor list page — PROTECTED
 router.get("/view-doctors", isAdminAuthenticated, adminController.doctorListPage);
+//edit doctor page — PROTECTED
+router.get("/edit-doctor/:id", isAdminAuthenticated, adminController.editDoctorPage);
+// edit doctor post — PROTECTED
+router.post("/edit-doctor/:id", isAdminAuthenticated, adminController.editDoctor);
+// delete doctor — PROTECTED
+router.get("/delete-doctor/:id", isAdminAuthenticated, adminController.deleteDoctorPage);
 
 // add admin get page — PROTECTED
 router.get("/add-admin", isAdminAuthenticated, adminController.addAdminPage);

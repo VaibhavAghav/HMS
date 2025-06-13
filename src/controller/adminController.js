@@ -37,6 +37,67 @@ exports.logoutAdmin = (req, res) => {
   });
 };
 
+// Controller for editing doctor
+exports.editDoctorPage = (req, res) => {
+  const doctorId = req.params.id;
+
+  if (!doctorId) {
+    return res.status(400).send("Doctor ID is required");
+  }
+
+  adminModel.getDoctorById(doctorId, (err, doctor) => {
+    if (err) {
+      console.error("Error fetching doctor:", err);
+      return res.status(500).send("Internal server error");
+    }
+    if (!doctor) {
+      return res.status(404).send("Doctor not found");
+    }
+
+    res.render("Admin/updateDoctor", { doctor });
+  });
+};
+// Controller for editing doctor
+exports.editDoctor = (req, res) => {
+  const doctorId = req.params.id;
+  const updatedData = {
+    doctor_name: req.body.doctor_name,
+    doctor_contact: req.body.doctor_contact,
+    doctor_experience: req.body.doctor_experience,
+    status: req.body.status,
+    spelization: req.body.spelization,
+  };
+
+  if (!doctorId) {
+    return res.status(400).send("Doctor ID is required");
+  }
+
+  adminModel.updateDoctor(doctorId, updatedData, (err, result) => {
+    if (err) {
+      console.error("Error updating doctor:", err);
+      return res.status(500).send("Internal server error");
+    }
+    res.redirect("/admin/view-doctors");
+  });
+};
+
+// Controller for deleting doctor
+exports.deleteDoctorPage = (req, res) => {
+  const doctorId = req.params.id;
+
+  if (!doctorId) {
+    return res.status(400).send("Doctor ID is required");
+  }
+
+  adminModel.deleteDoctor(doctorId, (err, result) => {
+    if (err) {
+      console.error("Error deleting doctor:", err);
+      return res.status(500).send("Internal server error");
+    }
+    res.redirect("/admin/view-doctors");
+  });
+};
+
 // Controller for adding admin
 exports.addAdmin = (req, res) => {
   const adminData = {

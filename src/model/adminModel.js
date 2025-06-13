@@ -112,6 +112,78 @@ exports.getAllDoctors = (callback) => {
   });
 };
 
+// get doctor by ID getDoctorById
+exports.getDoctorById = (doctorId, callback) => {
+  const query = `
+    SELECT d.doctor_id, d.doctor_name, d.doctor_contact, d.doctor_experience, 
+           d.status, d.spelization, u.username 
+    FROM doctor d 
+    JOIN users u ON d.user_id = u.user_id 
+    WHERE d.doctor_id = ?
+  `;
+
+  db.query(query, [doctorId], (err, results) => {
+    if (err) {
+      console.error("Error fetching doctor by ID:", err);
+      callback(err, null);
+      return;
+    }
+    callback(null, results[0]);
+  });
+};      
+
+// update doctor editDoctor
+exports.updateDoctor = (doctorId, updatedData, callback) => {
+  const updateDoctorQuery = `
+    UPDATE doctor
+    SET doctor_name = ?, doctor_contact = ?, doctor_experience = ?,
+        status = ?, spelization = ?
+    WHERE doctor_id = ?
+  `;
+  db.query(
+    updateDoctorQuery,
+    [
+      updatedData.doctor_name,
+      updatedData.doctor_contact,
+      updatedData.doctor_experience,
+      updatedData.status,
+      updatedData.spelization,
+      doctorId,
+    ],
+    (err, result) => {
+      if (err) {  
+        console.error("Error updating doctor:", err);
+        callback(err, null);
+        return;
+      }
+      if (result.affectedRows === 0) {
+        callback(new Error("Doctor not found"), null);
+      } else {
+        callback(null, result);
+      } 
+    }
+  );  
+};
+// delete doctor deleteDoctor
+exports.deleteDoctor = (doctorId, callback) => {
+  const deleteDoctorQuery = `
+    DELETE FROM doctor WHERE doctor_id = ?
+  `;  
+  db.query(deleteDoctorQuery, [doctorId], (err, result) => {
+    if (err) {
+      console.error("Error deleting doctor:", err);
+      callback(err, null);
+      return;
+    }
+    if (result.affectedRows === 0) {  
+      callback(new Error("Doctor not found"), null);
+    } else {  
+      callback(null, result);
+    }
+  });
+};
+
+
 exports.addDoctor = (doctorData, callback) => {
   // Step 1: Insert into users table
   const insertUserQuery =
