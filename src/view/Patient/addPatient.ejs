@@ -18,90 +18,155 @@
 
 <body>
 
-  <!-- Receptionist navbar and sidebar -->
   <%- include('../Reception/receptionNavbar') %>
-  <%- include('../Reception/receptionSidebar') %>
+    <%- include('../Reception/receptionSidebar') %>
 
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Add New Patient</h3>
-          </div>
-          <div class="card-body">
-            <form action="/patient/add-patient" method="POST">
-
-              <div class="mb-3">
-                <label for="patient_name" class="form-label">Patient Name</label>
-                <input type="text" class="form-control" id="patient_name" name="patient_name" required>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="card shadow-sm">
+              <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Add New Patient</h3>
               </div>
+              <div class="card-body">
+                <form action="add-patient" method="POST">
 
-              <div class="mb-3">
-                <label for="patient_age" class="form-label">Age</label>
-                <input type="number" class="form-control" id="patient_age" name="patient_age" required>
+                  <!-- Patient Name -->
+                  <div class="mb-3">
+                    <label for="patient_name" class="form-label">Patient Name</label>
+                    <input type="text" class="form-control" id="patient_name" name="patient_name" required>
+                  </div>
+
+                  <!-- Age -->
+                  <div class="mb-3">
+                    <label for="patient_age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="patient_age" name="patient_age" required>
+                  </div>
+
+                  <!-- Gender -->
+                  <div class="mb-3">
+                    <label for="patient_gender" class="form-label">Gender</label>
+                    <select class="form-select" id="patient_gender" name="patient_gender" required>
+                      <option value="">Select</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <!-- Specialization -->
+                  <div class="mb-3">
+                    <label for="specialization" class="form-label">Specialization</label>
+                    <select class="form-select" id="specialization" required>
+                      <option value="">Select</option>
+                      <% specializations.forEach(function(spec){ %>
+                        <option value="<%= spec.spelization %>">
+                          <%= spec.spelization %>
+                        </option>
+                        <% }) %>
+                    </select>
+                  </div>
+
+                  <!-- Doctor (dependent dropdown) -->
+                  <div class="mb-3">
+                    <label for="doctor_id" class="form-label">Doctor</label>
+                    <select class="form-select" id="doctor_id" name="doctor_id" required>
+                      <option value="">Select Doctor</option>
+                    </select>
+                  </div>
+
+                  <!-- Disease / Problem -->
+                  <div class="mb-3">
+                    <label for="patient_disease" class="form-label">Disease / Problem</label>
+                    <input type="text" class="form-control" id="patient_disease" name="patient_disease" required>
+                  </div>
+
+                  <!-- Room -->
+                  <div class="mb-3">
+                    <label for="room_id" class="form-label">Room</label>
+                    <select class="form-select" id="room_id" name="room_id">
+                      <option value="">Select Room</option>
+                      <% availableRooms.forEach(function(room){ %>
+                        <option value="<%= room.room_no %>">
+                          <%= room.room_type %> (₹<%= room.room_price %>)
+                        </option>
+                        <% }) %>
+                    </select>
+                  </div>
+
+                  <!-- Nurse -->
+                  <div class="mb-3">
+                    <label for="nurse_id" class="form-label">Nurse</label>
+                    <select class="form-select" id="nurse_id" name="nurse_id">
+                      <option value="">Select Nurse</option>
+                      <% nurses.forEach(function(nurse){ %>
+                        <option value="<%= nurse.nurse_id %>">
+                          <%= nurse.nurse_name %> 
+                        </option>
+                        <% }) %>
+                    </select>
+                  </div>
+
+                  <!-- Time Allocated -->
+                  <div class="mb-3">
+                    <label for="time_allocate" class="form-label">Time Allocated</label>
+                    <input type="time" class="form-control" id="time_allocate" name="time_allocate" required>
+                  </div>
+
+                  <!-- Status -->
+                  <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status" required>
+                      <option value="">Select Status</option>
+                      <option value="Visited">Visited</option>
+                      <option value="Admitted">Admitted</option>
+                      <option value="Not Visited">Not Visited</option>
+                    </select>
+                  </div>
+
+                  <!-- Action Buttons -->
+                  <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">Save Patient</button>
+                    <a href="/patient/allpatients" class="btn btn-secondary">Cancel</a>
+                  </div>
+
+                </form>
               </div>
-
-              <div class="mb-3">
-                <label for="patient_gender" class="form-label">Gender</label>
-                <select class="form-select" id="patient_gender" name="patient_gender" required>
-                  <option value="">Select</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div class="mb-3">
-                <label for="patient_disease" class="form-label">Disease / Problem</label>
-                <input type="text" class="form-control" id="patient_disease" name="patient_disease" required>
-              </div>
-
-              <div class="mb-3">
-                <label for="doctor_id" class="form-label">Doctor ID</label>
-                <input type="number" class="form-control" id="doctor_id" name="doctor_id" required>
-              </div>
-
-              <div class="mb-3">
-                <label for="room_id" class="form-label">Room ID</label>
-                <input type="number" class="form-control" id="room_id" name="room_id">
-              </div>
-
-              <div class="mb-3">
-                <label for="nurse_id" class="form-label">Nurse ID</label>
-                <input type="number" class="form-control" id="nurse_id" name="nurse_id">
-              </div>
-
-              <div class="mb-3">
-                <label for="time_allocate" class="form-label">Time Allocated</label>
-                <input type="time" class="form-control" id="time_allocate" name="time_allocate" required>
-              </div>
-
-              <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-select" id="status" name="status" required>
-                  <option value="">Select Status</option>
-                  <option value="Visited">Visited</option>
-                  <option value="Admitted">Admitted</option>
-                  <option value="Not Visited">Not Visited</option>
-                </select>
-              </div>
-
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-success">Save Patient</button>
-                <a href="/patient/allpatients" class="btn btn-secondary">Cancel</a>
-              </div>
-
-            </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <%- include('../fotter') %>
+      <%- include('../fotter') %>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+          // Dependent Doctor dropdown based on Specialization
+          document.getElementById("specialization").addEventListener("change", function () {
+            const specialization = this.value;
+
+            if (specialization) {
+              fetch(`/receptionist/doctors/${specialization}`)
+                .then(response => response.json())
+                .then(doctors => {
+                  const doctorSelect = document.getElementById("doctor_id");
+                  doctorSelect.innerHTML = `<option value="">Select Doctor</option>`;
+
+                  doctors.forEach(doc => {
+                    const option = document.createElement("option");
+                    option.value = doc.doctor_id;
+                    option.text = doc.doctor_name;
+                    doctorSelect.appendChild(option);
+                  });
+                })
+                .catch(error => console.error("Error fetching doctors:", error));
+            } else {
+              document.getElementById("doctor_id").innerHTML = `<option value="">Select Doctor</option>`;
+            }
+          });
+        </script>
+
 </body>
 
 </html>

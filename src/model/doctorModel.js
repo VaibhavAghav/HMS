@@ -25,3 +25,40 @@ exports.DoctorLogin = (username, password, callback) => {
     }
   });
 };
+
+// Get all doctors
+exports.getAllDoctors = (callback) => {
+  const query = `
+    SELECT d.*, u.username
+    FROM doctor d
+    JOIN users u ON d.user_id = u.user_id
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching doctors:", err);
+      return callback(err, null);
+    }
+    console.log("Doctors fetched successfully.");
+    callback(null, results);
+  });
+};
+
+// Get all distinct specializations
+exports.getAllSpecializations = (callback) => {
+  const query = "SELECT DISTINCT spelization FROM doctor";
+  db.query(query, (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results);
+  });
+};
+
+// Get doctors by specialization
+exports.getDoctorsBySpecialization = (specialization, callback) => {
+  const query =
+    "SELECT * FROM doctor WHERE spelization = ?";
+  db.query(query, [specialization], (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results);
+  });
+};

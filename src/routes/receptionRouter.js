@@ -14,7 +14,12 @@ router.get("/", receptionistController.ReceptionHomePage);
 
 // Add a new patient
 router.get("/add-patient", patientController.addPatientPage);
+// Post add patient
+router.post("/add-patient", patientController.savePatient);
 router.get("/view-patients", patientController.viewAllPatients);
+
+router.get("/doctors/:specialization", patientController.getDoctorsBySpecialization);
+
 
 /// Room api
 // Route to display add-room page by receptionist
