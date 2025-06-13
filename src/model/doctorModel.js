@@ -62,3 +62,22 @@ exports.getDoctorsBySpecialization = (specialization, callback) => {
     callback(null, results);
   });
 };
+
+
+exports.getDoctorById = (doctorId, callback) => {
+  const query = `
+    SELECT d.*, u.username
+    FROM doctor d
+    JOIN users u ON d.user_id = u.user_id
+    WHERE d.doctor_id = ?
+  `;
+
+  db.query(query, [doctorId], (err, results) => {
+    if (err) return callback(err, null);
+    if (results.length > 0) {
+      callback(null, results[0]);
+    } else {
+      callback(null, null);
+    }
+  });
+};
