@@ -71,7 +71,7 @@ exports.savePatient = (req, res) => {
     if (err) {
       return res.status(500).send("Error saving patient");
     }
-    res.redirect("/patient/allpatients");
+    res.redirect("/receptionist/view-patients");
   });
 };
 

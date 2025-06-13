@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>All Patients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -15,7 +16,6 @@
 
 <body>
 
-
     <%- include('../Reception/receptionNavbar') %>
         <%- include('../Reception/receptionSidebar') %>
 
@@ -25,15 +25,11 @@
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
                             <th>Disease</th>
-                            <th>Doctor ID</th>
-                            <th>Room ID</th>
-                            <th>Nurse ID</th>
-                            <th>Receptionist ID</th>
+                            <th>Doctor</th>
+                            <th>Room Type (Room No)</th>
+                            <th>Nurse</th>
                             <th>Time</th>
                             <th>Status</th>
                         </tr>
@@ -42,38 +38,35 @@
                         <% patients.forEach(patient=> { %>
                             <tr>
                                 <td>
-                                    <%= patient.patient_id %>
-                                </td>
-                                <td>
                                     <%= patient.patient_name %>
-                                </td>
-                                <td>
-                                    <%= patient.patient_age %>
-                                </td>
-                                <td>
-                                    <%= patient.patient_gender %>
                                 </td>
                                 <td>
                                     <%= patient.patient_disease %>
                                 </td>
                                 <td>
-                                    <%= patient.doctor_id %>
+                                    <%= patient.doctor_name %>
                                 </td>
                                 <td>
-                                    <%= patient.room_id %>
+                                    <%= patient.room_type %> (Room No: <%= patient.room_id %>)
                                 </td>
                                 <td>
-                                    <%= patient.nurse_id %>
-                                </td>
-                                <td>
-                                    <%= patient.receptionist_id %>
+                                    <%= patient.nurse_name %>
                                 </td>
                                 <td>
                                     <%= patient.time_allocate ? patient.time_allocate : '-' %>
                                 </td>
                                 <td>
-                                    <%= patient.status %>
+                                    <% if (patient.status==='Visited' ) { %>
+                                        <a href="/patient/bill/<%= patient.patient_id %>" class="text-success"
+                                            title="Generate Bill">
+                                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                                        </a>
+                                        <% } else { %>
+                                            <%= patient.status %>
+                                                <% } %>
                                 </td>
+
+
                             </tr>
                             <% }) %>
                     </tbody>
