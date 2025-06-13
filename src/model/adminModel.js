@@ -291,3 +291,69 @@ exports.getAllReceptionists = (callback) => {
     callback(null, results);
   });
 };
+
+// get receptionist by ID
+exports.getReceptionistById = (receptionistId, callback) => {
+  const query = `
+    SELECT r.reception_id, r.reception_name, r.reception_contact, u.username 
+    FROM reception r 
+    JOIN users u ON r.user_id = u.user_id 
+    WHERE r.reception_id = ?
+  `;
+
+  db.query(query, [receptionistId], (err, results) => {
+    if (err) {
+      console.error("Error fetching receptionist by ID:", err);
+      callback(err, null);
+      return;
+    }
+    callback(null, results[0]);
+  });
+};
+
+// update receptionist
+exports.updateReceptionist = (receptionistId, updatedData, callback) => {
+  const updateReceptionQuery = `
+    UPDATE reception
+    SET reception_name = ?, reception_contact = ?
+    WHERE reception_id = ?
+  `;
+  db.query(
+    updateReceptionQuery,
+    [updatedData.reception_name, updatedData.reception_contact, receptionistId],
+    (err, result) => {
+      if (err) {
+        console.error("Error updating receptionist:", err);
+        callback(err, null);
+        return;
+      }
+      if (result.affectedRows === 0) {
+        callback(new Error("Receptionist not found"), null);
+      } else {
+        callback(null, result);
+      }
+    }
+  );
+};
+
+// delete receptionist
+exports.deleteReceptionist = (receptionistId, callback) => {
+  const deleteReceptionQuery = `
+    DELETE FROM reception WHERE reception_id = ?
+  `;
+  db.query(deleteReceptionQuery, [receptionistId], (err, result) => {
+    if (err) {
+      console.error("Error deleting receptionist:", err);
+      callback(err, null);
+      return;
+    }
+    if (result.affectedRows === 0) {
+      callback(new Error("Receptionist not found"), null);
+    } else {
+      callback(null, result);
+    }
+  });
+};
+
+
+
