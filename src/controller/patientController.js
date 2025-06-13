@@ -3,6 +3,8 @@ const Patient = require("../model/patientModel");
 const doctor = require("../model/doctorModel");
 const room = require("../model/roomModel");
 const nurse = require("../model/nurseModel");
+const medicine = require("../model/medicineModel");
+const billModel = require("../model/billModel");
 
 // Load Add Patient Page
 exports.addPatientPage = (req, res) => {
@@ -42,7 +44,7 @@ exports.getDoctorsBySpecialization = (req, res) => {
       return res.status(500).json({ error: "Failed to fetch doctors" });
     }
     console.log("Doctors fetched successfully for specialization:", doctors);
-    
+
     res.json(doctors);
   });
 };
@@ -65,7 +67,7 @@ exports.savePatient = (req, res) => {
   };
 
   console.log("Saving patient with data:", patientData);
-  
+
   // Save to DB
   Patient.addPatient(patientData, (err, result) => {
     if (err) {
@@ -86,7 +88,60 @@ exports.viewAllPatients = (req, res) => {
       return res.status(500).send("Error fetching patients");
     }
     console.log("Patients fetched successfully:", patients);
-    
+
     res.render("Patient/viewPatients", { patients });
+  });
+};
+
+// get patient by id get all medicines
+exports.getPrescription = (req, res) => {
+  const patientId = req.params.id;
+  console.log("Fetching patient with ID:", patientId);
+
+  Patient.getPatientById(patientId, (err, patient) => {
+    if (err) {
+      console.error("Error fetching patient by ID:", err);
+      return res.status(500).send("Error fetching patient");
+    }
+    console.log("Patient fetched successfully:", patient);
+
+    // Fetch all medicines for the patient
+    medicine.getAllMedicines((err, medicines) => {
+      if (err) {
+        console.error("Error fetching medicines:", err);
+        return res.status(500).send("Error fetching medicines");
+      }
+      console.log("Medicines fetched successfully:", medicines);
+
+      // Render the patient details page with medicines
+      res.render("Patient/patientPrescription", { patient, medicines });
+    });
+
+  });
+};
+
+
+// Save prescription for a patient
+exports.savePrescription = (req, res) => {
+  const patientId = req.params.id;
+  const prescriptionData = req.body.medicines; // Array of { medicine_id, quantity }
+  const currentDate = new Date().toISOString().split("T")[0];
+
+  // Prepare data for insertion
+  const billEntries = prescriptionData.map(item => [
+    patientId,
+    item.medicine_id,
+    item.quantity,
+    currentDate
+  ]);
+
+  // Call the model to insert into DB
+  billModel.insertBills(billEntries, (err, result) => {
+    if (err) {
+      return res.status(500).send("Failed to save prescription.");
+    }
+
+    console.log("Prescription saved successfully:", result);
+    res.redirect(`/doctor/prescription/${patientId}`);
   });
 };

@@ -42,3 +42,22 @@ exports.getAllPatients = (callback) => {
     callback(null, results);
   });
 };
+
+
+// Get patient by ID
+exports.getPatientById = (patientId, callback) => {
+  const sql = `SELECT p.*, d.doctor_name, r.room_type, n.nurse_name 
+               FROM patient p 
+               JOIN doctor d ON p.doctor_id = d.doctor_id 
+               JOIN room r ON p.room_id = r.room_no 
+               JOIN nurse n ON p.nurse_id = n.nurse_id 
+               WHERE p.patient_id = ?`;
+
+  db.query(sql, [patientId], (err, results) => {
+    if (err) {
+      console.error("Error fetching patient by ID:", err);
+      return callback(err, null);
+    }
+    callback(null, results[0]);
+  });
+};
