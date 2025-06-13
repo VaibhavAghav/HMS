@@ -12,6 +12,7 @@
             padding-left: 260px;
         }
     </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -61,12 +62,18 @@
                                             title="Generate Bill">
                                             <i class="fa-solid fa-file-invoice-dollar"></i>
                                         </a>
-                                        <% } else { %>
-                                            <%= patient.status %>
-                                                <% } %>
+                                        <% } else if (patient.status==='Admitted' ) { %>
+                                            <i class="fa-solid fa-bed-pulse text-primary" title="Admitted"></i>
+                                            <% } else if (patient.status==='Not Visited' ) { %>
+                                                <i class="fa-solid fa-circle-xmark text-secondary"
+                                                    title="Not Visited"></i>
+                                                <% } else if (patient.status==='Billed' ) { %>
+                                                    <i class="fa-solid fa-money-check-dollar text-success"
+                                                        title="Billed"></i>
+                                                    <% } else { %>
+                                                        <%= patient.status %>
+                                                            <% } %>
                                 </td>
-
-
                             </tr>
                             <% }) %>
                     </tbody>
