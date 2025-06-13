@@ -247,6 +247,66 @@ exports.addReceptionist = (req, res) => {
       });
     }
 
-    res.redirect("/admin");
+    res.redirect("/admin/view-receptionists");
+  });
+};
+
+//edit receptionist page
+exports.editReceptionistPage = (req, res) => {
+  const receptionistId = req.params.id;
+
+  if (!receptionistId) {
+    return res.status(400).send("Receptionist ID is required");
+  }
+
+  adminModel.getReceptionistById(receptionistId, (err, receptionist) => {
+    if (err) {
+      console.error("Error fetching receptionist:", err);
+      return res.status(500).send("Internal server error");
+    }
+    if (!receptionist) {
+      return res.status(404).send("Receptionist not found");
+    }
+
+    res.render("Admin/updateReceptionist", { receptionist });
+  });
+};
+// Controller for editing receptionist
+exports.editReceptionist = (req, res) => {
+  const receptionistId = req.params.id;
+  const updatedData = {
+    reception_name: req.body.reception_name,
+    reception_contact: req.body.reception_contact,
+    username: req.body.username,
+    password: req.body.password,
+  };
+
+  if (!receptionistId) {
+    return res.status(400).send("Receptionist ID is required");
+  }
+
+  adminModel.updateReceptionist(receptionistId, updatedData, (err, result) => {
+    if (err) {
+      console.error("Error updating receptionist:", err);
+      return res.status(500).send("Internal server error");
+    }
+    res.redirect("/admin/view-receptionists");
+  });
+};
+
+// Controller for deleting receptionist
+exports.deleteReceptionistPage = (req, res) => {
+  const receptionistId = req.params.id;
+
+  if (!receptionistId) {
+    return res.status(400).send("Receptionist ID is required");
+  }
+
+  adminModel.deleteReceptionist(receptionistId, (err, result) => {
+    if (err) {
+      console.error("Error deleting receptionist:", err);
+      return res.status(500).send("Internal server error");
+    }
+    res.redirect("/admin/view-receptionists");
   });
 };

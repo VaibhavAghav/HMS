@@ -32,12 +32,18 @@ router.post("/add-admin", isAdminAuthenticated, adminController.addAdmin);
 
 //add receiptionist page — PROTECTED
 router.get("/add-receptionist", isAdminAuthenticated, adminController.addReceptionistPage);
-
 // add receiptionist post — PROTECTED
 router.post("/add-receptionist", isAdminAuthenticated, adminController.addReceptionist);
-
 // view receptionists page — PROTECTED
 router.get("/view-receptionists", adminController.receptionistListPage);
+// edit receptionist page — PROTECTED
+router.get("/edit-receptionist/:id", isAdminAuthenticated, adminController.editReceptionistPage);
+// edit receptionist post — PROTECTED
+router.post("/edit-receptionist/:id", isAdminAuthenticated, adminController.editReceptionist);
+// delete receptionist — PROTECTED
+router.get("/delete-receptionist/:id", isAdminAuthenticated, adminController.deleteReceptionistPage);
+
+
 
 // admin login page — PUBLIC
 router.get("/login", adminController.adminLoginPage);
