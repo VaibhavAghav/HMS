@@ -1,53 +1,35 @@
 //receptionRouter.js
-
 const express = require("express");
 let router = express.Router();
-let receptionistController = require("../controller/receptionController");
-let patientController = require("../controller/patientController");
 
-let roomController = require("../controller/roomController");
+const receptionistController = require("../controller/receptionController");
+const patientController = require("../controller/patientController");
+const roomController = require("../controller/roomController");
+const nurseController = require("../controller/nurseController");
 
-let nurseController = require("../controller/nurseController");
+const isReceptionAuthenticated = require("../middleware/receptionAuthentication");
 
-// Receptionist homepage
-router.get("/", receptionistController.ReceptionHomePage);
+router.get("/", isReceptionAuthenticated, receptionistController.ReceptionHomePage);
 
-// Add a new patient
-router.get("/add-patient", patientController.addPatientPage);
-// Post add patient
-router.post("/add-patient", patientController.savePatient);
-router.get("/view-patients", patientController.viewAllPatients);
+router.get("/add-patient", isReceptionAuthenticated, patientController.addPatientPage);
+router.post("/add-patient", isReceptionAuthenticated, patientController.savePatient);
+router.get("/view-patients", isReceptionAuthenticated, patientController.viewAllPatients);
+router.get("/doctors/:specialization", isReceptionAuthenticated, patientController.getDoctorsBySpecialization);
 
-router.get("/doctors/:specialization", patientController.getDoctorsBySpecialization);
+router.get("/add-room", isReceptionAuthenticated, roomController.AddRoomPage);
+router.post("/add-room", isReceptionAuthenticated, roomController.AddRoom);
+router.get("/view-rooms", isReceptionAuthenticated, roomController.ViewRooms);
+router.get("/edit-room/:id", isReceptionAuthenticated, roomController.UpdateRoomPage);
+router.post("/edit-room/:id", isReceptionAuthenticated, roomController.UpdateRoom);
+router.get("/delete-room/:id", isReceptionAuthenticated, roomController.DeleteRoomPage);
+router.post("/delete-room/:id", isReceptionAuthenticated, roomController.DeleteRoom);
 
-
-/// Room api
-// Route to display add-room page by receptionist
-router.get("/add-room", roomController.AddRoomPage);
-router.post("/add-room", roomController.AddRoom);
-// View all rooms
-router.get("/view-rooms", roomController.ViewRooms);
-// Update room
-router.get("/edit-room/:id", roomController.UpdateRoomPage);
-router.post("/edit-room/:id", roomController.UpdateRoom);
-// Delete a room
-router.get("/delete-room/:id", roomController.DeleteRoomPage);
-// Post delete room
-router.post("/delete-room/:id", roomController.DeleteRoom);
-
-
-
-// Nurse api
-router.get("/add-nurse", nurseController.AddNursePage);
-router.post("/add-nurse", nurseController.AddNurse);
-// View all nurses
-router.get("/view-nurses", nurseController.ViewNurses);
-//update nurse
-router.get("/edit-nurse/:id", nurseController.UpdateNursePage);
-router.post("/edit-nurse/:id", nurseController.UpdateNurse);
-// Delete a nurse
-router.get("/delete-nurse/:id", nurseController.DeleteNursePage);
-//post delete nurse
-router.post("/delete-nurse/:id", nurseController.DeleteNurse);
+router.get("/add-nurse", isReceptionAuthenticated, nurseController.AddNursePage);
+router.post("/add-nurse", isReceptionAuthenticated, nurseController.AddNurse);
+router.get("/view-nurses", isReceptionAuthenticated, nurseController.ViewNurses);
+router.get("/edit-nurse/:id", isReceptionAuthenticated, nurseController.UpdateNursePage);
+router.post("/edit-nurse/:id", isReceptionAuthenticated, nurseController.UpdateNurse);
+router.get("/delete-nurse/:id", isReceptionAuthenticated, nurseController.DeleteNursePage);
+router.post("/delete-nurse/:id", isReceptionAuthenticated, nurseController.DeleteNurse);
 
 module.exports = router;
