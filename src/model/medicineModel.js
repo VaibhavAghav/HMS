@@ -55,3 +55,16 @@ exports.deleteMedicine = (id, callback) => {
     });
 };
 
+// Get all medicines
+exports.getAllMedicines = (callback) => {
+    const sql = "SELECT * FROM medical";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Error fetching all medicines:", err);
+            return callback(err, null);
+        }
+        callback(null, results);
+    });
+};
+
+//medicineModel.js
