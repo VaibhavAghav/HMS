@@ -10,19 +10,19 @@ const isAdminAuthenticated = require("../middleware/adminAuthentication"); // ad
 router.get("/", isAdminAuthenticated, adminController.adminHomePage);
 
 // add doctor page — PROTECTED
-router.get("/add-doctor", isAdminAuthenticated, adminController.addDoctorPage);
+router.get("/add-doctor", isAdminAuthenticated, adminController.addDoctorPage);  //*
 
 // add doctor post — PROTECTED
-router.post("/add-doctor", isAdminAuthenticated, adminController.addDoctor);
+router.post("/add-doctor", isAdminAuthenticated, adminController.addDoctor);  //*
 
 // doctor list page — PROTECTED
-router.get("/view-doctors", isAdminAuthenticated, adminController.doctorListPage);
+router.get("/view-doctors", isAdminAuthenticated, adminController.doctorListPage); //-
 //edit doctor page — PROTECTED
-router.get("/edit-doctor/:id", isAdminAuthenticated, adminController.editDoctorPage);
+router.get("/edit-doctor/:id", isAdminAuthenticated, adminController.editDoctorPage);//-
 // edit doctor post — PROTECTED
-router.post("/edit-doctor/:id", isAdminAuthenticated, adminController.editDoctor);
+router.post("/edit-doctor/:id", isAdminAuthenticated, adminController.editDoctor);//-
 // delete doctor — PROTECTED
-router.get("/delete-doctor/:id", isAdminAuthenticated, adminController.deleteDoctorPage);
+router.get("/delete-doctor/:id", isAdminAuthenticated, adminController.deleteDoctorPage);//-
 
 // add admin get page — PROTECTED
 router.get("/add-admin", isAdminAuthenticated, adminController.addAdminPage);
@@ -31,17 +31,17 @@ router.get("/add-admin", isAdminAuthenticated, adminController.addAdminPage);
 router.post("/add-admin", isAdminAuthenticated, adminController.addAdmin);
 
 //add receiptionist page — PROTECTED
-router.get("/add-receptionist", isAdminAuthenticated, adminController.addReceptionistPage);
+router.get("/add-receptionist", isAdminAuthenticated, adminController.addReceptionistPage); //-
 // add receiptionist post — PROTECTED
-router.post("/add-receptionist", isAdminAuthenticated, adminController.addReceptionist);
+router.post("/add-receptionist", isAdminAuthenticated, adminController.addReceptionist);//-
 // view receptionists page — PROTECTED
-router.get("/view-receptionists", adminController.receptionistListPage);
+router.get("/view-receptionists", adminController.receptionistListPage);   //*
 // edit receptionist page — PROTECTED
-router.get("/edit-receptionist/:id", isAdminAuthenticated, adminController.editReceptionistPage);
+router.get("/edit-receptionist/:id", isAdminAuthenticated, adminController.editReceptionistPage); //*
 // edit receptionist post — PROTECTED
-router.post("/edit-receptionist/:id", isAdminAuthenticated, adminController.editReceptionist);
+router.post("/edit-receptionist/:id", isAdminAuthenticated, adminController.editReceptionist); //*
 // delete receptionist — PROTECTED
-router.get("/delete-receptionist/:id", isAdminAuthenticated, adminController.deleteReceptionistPage);
+router.get("/delete-receptionist/:id", isAdminAuthenticated, adminController.deleteReceptionistPage); //*
 
 
 
