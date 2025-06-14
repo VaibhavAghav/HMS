@@ -80,11 +80,39 @@ exports.getDoctorById = (doctorId, callback) => {
   });
 };
 
-exports.getPatientsByDoctorId = (doctorId, callback) => {
+exports.getNotVistedPatientsByDoctorId = (doctorId, callback) => {
   const query = `
     SELECT *
     FROM patient
-    WHERE doctor_id = ?
+    WHERE doctor_id = ? AND status = 'Not Visited'
+  `;
+
+  db.query(query, [doctorId], (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results);
+  });
+};
+
+//getVisitedPatientsByDoctorId
+exports.getVisitedPatientsByDoctorId = (doctorId, callback) => {
+  const query = `
+    SELECT *
+    FROM patient
+    WHERE doctor_id = ? AND status = 'Visited'
+  `;
+
+  db.query(query, [doctorId], (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results);
+  });
+};
+
+//getAdmitedPatientsByDoctorId
+exports.getAdmitedPatientsByDoctorId = (doctorId, callback) => {
+  const query = `
+    SELECT *
+    FROM patient
+    WHERE doctor_id = ? AND status = 'Admitted'
   `;
 
   db.query(query, [doctorId], (err, results) => {
