@@ -9,12 +9,19 @@ const nurseController = require("../controller/nurseController");
 
 const isReceptionAuthenticated = require("../middleware/receptionAuthentication");
 
-router.get("/", isReceptionAuthenticated, receptionistController.ReceptionHomePage);
-
 router.get("/add-patient", isReceptionAuthenticated, patientController.addPatientPage);
 router.post("/add-patient", isReceptionAuthenticated, patientController.savePatient);
 router.get("/view-patients", isReceptionAuthenticated, patientController.viewAllPatients);
 router.get("/doctors/:specialization", isReceptionAuthenticated, patientController.getDoctorsBySpecialization);
+router.get("/view-billed-patients", isReceptionAuthenticated, patientController.viewBilledPatients);
+router.get("/view-unbilled-patients", isReceptionAuthenticated, patientController.viewUnbilledPatients);
+
+router.get("/", isReceptionAuthenticated, receptionistController.ReceptionHomePage);
+
+//receptionist/bill
+router.get("/bill/:id", isReceptionAuthenticated, receptionistController.BillPage);
+//post request to update patient status
+router.post("/update-patient-status/:id", isReceptionAuthenticated, receptionistController.updatePatientStatus);
 
 router.get("/add-room", isReceptionAuthenticated, roomController.AddRoomPage);
 router.post("/add-room", isReceptionAuthenticated, roomController.AddRoom);

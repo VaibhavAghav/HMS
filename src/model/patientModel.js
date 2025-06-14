@@ -76,3 +76,40 @@ exports.updatePatientStatus = (patientId, status, callback) => {
   });
 }
 
+
+
+// getBilledPatients all pateint with status 'billed'
+exports.getBilledPatients = (callback) => {
+  const sql = `SELECT p.*, d.doctor_name, r.room_type, n.nurse_name 
+               FROM patient p 
+               JOIN doctor d ON p.doctor_id = d.doctor_id 
+               JOIN room r ON p.room_id = r.room_no 
+               JOIN nurse n ON p.nurse_id = n.nurse_id 
+               WHERE p.status = 'Billed'`;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching billed patients:", err);
+      return callback(err, null);
+    }
+    callback(null, results);
+  });
+};
+
+//getUnbilledPatients
+exports.getUnbilledPatients = (callback) => {
+  const sql = `SELECT p.*, d.doctor_name, r.room_type, n.nurse_name 
+               FROM patient p 
+               JOIN doctor d ON p.doctor_id = d.doctor_id 
+               JOIN room r ON p.room_id = r.room_no 
+               JOIN nurse n ON p.nurse_id = n.nurse_id 
+               WHERE p.status = 'Visited'`;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching unbilled patients:", err);
+      return callback(err, null);
+    }
+    callback(null, results);
+  });
+};
