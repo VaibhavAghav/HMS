@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Prescription</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            margin-top: 100px;
+            border-radius: 1rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <%- include('../Doctor/doctorNavbar.ejs') %>
+
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 bg-white border-end sidebar p-0">
+                    <%- include('../Doctor/doctorSidebar') %>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 p-4">
+                    <div class="card shadow-sm p-4">
+                        <h3 class="text-primary text-center mb-4">Patient Prescription</h3>
+
+                        <!-- Patient Details -->
+                        <div class="mb-4">
+                            <h5 class="mb-3 text-secondary border-bottom pb-2">Patient Details</h5>
+                            <div class="row g-3">
+                                <div class="col-md-4"><strong>Name:</strong>
+                                    <%= patient.patient_name %>
+                                </div>
+                                <div class="col-md-4"><strong>Age:</strong>
+                                    <%= patient.patient_age %>
+                                </div>
+                                <div class="col-md-4"><strong>Gender:</strong>
+                                    <%= patient.patient_gender %>
+                                </div>
+                                <div class="col-md-4"><strong>Doctor:</strong>
+                                    <%= patient.doctor_name %>
+                                </div>
+                                <div class="col-md-4"><strong>Room:</strong>
+                                    <%= patient.room_type %>
+                                </div>
+                                <div class="col-md-4"><strong>Nurse:</strong>
+                                    <%= patient.nurse_name %>
+                                </div>
+                                <div class="col-md-6"><strong>Disease:</strong>
+                                    <%= patient.patient_disease %>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="statusSelect" class="form-label"><strong>Status:</strong></label>
+                                    <select id="statusSelect" name="status" class="form-select" required
+                                        form="prescriptionForm">
+                                        <option value="NotVisited" <%=patient.status==='NotVisited' ? 'selected' : '' %>
+                                            >NotVisited</option>
+                                        <option value="Visited" <%=patient.status==='Visited' ? 'selected' : '' %>
+                                            >Visited</option>
+                                        <option value="Admitted" <%=patient.status==='Admitted' ? 'selected' : '' %>
+                                            >Admitted</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Previous Medicines Table -->
+                        <div class="mb-5">
+                            <h5 class="mb-3 text-secondary border-bottom pb-2">Previous Medicines</h5>
+                            <% if (patient.bills && patient.bills.length> 0) { %>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Medicine Name</th>
+                                                <th>Quantity</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% patient.bills.forEach((bill, index)=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= index + 1 %>
+                                                    </td>
+                                                    <td>
+                                                        <%= bill.medicine_name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= bill.quantity %>
+                                                    </td>
+                                                    <td>
+                                                        <%= bill.bill_date %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <% } else { %>
+                                    <p class="text-muted">No previous prescriptions found.</p>
+                                    <% } %>
+                        </div>
+
+                        <!-- Prescription Form -->
+                        <form method="POST" action="/doctor/prescription/<%= patient.patient_id %>"
+                            id="prescriptionForm">
+
+                            <!-- Add Medicine -->
+                            <div class="mb-4">
+                                <h5 class="mb-3 text-secondary border-bottom pb-2">Add Medicine</h5>
+                                <div class="row align-items-end g-3">
+                                    <div class="col-md-5">
+                                        <label for="medicineSelect" class="form-label">Medicine</label>
+                                        <select id="medicineSelect" class="form-select">
+                                            <option selected disabled>Select medicine...</option>
+                                            <% medicines.forEach(med=> { %>
+                                                <option value="<%= med.medical_id %>"
+                                                    data-name="<%= med.medicine_name %>">
+                                                    <%= med.medicine_name %>
+                                                </option>
+                                                <% }) %>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="medicineQty" class="form-label">Quantity</label>
+                                        <input type="number" id="medicineQty" class="form-control"
+                                            placeholder="Quantity" min="1" />
+                                    </div>
+                                    <div class="col-md-2 d-grid">
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="addMedicine()">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prescribed Medicines Table -->
+                            <h5 class="mb-3 text-secondary border-bottom pb-2">Prescribed Medicines</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="medicineTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Medicine Name</th>
+                                            <th>Quantity</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn btn-success px-4">Submit Prescription</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- JavaScript for Adding Medicines -->
+    <script>
+        let count = 1;
+
+        function addMedicine() {
+            const select = document.getElementById("medicineSelect");
+            const qty = document.getElementById("medicineQty").value.trim();
+            const selectedOption = select.options[select.selectedIndex];
+
+            if (!selectedOption || selectedOption.disabled || qty <= 0) {
+                return alert("Please select a valid medicine and quantity.");
+            }
+
+            const medId = selectedOption.value;
+            const medName = selectedOption.getAttribute("data-name");
+            const table = document.querySelector("#medicineTable tbody");
+            const rowIndex = count - 1;
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${count}</td>
+            <td>
+              ${medName}
+              <input type="hidden" name="medicines[${rowIndex}][medicine_id]" value="${medId}">
+            </td>
+            <td>
+              ${qty}
+              <input type="hidden" name="medicines[${rowIndex}][quantity]" value="${qty}">
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Remove</button>
+            </td>
+        `;
+            table.appendChild(row);
+
+            count++;
+            select.selectedIndex = 0;
+            document.getElementById("medicineQty").value = "";
+        }
+
+        function removeRow(btn) {
+            btn.closest("tr").remove();
+        }
+    </script>
+
+</body>
+
+</html>

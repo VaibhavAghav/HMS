@@ -1,3 +1,4 @@
+const e = require("express");
 const db = require("../config/db"); // your DB connection config
 
 exports.addPatient = (patientData, callback) => {
@@ -61,3 +62,17 @@ exports.getPatientById = (patientId, callback) => {
     callback(null, results[0]);
   });
 };
+
+
+//change patient status updatePatientStatus
+exports.updatePatientStatus = (patientId, status, callback) => {
+  const sql = `UPDATE patient SET status = ? WHERE patient_id = ?`;
+  db.query(sql, [status, patientId], (err, result) => {
+    if (err) {
+      console.error("Error updating patient status:", err);
+      return callback(err, null);
+    }
+    callback(null, result);
+  });
+}
+

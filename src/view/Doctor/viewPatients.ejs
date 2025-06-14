@@ -71,8 +71,12 @@
                                                 <th>Age</th>
                                                 <th>Gender</th>
                                                 <th>Disease</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+
+                                                <% if (showStatusColumn) { %>
+                                                    <th>Status</th>
+                                                    <% } %>
+
+                                                        <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -93,27 +97,22 @@
                                                     <td>
                                                         <%= patient.patient_disease %>
                                                     </td>
-                                                    <td>
-                                                        <form action="/doctor/update-status/<%= patient.patient_id %>"
-                                                            method="POST">
-                                                            <select name="status" class="form-select form-select-sm"
-                                                                onchange="this.form.submit()">
-                                                                <option value="Not Visited"
-                                                                    <%=patient.status==='Not Visited' ? 'selected' : ''
-                                                                    %>>Not Visited</option>
-                                                                <option value="Visited" <%=patient.status==='Visited'
-                                                                    ? 'selected' : '' %>>Visited</option>
-                                                                <option value="Admitted" <%=patient.status==='Admitted'
-                                                                    ? 'selected' : '' %>>Admitted</option>
-                                                            </select>
-                                                        </form>
-                                                    </td>
-                                                    <td>
-                                                        <a href="prescription/<%= patient.patient_id %>"
-                                                            class="btn btn-primary btn-sm">
-                                                            <i class="fa-solid fa-prescription"></i> Prescription
-                                                        </a>
-                                                    </td>
+
+                                                    <% if (showStatusColumn) { %>
+                                                        <td>
+                                                            <small>
+                                                                <%= patient.status %>
+                                                            </small>
+                                                        </td>
+                                                        <% } %>
+
+                                                            <td>
+                                                                <a href="prescription/<%= patient.patient_id %>"
+                                                                    class="btn btn-primary btn-sm">
+                                                                    <i class="fa-solid fa-prescription"></i>
+                                                                    Prescription
+                                                                </a>
+                                                            </td>
                                                 </tr>
                                                 <% }); %>
                                         </tbody>

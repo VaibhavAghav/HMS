@@ -63,7 +63,7 @@ exports.savePatient = (req, res) => {
     room_id: req.body.room_id,
     nurse_id: req.body.nurse_id,
     time_allocate: req.body.time_allocate,
-    status: req.body.status
+    status: req.body.status,
   };
 
   console.log("Saving patient with data:", patientData);
@@ -76,7 +76,6 @@ exports.savePatient = (req, res) => {
     res.redirect("/receptionist/view-patients");
   });
 };
-
 
 // View all patients
 exports.viewAllPatients = (req, res) => {
@@ -93,55 +92,79 @@ exports.viewAllPatients = (req, res) => {
   });
 };
 
-// get patient by id get all medicines
+// Get prescription for a patient
 exports.getPrescription = (req, res) => {
   const patientId = req.params.id;
-  console.log("Fetching patient with ID:", patientId);
 
   Patient.getPatientById(patientId, (err, patient) => {
     if (err) {
       console.error("Error fetching patient by ID:", err);
       return res.status(500).send("Error fetching patient");
     }
-    console.log("Patient fetched successfully:", patient);
 
-    // Fetch all medicines for the patient
-    medicine.getAllMedicines((err, medicines) => {
+    billModel.getBillsByPatientId(patientId, (err, bills) => {
       if (err) {
-        console.error("Error fetching medicines:", err);
-        return res.status(500).send("Error fetching medicines");
+        console.error("Error fetching bills:", err);
+        return res.status(500).send("Error fetching bills");
       }
-      console.log("Medicines fetched successfully:", medicines);
 
-      // Render the patient details page with medicines
-      res.render("Patient/patientPrescription", { patient, medicines });
+      patient.bills = bills;
+
+      medicine.getAllMedicines((err, medicines) => {
+        if (err) {
+          console.error("Error fetching medicines:", err);
+          return res.status(500).send("Error fetching medicines");
+        }
+
+        if(patient.status === "Visited") {
+          return  res.render("Patient/patientPrescription",{patient});
+        }
+
+        res.render("Patient/admittedPatientPrescription", {
+          patient,
+          medicines,
+        });
+      });
     });
-
   });
 };
 
-
-// Save prescription for a patient
+// Save prescription for a patient and update status
 exports.savePrescription = (req, res) => {
   const patientId = req.params.id;
-  const prescriptionData = req.body.medicines; // Array of { medicine_id, quantity }
+  const prescriptionData = req.body.medicines;
+  const newStatus = req.body.status;
   const currentDate = new Date().toISOString().split("T")[0];
 
-  // Prepare data for insertion
-  const billEntries = prescriptionData.map(item => [
+  if (!prescriptionData || prescriptionData.length === 0) {
+    return res.status(400).send("No medicines provided.");
+  }
+
+  const billEntries = prescriptionData.map((item) => [
     patientId,
     item.medicine_id,
     item.quantity,
-    currentDate
+    currentDate,
   ]);
 
-  // Call the model to insert into DB
+  // First insert into bill
   billModel.insertBills(billEntries, (err, result) => {
     if (err) {
+      console.error("Error inserting bills:", err);
       return res.status(500).send("Failed to save prescription.");
     }
 
-    console.log("Prescription saved successfully:", result);
-    res.redirect(`/doctor/prescription/${patientId}`);
+    console.log("Bills saved successfully:", result);
+
+    // Then update patient status
+    Patient.updatePatientStatus(patientId, newStatus, (err, result) => {
+      if (err) {
+        console.error("Error updating patient status:", err);
+        return res.status(500).send("Failed to update patient status.");
+      }
+
+      console.log("Patient status updated successfully.");
+      res.redirect(`/doctor/prescription/${patientId}`);
+    });
   });
 };
