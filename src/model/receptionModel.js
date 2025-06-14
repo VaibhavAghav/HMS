@@ -44,3 +44,54 @@ exports.getReceptionDetailsByUserId = (user_id, callback) => {
     }
   });
 };
+
+exports.getPatientBillsByPatientId = (patientId, callback) => {
+  const query = `
+    SELECT 
+      p.patient_id, p.patient_name, p.patient_age, p.patient_gender, 
+      p.patient_disease, p.time_allocate, p.discharge_date, p.status,
+      d.doctor_name, 
+      b.bill_id, b.bill_date, 
+      m.medicine_name, m.price_medicine, b.quantity, 
+      (m.price_medicine * b.quantity) AS total_price
+    FROM patient p
+    LEFT JOIN doctor d ON p.doctor_id = d.doctor_id
+    LEFT JOIN bill b ON p.patient_id = b.patient_id
+    LEFT JOIN medical m ON b.medical_id = m.medical_id
+    WHERE p.patient_id = ?
+    ORDER BY b.bill_date DESC
+  `;
+
+  db.query(query, [patientId], (err, result) => {
+    if (err) {
+      console.error("Error fetching patient full bill details by ID:", err);
+      return callback(err, null);
+    }
+    if (result.length > 0) {
+      return callback(null, result);
+    } else {
+      return callback(null, null);
+    }
+  });
+};
+
+// Update Patient Status
+exports.updatePatientStatus = (patientId, status, callback) => {
+  const query = `
+    UPDATE patient 
+    SET status = ? 
+    WHERE patient_id = ?
+  `;
+
+  db.query(query, [status, patientId], (err, result) => {
+    if (err) {
+      console.error("Error updating patient status:", err);
+      return callback(err, null);
+    }
+    if (result.affectedRows > 0) {
+      return callback(null, result);
+    } else {
+      return callback(null, null);
+    }
+  });
+};

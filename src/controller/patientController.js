@@ -77,21 +77,6 @@ exports.savePatient = (req, res) => {
   });
 };
 
-// View all patients
-exports.viewAllPatients = (req, res) => {
-  console.log("Fetching all patients");
-
-  Patient.getAllPatients((err, patients) => {
-    if (err) {
-      console.error("Error fetching patients:", err);
-      return res.status(500).send("Error fetching patients");
-    }
-    console.log("Patients fetched successfully:", patients);
-
-    res.render("Patient/viewPatients", { patients });
-  });
-};
-
 // Get prescription for a patient
 exports.getPrescription = (req, res) => {
   const patientId = req.params.id;
@@ -116,8 +101,8 @@ exports.getPrescription = (req, res) => {
           return res.status(500).send("Error fetching medicines");
         }
 
-        if(patient.status === "Visited") {
-          return  res.render("Patient/patientPrescription",{patient});
+        if (patient.status === "Visited") {
+          return res.render("Patient/patientPrescription", { patient });
         }
 
         res.render("Patient/admittedPatientPrescription", {
@@ -166,5 +151,50 @@ exports.savePrescription = (req, res) => {
       console.log("Patient status updated successfully.");
       res.redirect(`/doctor/prescription/${patientId}`);
     });
+  });
+};
+
+// View all patients
+exports.viewAllPatients = (req, res) => {
+  console.log("Fetching all patients");
+
+  Patient.getAllPatients((err, patients) => {
+    if (err) {
+      console.error("Error fetching patients:", err);
+      return res.status(500).send("Error fetching patients");
+    }
+    console.log("Patients fetched successfully:", patients);
+
+    res.render("Patient/viewPatients", { patients });
+  });
+};
+
+//viewBilledPatients
+exports.viewBilledPatients = (req, res) => {
+  console.log("Fetching billed patients");
+
+  Patient.getBilledPatients((err, patients) => {
+    if (err) {
+      console.error("Error fetching billed patients:", err);
+      return res.status(500).send("Error fetching billed patients");
+    }
+    console.log("Billed patients fetched successfully:", patients);
+
+    res.render("Patient/viewPatients", { patients });
+  });
+};
+
+//viewUnbilledPatients
+exports.viewUnbilledPatients = (req, res) => {
+  console.log("Fetching unbilled patients");
+
+  Patient.getUnbilledPatients((err, patients) => {
+    if (err) {
+      console.error("Error fetching unbilled patients:", err);
+      return res.status(500).send("Error fetching unbilled patients");
+    }
+    console.log("Unbilled patients fetched successfully:", patients);
+
+    res.render("Patient/viewPatients", { patients });
   });
 };
