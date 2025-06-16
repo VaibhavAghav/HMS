@@ -65,40 +65,42 @@
                         <div class="glow-card">
                             <h2 class="text-center mb-4">Add Receptionist</h2>
 
-                            <form action="add-receptionist" method="POST">
-                                <div class="mb-3">
-                                    <label for="reception_name" class="form-label">Receptionist Name</label>
-                                    <input type="text" class="form-control" id="reception_name" name="reception_name"
-                                        placeholder="Enter full name" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="reception_contact" class="form-label">Contact Number</label>
-                                    <input type="text" class="form-control" id="reception_contact"
-                                        name="reception_contact" placeholder="Enter contact number" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username"
-                                        placeholder="Create username" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Create password" required>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary w-100">Add Receptionist</button>
-                            </form>
-
                             <% if (typeof message !=='undefined' ) { %>
-                                <div class="alert alert-danger text-center mt-3">
+                                <div class="alert alert-<%= messageType %> text-center">
                                     <%= message %>
                                 </div>
                                 <% } %>
+
+                                    <form action="add-receptionist" method="POST">
+                                        <!-- first row -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Receptionist Name</label>
+                                                <input type="text" placeholder="Receptionist Name" class="form-control" name="reception_name" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Contact Number</label>
+                                                <input type="text" placeholder="Contact Number" class="form-control" name="reception_contact"
+                                                    required>
+                                            </div>
+                                        </div>
+
+                                        <!-- second row -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Username</label>
+                                                <input type="text" placeholder="Username" class="form-control" name="username" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Password</label>
+                                                <input type="password" placeholder="password" class="form-control" name="password" required>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary w-100">Add Receptionist</button>
+                                    </form>
                         </div>
+
                     </div>
                 </div>
         </div>

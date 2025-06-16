@@ -1,4 +1,5 @@
-const e = require("express");
+// patientModel.js
+
 const db = require("../config/db"); // your DB connection config
 
 exports.addPatient = (patientData, callback) => {
@@ -27,6 +28,62 @@ exports.addPatient = (patientData, callback) => {
   });
 };
 
+exports.getTodayLastAppointmentTime = (doctorId, callback) => {
+  const today = new Date();
+  const dateString = today.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+
+  const sql = `
+    SELECT time_allocate 
+    FROM patient 
+    WHERE doctor_id = ? AND DATE(time_allocate) = ?
+    ORDER BY time_allocate DESC 
+    LIMIT 1`;
+
+  db.query(sql, [doctorId, dateString], (err, results) => {
+    if (err) {
+      console.error("Error fetching today's last appointment time:", err);
+      return callback(err, null);
+    }
+    callback(null, results[0]);
+  });
+};
+
+exports.getLastAppointmentTime = (doctorId, callback) => {
+  const sql = `
+    SELECT time_allocate 
+    FROM patient 
+    WHERE doctor_id = ? 
+    ORDER BY time_allocate DESC 
+    LIMIT 1`;
+
+  db.query(sql, [doctorId], (err, results) => {
+    if (err) {
+      console.error("Error fetching last appointment time:", err);
+      return callback(err, null);
+    }
+    callback(null, results[0]);
+  });
+};
+
+// Get last appointment for doctor today
+exports.getLastAppointmentTimeForToday = (doctorId, today, callback) => {
+  const sql = `
+    SELECT time_allocate 
+    FROM patient 
+    WHERE doctor_id = ? 
+      AND DATE(time_allocate) = ? 
+    ORDER BY time_allocate DESC 
+    LIMIT 1`;
+
+  db.query(sql, [doctorId, today], (err, results) => {
+    if (err) {
+      console.error("Error fetching last appointment time:", err);
+      return callback(err, null);
+    }
+    callback(null, results[0]);
+  });
+};
+
 // Get all patients
 exports.getAllPatients = (callback) => {
   const sql = `SELECT p.*, d.doctor_name, r.room_type, n.nurse_name 
@@ -43,7 +100,6 @@ exports.getAllPatients = (callback) => {
     callback(null, results);
   });
 };
-
 
 // Get patient by ID
 exports.getPatientById = (patientId, callback) => {
@@ -63,7 +119,6 @@ exports.getPatientById = (patientId, callback) => {
   });
 };
 
-
 //change patient status updatePatientStatus
 exports.updatePatientStatus = (patientId, status, callback) => {
   const sql = `UPDATE patient SET status = ? WHERE patient_id = ?`;
@@ -74,9 +129,7 @@ exports.updatePatientStatus = (patientId, status, callback) => {
     }
     callback(null, result);
   });
-}
-
-
+};
 
 // getBilledPatients all pateint with status 'billed'
 exports.getBilledPatients = (callback) => {

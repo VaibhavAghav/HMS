@@ -17,10 +17,17 @@ exports.AddNurse = (req, res) => {
   nurseModel.addNurse(nurseData, (err, result) => {
     if (err) {
       console.error("Error adding nurse:", err);
-      return res.status(500).send("Error adding nurse.");
+      // return res.status(500).send("Error adding nurse.");
+      return res.render("Nurse/addNurse", {
+        messageType: "error",
+        message: "Error adding nurse. Please try again.",
+      });
     }
     console.log("Nurse added successfully.");
-    res.redirect("view-nurses"); // or wherever your nurse list page is
+    res.render("Nurse/addNurse", {
+      messageType: "success",
+      message: "Nurse added Successfully",
+    }); // or wherever your nurse list page is
   });
 };
 
@@ -91,7 +98,6 @@ exports.DeleteNursePage = (req, res) => {
     res.render("Nurse/deleteNurse", { nurse });
   });
 };
-
 
 // Handle Delete Nurse POST
 exports.DeleteNurse = (req, res) => {

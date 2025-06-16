@@ -15,6 +15,7 @@ router.get("/view-patients", isReceptionAuthenticated, patientController.viewAll
 router.get("/doctors/:specialization", isReceptionAuthenticated, patientController.getDoctorsBySpecialization);
 router.get("/view-billed-patients", isReceptionAuthenticated, patientController.viewBilledPatients);
 router.get("/view-unbilled-patients", isReceptionAuthenticated, patientController.viewUnbilledPatients);
+router.get("/last-patient-time/:doctor_id", isReceptionAuthenticated, patientController.getLastPatientTime);
 
 router.get("/", isReceptionAuthenticated, receptionistController.ReceptionHomePage);
 

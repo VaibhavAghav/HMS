@@ -4,8 +4,9 @@ const db = require("../config/db");
 // Add Room function
 exports.addRoom = (roomData, callback) => {
   const query =
-    "INSERT INTO room (room_type, room_status, room_price) VALUES (?, ?, ?)";
+    "INSERT INTO room (room_no, room_type, room_status, room_price) VALUES (?, ?, ?, ?)";
   const values = [
+    roomData.room_no,
     roomData.room_type,
     roomData.room_status,
     roomData.room_price,
@@ -63,8 +64,9 @@ exports.getRoomById = (roomId, callback) => {
 // Update Room function
 exports.updateRoom = (roomId, updatedRoomData, callback) => {
   const query =
-    "UPDATE room SET room_type = ?, room_status = ?, room_price = ? WHERE room_no = ?";
+    "UPDATE room SET room_no=?, room_type = ?, room_status = ?, room_price = ? WHERE room_no = ?";
   const values = [
+    updatedRoomData.room_no,
     updatedRoomData.room_type,
     updatedRoomData.room_status,
     updatedRoomData.room_price,

@@ -26,6 +26,14 @@
                     </h2>
 
                     <form action="/receptionist/edit-room/<%= room.room_no %>" method="POST">
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Room Number</label>
+                            <input type="text" class="form-control" name="room_no" value="<%= room.room_no %>"
+                                required>
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Room Type</label>
                             <input type="text" class="form-control" name="room_type" value="<%= room.room_type %>"

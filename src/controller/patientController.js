@@ -5,6 +5,9 @@ const room = require("../model/roomModel");
 const nurse = require("../model/nurseModel");
 const medicine = require("../model/medicineModel");
 const billModel = require("../model/billModel");
+const moment = require("moment");
+
+const patientService = require("../services/patientService");
 
 // Load Add Patient Page
 exports.addPatientPage = (req, res) => {
@@ -24,6 +27,7 @@ exports.addPatientPage = (req, res) => {
           availableRooms,
           nurses: nursesList,
         });
+
         res.render("Patient/addPatient", {
           specializations,
           availableRooms,
@@ -34,22 +38,97 @@ exports.addPatientPage = (req, res) => {
   });
 };
 
-// API to get doctors by specialization (AJAX endpoint)
-exports.getDoctorsBySpecialization = (req, res) => {
-  const specialization = req.params.specialization;
+exports.getLastPatientTime = (req, res) => {
+  const doctorId = req.params.doctor_id;
 
-  doctor.getDoctorsBySpecialization(specialization, (err, doctors) => {
+  Patient.getLastAppointmentTime(doctorId, (err, result) => {
     if (err) {
-      console.error("Error fetching doctors by specialization:", err);
-      return res.status(500).json({ error: "Failed to fetch doctors" });
+      console.error("Error fetching last patient time:", err);
+      return res
+        .status(500)
+        .json({ error: "Failed to fetch last appointment time" });
     }
-    console.log("Doctors fetched successfully for specialization:", doctors);
 
-    res.json(doctors);
+    if (result && result.time_allocate) {
+      res.json({ time_allocate: result.time_allocate });
+    } else {
+      res.json({ message: "No prior appointments" });
+    }
   });
 };
 
-// Add a new patient
+// Get doctors by specialization with next available time
+exports.getDoctorsBySpecialization = (req, res) => {
+  const specialization = req.params.specialization;
+  const today = moment().format("YYYY-MM-DD");
+  const now = moment();
+
+  doctor.getDoctorsBySpecialization(specialization, (err, doctors) => {
+    if (err) {
+      console.error("Error fetching doctors:", err);
+      return res.status(500).json({ error: "Failed to fetch doctors" });
+    }
+
+    const promises = doctors.map((doc) => {
+      return new Promise((resolve, reject) => {
+        Patient.getLastAppointmentTimeForToday(
+          doc.doctor_id,
+          today,
+          (err, result) => {
+            if (err) return reject(err);
+
+            let nextTime;
+
+            if (result && result.time_allocate) {
+              const lastTime = moment(result.time_allocate);
+              const afterHalfHour = moment(lastTime).add(30, "minutes");
+
+              if (afterHalfHour.isBefore(now)) {
+                // Current time rounded to next half hour slot
+                nextTime =
+                  moment(now).minute() >= 30
+                    ? moment(now).minute(0).add(1, "hour")
+                    : moment(now).minute(30);
+              } else {
+                nextTime = afterHalfHour;
+              }
+            } else {
+              // No appointments today
+              const firstSlot = moment(today + " 09:00");
+              nextTime = now.isAfter(firstSlot)
+                ? now.minute() >= 30
+                  ? moment(now).minute(0).add(1, "hour")
+                  : moment(now).minute(30)
+                : firstSlot;
+            }
+
+            // If after 5:30 PM
+            const endOfDay = moment(today + " 17:30");
+            if (nextTime.isAfter(endOfDay)) {
+              nextTime = "Unavailable";
+            }
+
+            resolve({
+              doctor_id: doc.doctor_id,
+              doctor_name: doc.doctor_name,
+              next_time:
+                nextTime === "Unavailable"
+                  ? "Unavailable"
+                  : nextTime.format("YYYY-MM-DDTHH:mm"), // ISO for datetime-local input
+            });
+          }
+        );
+      });
+    });
+
+    Promise.all(promises)
+      .then((results) => res.json(results))
+      .catch((err) => {
+        console.error("Error processing doctor availability:", err);
+        res.status(500).json({ error: "Failed to fetch availability" });
+      });
+  });
+};
 
 // Add Patient Handler
 exports.savePatient = (req, res) => {
@@ -66,6 +145,8 @@ exports.savePatient = (req, res) => {
     status: req.body.status,
   };
 
+  //patientService
+
   console.log("Saving patient with data:", patientData);
 
   // Save to DB
@@ -73,7 +154,9 @@ exports.savePatient = (req, res) => {
     if (err) {
       return res.status(500).send("Error saving patient");
     }
-    res.redirect("/receptionist/view-patients");
+    return res.redirect(
+      "/receptionist/view-patients?message=Patient%20added%20successfully&type=success"
+    );
   });
 };
 
@@ -165,7 +248,15 @@ exports.viewAllPatients = (req, res) => {
     }
     console.log("Patients fetched successfully:", patients);
 
-    res.render("Patient/viewPatients", { patients });
+    const message = req.query.message;
+    const type = req.query.type;
+
+    // Pass to view
+    res.render("Patient/viewPatients", {
+      patients: patients,
+      message: message,
+      type: type,
+    });
   });
 };
 

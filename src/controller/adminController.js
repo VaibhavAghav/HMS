@@ -53,7 +53,7 @@ exports.editDoctorPage = (req, res) => {
     if (!doctor) {
       return res.status(404).send("Doctor not found");
     }
-
+    console.log("Doctor fetched successfully:", doctor);
     res.render("Admin/updateDoctor", { doctor });
   });
 };
@@ -172,10 +172,14 @@ exports.addDoctor = (req, res) => {
       console.error("Error adding doctor:", err);
       return res.render("Admin/addDoctor", {
         message: "Doctor not added. Please try again.",
+        messageType: "danger",
       });
     }
 
-    res.redirect("/admin");
+    return res.render("Admin/addDoctor", {
+      message: "Doctor added successfully!",
+      messageType: "success",
+    });
   });
 };
 
@@ -244,10 +248,14 @@ exports.addReceptionist = (req, res) => {
       console.error("Error adding receptionist:", err);
       return res.render("Admin/addReceptionist", {
         message: "Receptionist not added. Please try again.",
+        messageType: "danger",
       });
     }
 
-    res.redirect("/admin/view-receptionists");
+    return res.render("Admin/addReceptionist", {
+      message: "Receptionist added successfully!",
+      messageType: "success",
+    });
   });
 };
 

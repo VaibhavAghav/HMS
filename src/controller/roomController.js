@@ -9,6 +9,7 @@ exports.AddRoomPage = (req, res) => {
 // Handle Add Room POST
 exports.AddRoom = (req, res) => {
   const roomData = {
+    room_no: req.body.room_no,
     room_type: req.body.room_type,
     room_status: req.body.room_status,
     room_price: req.body.room_price,
@@ -17,10 +18,16 @@ exports.AddRoom = (req, res) => {
   Room.addRoom(roomData, (err, result) => {
     if (err) {
       console.error("Error adding room:", err);
-      return res.status(500).send("Error adding room.");
+      return res.render("Room/addRoom", {
+        messageType: "danger",
+        message: "Error adding room.",
+      });
     }
     console.log("Room added successfully.");
-    res.redirect("/receptionist/view-rooms"); // adjust route if needed
+    res.render("Room/addRoom", {
+      messageType: "success",
+      message: "Room added successfully.",
+    });
   });
 };
 
@@ -51,6 +58,7 @@ exports.UpdateRoomPage = (req, res) => {
 exports.UpdateRoom = (req, res) => {
   const roomId = req.params.id;
   const updatedRoomData = {
+    room_no: req.body.room_no,
     room_type: req.body.room_type,
     room_status: req.body.room_status,
     room_price: req.body.room_price,
