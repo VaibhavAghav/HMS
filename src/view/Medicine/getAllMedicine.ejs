@@ -12,6 +12,10 @@
             padding-left: 260px;
             overflow-x: hidden;
         }
+
+        #searchInput {
+            max-width: 300px;
+        }
     </style>
 </head>
 
@@ -29,8 +33,23 @@
                                     <% } %>
 
                                         <div class="container">
-                                            <h2 class="mb-4">All Medicines</h2>
 
+                                            <!-- Title, Add button and Search in one row -->
+                                            <div class="row mb-3 align-items-center">
+                                                <div class="col">
+                                                    <h2 class="mb-0">All Medicines</h2>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input type="text" id="searchInput" onkeyup="searchMedicine()"
+                                                        class="form-control" placeholder="Search medicine by name...">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="/medicine/add-medicine" class="btn btn-primary">+ Add
+                                                        Medicine</a>
+                                                </div>
+                                            </div>
+
+                                            <!-- Medicines Table -->
                                             <table class="table table-bordered table-hover shadow-sm">
                                                 <thead class="table-dark">
                                                     <tr>
@@ -39,7 +58,7 @@
                                                         <th style="width: 160px;">Actions</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="medicineTable">
                                                     <% medicines.forEach(medicine=> { %>
                                                         <tr>
                                                             <td>
@@ -57,12 +76,31 @@
                                                         <% }) %>
                                                 </tbody>
                                             </table>
+
                                         </div>
 
                                         <%- include('../fotter') %>
 
+                                            <script>
+                                                function searchMedicine() {
+                                                    const input = document.getElementById("searchInput");
+                                                    const filter = input.value.toLowerCase();
+                                                    const table = document.getElementById("medicineTable");
+                                                    const tr = table.getElementsByTagName("tr");
+
+                                                    for (let i = 0; i < tr.length; i++) {
+                                                        const td = tr[i].getElementsByTagName("td")[0];
+                                                        if (td) {
+                                                            const txtValue = td.textContent || td.innerText;
+                                                            tr[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
+                                                        }
+                                                    }
+                                                }
+                                            </script>
+
                                             <script
                                                 src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

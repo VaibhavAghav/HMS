@@ -55,7 +55,7 @@ exports.getAllSpecializations = (callback) => {
 
 // Get doctors by specialization
 exports.getDoctorsBySpecialization = (specialization, callback) => {
-  const query = "SELECT * FROM doctor WHERE spelization = ?";
+  const query = "SELECT * FROM doctor WHERE spelization = ? ";
   db.query(query, [specialization], (err, results) => {
     if (err) return callback(err, null);
     callback(null, results);

@@ -31,7 +31,7 @@
                     <%- include('../Reception/receptionNavbar') %>
                         <%- include('../Reception/receptionSidebar') %>
                             <% } else { %>
-                                <%- include('../navbar') %> 
+                                <%- include('../navbar') %>
                                     <% } %>
 
                                         <div class="container">
@@ -41,28 +41,37 @@
                                                         <div class="card-header bg-primary text-white text-center">
                                                             <h4 class="mb-0">Add Medicine</h4>
                                                         </div>
-                                                        <div class="card-body" style="min-height: 300px;">
-                                                            <form action="/medicine/add-medicine" method="POST">
-                                                                <div class="mb-3">
-                                                                    <label for="medicine_name"
-                                                                        class="form-label">Medicine Name</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="medicine_name" name="medicine_name"
-                                                                        required>
-                                                                </div>
+                                                        <!-- Message at top -->
+                                                        <% if (typeof message !=='undefined' ) { %>
+                                                            <div class="alert alert-<%= messageType %> text-center">
+                                                                <%= message %>
+                                                            </div>
+                                                            <% } %>
+                                                                <div class="card-body" style="min-height: 300px;">
+                                                                    <form action="/medicine/add-medicine" method="POST">
+                                                                        <div class="mb-3">
+                                                                            <label for="medicine_name"
+                                                                                class="form-label">Medicine Name</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="medicine_name" name="medicine_name"
+                                                                                required>
+                                                                        </div>
 
-                                                                <div class="mb-3">
-                                                                    <label for="price_medicine" class="form-label">Price
-                                                                        (₹)</label>
-                                                                    <input type="number" class="form-control"
-                                                                        id="price_medicine" name="price_medicine"
-                                                                        step="0.01" required>
-                                                                </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="price_medicine"
+                                                                                class="form-label">Price
+                                                                                (₹)</label>
+                                                                            <input type="number" class="form-control"
+                                                                                id="price_medicine"
+                                                                                name="price_medicine" step="0.01"
+                                                                                required>
+                                                                        </div>
 
-                                                                <button type="submit" class="btn btn-success w-100">Save
-                                                                    Medicine</button>
-                                                            </form>
-                                                        </div>
+                                                                        <button type="submit"
+                                                                            class="btn btn-success w-100">Save
+                                                                            Medicine</button>
+                                                                    </form>
+                                                                </div>
                                                     </div>
                                                 </div>
                                             </div>

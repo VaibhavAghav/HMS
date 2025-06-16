@@ -12,6 +12,10 @@
             padding-left: 260px;
             overflow-x: hidden;
         }
+
+        #searchInput {
+            max-width: 300px;
+        }
     </style>
 </head>
 
@@ -20,51 +24,89 @@
     <%- include('../Reception/receptionNavbar') %>
         <%- include('../Reception/receptionSidebar') %>
 
-            <div class="container mt-6">
-                <h2 class="mb-4">Room List</h2>
+            <div class="container">
+                <!-- Title, Add button and Search in one row -->
+                <div class="row mb-3 align-items-center">
+                    <div class="col">
+                        <h2 class="mb-0">All Rooms</h2>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="searchInput" onkeyup="searchRoom()" class="form-control"
+                            placeholder="Search nurse by name...">
+                    </div>
+                    <div class="col-auto">
+                        <a href="add-room" class="btn btn-primary">+ Add Room</a>
+                    </div>
+                </div>
 
-                <table class="table table-bordered table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Room No</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Price (₹)</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% rooms.forEach(function(room) { %>
-                            <tr>
-                                <td>
-                                    <%= room.room_no %>
-                                </td>
-                                <td>
-                                    <%= room.room_type %>
-                                </td>
-                                <td>
-                                    <%= room.room_status %>
-                                </td>
-                                <td>
-                                    <%= room.room_price %>
-                                </td>
-                                <td>
-                                    <a href="edit-room/<%= room.room_no %>"
-                                        class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="delete-room/<%= room.room_no %>"
-                                        class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <% }) %>
-                    </tbody>
-                </table>
+                <!-- Flash Message (if any) -->
+                <% if (typeof message !=='undefined' ) { %>
+                    <div class="alert alert-<%= messageType === 'success' ? 'success' : 'danger' %> alert-dismissible fade show"
+                        role="alert">
+                        <%= message %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <% } %>
 
-                <a href="/receptionist/add-room" class="btn btn-primary">Add New Room</a>
+                        <!-- Room Table -->
+                        <table class="table table-bordered table-hover shadow-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Room No</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Price (₹)</th>
+                                    <th style="width: 160px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="roomTable">
+                                <% rooms.forEach(function(room) { %>
+                                    <tr>
+                                        <td>
+                                            <%= room.room_no %>
+                                        </td>
+                                        <td>
+                                            <%= room.room_type %>
+                                        </td>
+                                        <td>
+                                            <%= room.room_status %>
+                                        </td>
+                                        <td>₹ <%= room.room_price %>
+                                        </td>
+                                        <td>
+                                            <a href="edit-room/<%= room.room_no %>"
+                                                class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="delete-room/<%= room.room_no %>"
+                                                class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+
             </div>
 
             <%- include('../fotter') %>
 
+                <script>
+                    function searchRoom() {
+                        const input = document.getElementById("searchInput");
+                        const filter = input.value.toLowerCase();
+                        const table = document.getElementById("roomTable");
+                        const tr = table.getElementsByTagName("tr");
+
+                        for (let i = 0; i < tr.length; i++) {
+                            const td = tr[i].getElementsByTagName("td")[1]; // Search by Room Type now (index 1)
+                            if (td) {
+                                const txtValue = td.textContent || td.innerText;
+                                tr[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
+                            }
+                        }
+                    }
+                </script>
+
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

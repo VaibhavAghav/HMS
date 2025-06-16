@@ -65,61 +65,71 @@
                         <div class="glow-card">
                             <h2 class="text-center mb-4">Add Doctor</h2>
 
-                            <form action="add-doctor" method="POST">
-                                <div class="mb-3">
-                                    <label for="doctor_name" class="form-label">Doctor Name</label>
-                                    <input type="text" class="form-control" id="doctor_name" name="doctor_name"
-                                        placeholder="Enter full name" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="doctor_contact" class="form-label">Contact Number</label>
-                                    <input type="text" class="form-control" id="doctor_contact" name="doctor_contact"
-                                        placeholder="Enter contact number" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="doctor_experience" class="form-label">Experience (Years)</label>
-                                    <input type="number" class="form-control" id="doctor_experience"
-                                        name="doctor_experience" placeholder="Enter years of experience" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="spelization" class="form-label">Specialization</label>
-                                    <input type="text" class="form-control" id="spelization" name="spelization"
-                                        placeholder="Enter specialization" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" id="status" name="status" required>
-                                        <option value="">Select status</option>
-                                        <option value="Active">Active</option>
-                                        <option value="In-Active">In-Active</option>
-                                        <option value="On Leave">On Leave</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username"
-                                        placeholder="Create username" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Create password" required>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary w-100">Add Doctor</button>
-                            </form>
-
+                            <!-- Message at top -->
                             <% if (typeof message !=='undefined' ) { %>
-                                <div class="alert alert-danger text-center mt-3">
+                                <div class="alert alert-<%= messageType %> text-center">
                                     <%= message %>
                                 </div>
                                 <% } %>
+
+
+                                    <form action="add-doctor" method="POST">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="doctor_name" class="form-label">Doctor Name</label>
+                                                <input type="text" class="form-control" id="doctor_name"
+                                                    name="doctor_name" placeholder="Enter full name" required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="doctor_contact" class="form-label">Contact Number</label>
+                                                <input type="text" class="form-control" id="doctor_contact"
+                                                    name="doctor_contact" placeholder="Enter contact number" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="doctor_experience" class="form-label">Experience
+                                                    (Years)</label>
+                                                <input type="number" class="form-control" id="doctor_experience"
+                                                    name="doctor_experience" placeholder="Years of experience" required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="spelization" class="form-label">Specialization</label>
+                                                <input type="text" class="form-control" id="spelization"
+                                                    name="spelization" placeholder="Specialization" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="status" class="form-label">Status</label>
+                                                <select class="form-select" id="status" name="status" required>
+                                                    <option value="">Select status</option>
+                                                    <option value="Active">Active</option>
+                                                    <option value="In-Active">In-Active</option>
+                                                    <option value="On Leave">On Leave</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="username" class="form-label">Username</label>
+                                                <input type="text" class="form-control" id="username" name="username"
+                                                    placeholder="Create username" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="password" name="password"
+                                                placeholder="Create password" required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary w-100">Add Doctor</button>
+                                    </form>
+
                         </div>
                     </div>
                 </div>

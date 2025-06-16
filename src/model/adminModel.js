@@ -205,8 +205,8 @@ exports.addDoctor = (doctorData, callback) => {
       // Step 2: Insert into doctor table
       const insertDoctorQuery = `
         INSERT INTO doctor 
-        (doctor_name, doctor_contact, doctor_experience, status, spelization, user_id, admin_id) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        (doctor_name, doctor_contact, doctor_experience, status, spelization, user_id) 
+        VALUES (?, ?, ?, ?, ?, ?)
       `;
 
       db.query(
@@ -218,7 +218,6 @@ exports.addDoctor = (doctorData, callback) => {
           doctorData.status,
           doctorData.spelization,
           user_id,
-          doctorData.admin_id,
         ],
         (err, doctorResult) => {
           if (err) {
@@ -255,8 +254,8 @@ exports.addReceptionist = (receptionistData, callback) => {
       // Step 2: Insert into reception table
       const insertReceptionQuery = `
         INSERT INTO reception 
-        (reception_name, reception_contact, user_id, admin_id) 
-        VALUES (?, ?, ?, ?)
+        (reception_name, reception_contact, user_id) 
+        VALUES (?, ?, ?)
       `;
 
       db.query(
@@ -264,8 +263,7 @@ exports.addReceptionist = (receptionistData, callback) => {
         [
           receptionistData.reception_name,
           receptionistData.reception_contact,
-          user_id,
-          receptionistData.admin_id,
+          user_id
         ],
         (err, receptionResult) => {
           if (err) {
