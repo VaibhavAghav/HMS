@@ -4,14 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Reception | Patient Bill</title>
-
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <style>
         body {
             margin: 0;
@@ -38,40 +33,34 @@
             padding: 20px;
         }
     </style>
-
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
-    <!-- Navbar -->
     <%- include('../Reception/receptionNavbar') %>
 
-        <!-- Main Wrapper -->
         <div class="d-flex" style="min-height: calc(100vh - 56px);">
-
-            <!-- Sidebar -->
             <div class="sidebar shadow">
                 <%- include('../Reception/receptionSidebar') %>
             </div>
 
-            <!-- Main Content -->
             <div class="main-content d-flex flex-column">
 
                 <div class="flex-grow-1">
                     <div class="container-fluid my-4">
 
-                        <!-- Bill Details Card -->
                         <div class="card shadow-lg p-4" style="background-color: #f8f9fa;">
                             <div class="card-body">
 
                                 <h2 class="text-center mb-4">Bill Details for <%= bills[0].patient_name %>
                                 </h2>
 
-                                <!-- Patient Info + Editable Fields -->
+                                <!-- Patient Info -->
                                 <div class="mb-4">
                                     <h5>Patient Information</h5>
-                                    <form action="/receptionist/update-patient-status/<%= bills[0].patient_id %>" method="POST">
+                                    <form action="/receptionist/update-patient-status/<%= bills[0].patient_id %>"
+                                        method="POST">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <p><strong>Age:</strong>
@@ -89,7 +78,7 @@
                                                     <%= bills[0].doctor_name %>
                                                 </p>
                                                 <p><strong>Time Allocated:</strong>
-                                                    <%= bills[0].time_allocate %>
+                                                    <%= new Date(bills[0].time_allocate).toLocaleString() %>
                                                 </p>
                                                 <div class="mb-3">
                                                     <label class="form-label"><strong>Status:</strong></label>
@@ -131,8 +120,7 @@
                                         </thead>
                                         <tbody>
                                             <% let grandTotal=0; %>
-                                                <% bills.forEach((bill)=> {
-                                                    if (bill.medicine_name) { %>
+                                                <% bills.forEach((bill)=> { if (bill.medicine_name) { %>
                                                     <tr>
                                                         <td>
                                                             <%= bill.bill_id %>
@@ -154,14 +142,47 @@
                                                     </tr>
                                                     <% grandTotal +=parseFloat(bill.total_price); } }) %>
                                         </tbody>
-                                        <tfoot>
-                                            <tr class="table-info">
-                                                <th colspan="5">Grand Total</th>
-                                                <th>₹<%= grandTotal.toFixed(2) %>
-                                                </th>
-                                            </tr>
-                                        </tfoot>
                                     </table>
+                                </div>
+
+                                <!-- Room Charges -->
+                                <div class="mt-4">
+                                    <h5>Room Charges</h5>
+                                    <% if (bills[0].room_no) { let roomCharge=bills[0].room_price *
+                                        bills[0].days_stayed; grandTotal +=roomCharge; %>
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>Room No</th>
+                                                <td>
+                                                    <%= bills[0].room_no %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Room Price (per day)</th>
+                                                <td>₹<%= bills[0].room_price %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Days Stayed</th>
+                                                <td>
+                                                    <%= bills[0].days_stayed %>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-info">
+                                                <th>Total Room Charges</th>
+                                                <td>₹<%= roomCharge.toFixed(2) %>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <% } else { %>
+                                            <p class="text-danger">Room not assigned</p>
+                                            <% } %>
+                                </div>
+
+                                <!-- Grand Total -->
+                                <div class="mt-4">
+                                    <h4 class="text-end">Grand Total : ₹<%= grandTotal.toFixed(2) %>
+                                    </h4>
                                 </div>
 
                             </div>
@@ -170,9 +191,7 @@
                     </div>
                 </div>
 
-                <!-- Footer -->
                 <%- include('../fotter') %>
-
             </div>
         </div>
 
