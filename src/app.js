@@ -3,7 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const router = require("./routes/userRouter"); // correct route file
+const userRouter = require("./routes/userRouter"); // correct route file
 const rootRouter = require("./routes/rootRouter");
 
 const adminRouter = require("./routes/adminRouter");
@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 });
 
 // Use routes
-app.use("/", router);
+app.use("/", userRouter);
 app.use("/", rootRouter);
 app.use("/admin", adminRouter);
 

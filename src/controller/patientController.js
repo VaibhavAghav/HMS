@@ -103,7 +103,7 @@ exports.getDoctorsBySpecialization = (req, res) => {
             }
 
             // If after 5:30 PM
-            const endOfDay = moment(today + " 17:30");
+            const endOfDay = moment(today + " 20:30");
             if (nextTime.isAfter(endOfDay)) {
               nextTime = "Unavailable";
             }
