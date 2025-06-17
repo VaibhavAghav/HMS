@@ -2,11 +2,11 @@
 
 const db = require("../config/db");
 
-
 exports.addNurse = (nurseData, callback) => {
   const { nurse_name, nurse_contact, nurse_shift } = nurseData;
 
-  const sql = "INSERT INTO nurse (nurse_name, nurse_contact, nurse_shift) VALUES (?, ?, ?)";
+  const sql =
+    "INSERT INTO nurse (nurse_name, nurse_contact, nurse_shift) VALUES (?, ?, ?)";
 
   db.query(sql, [nurse_name, nurse_contact, nurse_shift], (err, result) => {
     if (err) {
@@ -17,13 +17,16 @@ exports.addNurse = (nurseData, callback) => {
 };
 
 // Fetch all nurses
+// Fetch nurses not assigned to any active (not discharged) patient
 exports.getAllNurses = (callback) => {
-  const sql = "SELECT * FROM nurse";
-
-  db.query(sql, (err, results) => {
-    if (err) {
-      return callback(err, null);
-    }
+  const query = `
+    SELECT * FROM nurse 
+    WHERE nurse_id NOT IN (
+      SELECT nurse_id FROM patient WHERE status != 'Discharged'
+    )
+  `;
+  db.query(query, (err, results) => {
+    if (err) return callback(err, null);
     callback(null, results);
   });
 };
@@ -47,14 +50,19 @@ exports.getNurseById = (nurseId, callback) => {
 exports.updateNurse = (nurseId, updatedData, callback) => {
   const { nurse_name, nurse_contact, nurse_shift } = updatedData;
 
-  const sql = "UPDATE nurse SET nurse_name = ?, nurse_contact = ?, nurse_shift = ? WHERE nurse_id = ?";
+  const sql =
+    "UPDATE nurse SET nurse_name = ?, nurse_contact = ?, nurse_shift = ? WHERE nurse_id = ?";
 
-  db.query(sql, [nurse_name, nurse_contact, nurse_shift, nurseId], (err, result) => {
-    if (err) {
-      return callback(err, null);
+  db.query(
+    sql,
+    [nurse_name, nurse_contact, nurse_shift, nurseId],
+    (err, result) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, result);
     }
-    callback(null, result);
-  });
+  );
 };
 
 // Delete a nurse by ID

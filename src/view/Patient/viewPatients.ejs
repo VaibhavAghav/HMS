@@ -148,8 +148,11 @@
                                                                     <i class="fa-solid fa-circle-xmark text-secondary"
                                                                         title="Not Visited"></i>
                                                                     <% } else if (patient.status==='Billed' ) { %>
-                                                                        <i class="fa-solid fa-money-check-dollar text-success"
-                                                                            title="Billed"></i>
+                                                                        <a href="show-bill/<%= patient.patient_id %>"
+                                                                            class="text-success" title="Billed">
+                                                                            <i
+                                                                                class="fa-solid fa-money-check-dollar text-success"></i>
+                                                                        </a>
                                                                         <% } else { %>
                                                                             <%= patient.status %>
                                                                                 <% } %>

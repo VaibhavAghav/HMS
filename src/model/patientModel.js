@@ -8,16 +8,17 @@ exports.addPatient = (patientData, callback) => {
   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
-    patientData.patient_name,
-    patientData.patient_age,
-    patientData.patient_gender,
-    patientData.doctor_id,
-    patientData.patient_disease,
-    patientData.room_id,
-    patientData.nurse_id,
-    patientData.time_allocate,
-    patientData.status,
-  ];
+  patientData.patient_name,
+  patientData.patient_age,
+  patientData.patient_gender,
+  patientData.doctor_id,
+  patientData.patient_disease,
+  patientData.room_id === "" ? null : patientData.room_id,
+  patientData.nurse_id === "" ? null : patientData.nurse_id,
+  patientData.time_allocate,
+  patientData.status,
+];
+
 
   db.query(sql, values, (err, result) => {
     if (err) {

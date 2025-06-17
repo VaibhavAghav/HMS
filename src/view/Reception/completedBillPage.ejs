@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reception | Patient Bill</title>
+    <title>Reception | Final Patient Bill</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -46,68 +46,56 @@
             </div>
 
             <div class="main-content d-flex flex-column">
-
                 <div class="flex-grow-1">
                     <div class="container-fluid my-4">
 
                         <div class="card shadow-lg p-4" style="background-color: #f8f9fa;">
                             <div class="card-body">
 
-                                <h2 class="text-center mb-4">Bill Details for <%= bills[0].patient_name %>
+                                <h2 class="text-center mb-4">Final Bill Details for <%= bills[0].patient_name %>
                                 </h2>
 
-                                <!-- Patient Info -->
+                                <!-- Patient Information -->
                                 <div class="mb-4">
                                     <h5>Patient Information</h5>
-                                    <form action="/receptionist/update-patient-status/<%= bills[0].patient_id %>"
-                                        method="POST">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <p><strong>Age:</strong>
-                                                    <%= bills[0].patient_age %>
-                                                </p>
-                                                <p><strong>Gender:</strong>
-                                                    <%= bills[0].patient_gender %>
-                                                </p>
-                                                <p><strong>Disease:</strong>
-                                                    <%= bills[0].patient_disease %>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <p><strong>Doctor:</strong>
-                                                    <%= bills[0].doctor_name %>
-                                                </p>
-                                                <p><strong>Time Allocated:</strong>
-                                                    <%= new Date(bills[0].time_allocate).toLocaleString() %>
-                                                </p>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label"><strong>Status:</strong></label>
-                                                    <select name="status" class="form-select" required>
-                                                        <option value="Visited" <%=bills[0].status==='Visited'
-                                                            ? 'selected' : '' %>>Visited</option>
-                                                        <option value="Billed" <%=bills[0].status==='Billed'
-                                                            ? 'selected' : '' %>>Billed</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label class="form-label"><strong>Discharge Date:</strong></label>
-                                                    <input type="date" name="discharge_date" class="form-control"
-                                                        value="<%= bills[0].discharge_date ? bills[0].discharge_date.toISOString().split('T')[0] : new Date().toISOString().split('T')[0] %>"
-                                                        required>
-                                                </div>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p><strong>Age:</strong>
+                                                <%= bills[0].patient_age %>
+                                            </p>
+                                            <p><strong>Gender:</strong>
+                                                <%= bills[0].patient_gender %>
+                                            </p>
+                                            <p><strong>Disease:</strong>
+                                                <%= bills[0].patient_disease %>
+                                            </p>
                                         </div>
-                                        <button type="submit" class="btn btn-primary mt-2">
-                                            <i class="fa-solid fa-floppy-disk"></i> Save Changes
-                                        </button>
-                                    </form>
+                                        <div class="col-md-4">
+                                            <p><strong>Doctor Name:</strong>
+                                                <%= bills[0].doctor_name %>
+                                            </p>
+                                            <p><strong>Specialization:</strong>
+                                                <%= bills[0].specialization %>
+                                            </p>
+                                            <p><strong>Date of Appointment:</strong>
+                                                <%= new Date(bills[0].time_allocate).toLocaleString() %>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p><strong>Status:</strong>
+                                                <%= bills[0].status %>
+                                            </p>
+                                            <p><strong>Discharge Date:</strong>
+                                                <%= bills[0].discharge_date ?
+                                                    bills[0].discharge_date.toISOString().split('T')[0] : 'N/A' %>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- Bill Table -->
+                                <!-- Medical Bill Table -->
                                 <div class="table-responsive">
+                                    <h5>Medical Charges</h5>
                                     <table class="table table-bordered table-striped align-middle">
                                         <thead class="table-dark">
                                             <tr>
@@ -182,7 +170,7 @@
 
                                 <!-- Grand Total -->
                                 <div class="mt-4">
-                                    <h4 class="text-end">Grand Total : ₹<%= grandTotal.toFixed(2) %>
+                                    <h4 class="text-end">Grand Total: ₹<%= grandTotal.toFixed(2) %>
                                     </h4>
                                 </div>
 
