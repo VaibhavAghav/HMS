@@ -21,6 +21,8 @@ router.get("/", isReceptionAuthenticated, receptionistController.ReceptionHomePa
 
 //receptionist/bill
 router.get("/bill/:id", isReceptionAuthenticated, receptionistController.BillPage);
+// show-bill
+router.get("/show-bill/:id", isReceptionAuthenticated, receptionistController.CompletedBillPage);
 //post request to update patient status
 router.post("/update-patient-status/:id", isReceptionAuthenticated, receptionistController.updatePatientStatus);
 

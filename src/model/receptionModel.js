@@ -48,21 +48,22 @@ exports.getReceptionDetailsByUserId = (user_id, callback) => {
 exports.getPatientBillsByPatientId = (patientId, callback) => {
   const query = `
     SELECT
-      p.patient_id, p.patient_name, p.patient_age, p.patient_gender,
-      p.patient_disease, p.time_allocate, p.discharge_date, p.status,
-      d.doctor_name,
-      b.bill_id, b.bill_date,
-      m.medicine_name, m.price_medicine, b.quantity,
-      (m.price_medicine * b.quantity) AS total_price,
-      r.room_no, r.room_price,
-      TIMESTAMPDIFF(DAY, p.time_allocate, IFNULL(p.discharge_date, NOW())) AS days_stayed
-    FROM patient p
-    LEFT JOIN doctor d ON p.doctor_id = d.doctor_id
-    LEFT JOIN bill b ON p.patient_id = b.patient_id
-    LEFT JOIN medical m ON b.medical_id = m.medical_id
-    LEFT JOIN room r ON p.room_id = r.room_no
-    WHERE p.patient_id = ?
-    ORDER BY b.bill_date DESC
+  p.patient_id, p.patient_name, p.patient_age, p.patient_gender,
+  p.patient_disease, p.time_allocate, p.discharge_date, p.status,
+  d.doctor_name,
+  b.bill_id, b.bill_date,
+  m.medicine_name, m.price_medicine, b.quantity,
+  (m.price_medicine * b.quantity) AS total_price,
+  r.room_no, r.room_price,
+  GREATEST(1, TIMESTAMPDIFF(DAY, p.time_allocate, IFNULL(p.discharge_date, NOW()))) AS days_stayed
+FROM patient p
+LEFT JOIN doctor d ON p.doctor_id = d.doctor_id
+LEFT JOIN bill b ON p.patient_id = b.patient_id
+LEFT JOIN medical m ON b.medical_id = m.medical_id
+LEFT JOIN room r ON p.room_id = r.room_no
+WHERE p.patient_id = ?
+ORDER BY b.bill_date DESC
+
   `;
 
   db.query(query, [patientId], (err, result) => {
@@ -79,15 +80,15 @@ exports.getPatientBillsByPatientId = (patientId, callback) => {
   });
 };
 
-// Update Patient Status
-exports.updatePatientStatus = (patientId, status, callback) => {
+// Update Patient Status, Discharge Date and Discharge Status
+exports.updatePatientStatus = (patientId, status, dischargeDate, callback) => {
   const query = `
     UPDATE patient 
-    SET status = ? 
+    SET status = ?, discharge_date = ?, discharge_status = 'Discharged' 
     WHERE patient_id = ?
   `;
 
-  db.query(query, [status, patientId], (err, result) => {
+  db.query(query, [status, dischargeDate, patientId], (err, result) => {
     if (err) {
       console.error("Error updating patient status:", err);
       return callback(err, null);

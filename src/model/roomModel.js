@@ -36,8 +36,20 @@ exports.getAllRooms = (callback) => {
   });
 };
 
+// Fetch rooms not assigned to any active (not discharged) patient
 exports.getVacantRooms = (callback) => {
-  const query = "SELECT * FROM room WHERE room_status = 'Available'";
+  const query = `
+    SELECT * 
+FROM room 
+WHERE room_status = 'Available'
+AND room_no NOT IN (
+  SELECT DISTINCT room_id 
+  FROM patient 
+  WHERE discharge_status IS NULL OR discharge_status != 'Discharged'
+);
+
+  `;
+  // slect *
   db.query(query, (err, results) => {
     if (err) return callback(err, null);
     callback(null, results);

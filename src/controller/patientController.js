@@ -11,22 +11,15 @@ const patientService = require("../services/patientService");
 
 // Load Add Patient Page
 exports.addPatientPage = (req, res) => {
-  console.log("Add Patient Page Accessed");
-
   doctor.getAllSpecializations((err, specializations) => {
     if (err) return res.status(500).send("Error loading specializations");
 
     room.getVacantRooms((err, availableRooms) => {
       if (err) return res.status(500).send("Error loading rooms");
-
+      console.log("Available rooms:", availableRooms);
+      
       nurse.getAllNurses((err, nursesList) => {
         if (err) return res.status(500).send("Error loading nurses");
-
-        console.log("Rendering add patient page with data:", {
-          specializations,
-          availableRooms,
-          nurses: nursesList,
-        });
 
         res.render("Patient/addPatient", {
           specializations,
