@@ -1,43 +1,56 @@
-<div class="d-flex flex-column p-3 bg-light shadow"
-    style="width: 250px; height: 100vh; position: fixed; top: 56px; left: 0; overflow-y: auto;">
-    <h4 class="mb-4">Doctor Panel</h4>
+<!-- sidebar.html -->
+<div class="sidebar">
+    <div class="d-flex flex-column p-3">
+        <h4 class="mb-4 text-white">Doctor Panel</h4>
 
-    <ul class="nav nav-pills flex-column mb-auto">
+        <ul class="nav nav-pills flex-column mb-auto">
+            <!-- Dashboard -->
+            <li class="nav-item mb-2">
+                <a href="/doctor" class="nav-link active">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+            </li>
 
-        <!-- Dashboard -->
-        <li class="nav-item mb-2">
-            <a href="/doctor" class="nav-link active">🏠 Dashboard</a>
-        </li>
+            <!-- Patient Management -->
+            <li class="nav-item mb-2">
+                <a class="nav-link menu-toggle" data-bs-toggle="collapse" href="#patientMenu">
+                    <i class="fas fa-procedures me-2"></i> Patients
+                    <i class="fas fa-chevron-down float-end mt-1"></i>
+                </a>
+                <div class="collapse sub-menu" id="patientMenu">
+                    <a href="/doctor/view-non-visited-patients" class="nav-link">
+                        <i class="fas fa-clock me-2"></i> Not Visited
+                    </a>
+                    <a href="/doctor/view-admited-patients" class="nav-link">
+                        <i class="fas fa-bed me-2"></i> Admitted
+                    </a>
+                    <a href="/doctor/view-visited-patients" class="nav-link">
+                        <i class="fas fa-check-circle me-2"></i> Visited
+                    </a>
+                </div>
+            </li>
 
-        <!-- Patient Management -->
-        <li class="nav-item mb-2">
-            <a class="nav-link text-dark" data-bs-toggle="collapse" href="#patientMenu" role="button"
-                aria-expanded="false" aria-controls="patientMenu">
-                👥 Patients
+            <!-- Medicine Management -->
+            <li class="nav-item mb-2">
+                <a class="nav-link menu-toggle" data-bs-toggle="collapse" href="#medicineMenu">
+                    <i class="fas fa-pills me-2"></i> Medicine
+                    <i class="fas fa-chevron-down float-end mt-1"></i>
+                </a>
+                <div class="collapse sub-menu" id="medicineMenu">
+                    <a href="/medicine/add-medicine" class="nav-link">
+                        <i class="fas fa-plus-circle me-2"></i> Add Medicine
+                    </a>
+                    <a href="/medicine/allmedicine" class="nav-link">
+                        <i class="fas fa-list me-2"></i> View All
+                    </a>
+                </div>
+            </li>
+        </ul>
+
+        <div class="mt-auto pt-3 border-top">
+            <a href="/doctor/logout" class="nav-link text-danger">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
             </a>
-            <div class="collapse ps-3" id="patientMenu">
-                <a href="/doctor/view-non-visited-patients" class="nav-link text-dark">📝 Not Visited</a>
-                <a href="/doctor/view-admited-patients" class="nav-link text-dark">🏥 Admitted</a>
-                <a href="/doctor/view-visited-patients" class="nav-link text-dark">✅ Visited</a>
-            </div>
-        </li>
-
-        <!-- Medicine Management -->
-        <li class="nav-item mb-2">
-            <a class="nav-link text-dark" data-bs-toggle="collapse" href="#medicineMenu" role="button"
-                aria-expanded="false" aria-controls="medicineMenu">
-                💊 Medicine
-            </a>
-            <div class="collapse ps-3" id="medicineMenu">
-                <a href="/medicine/add-medicine" class="nav-link text-dark">➕ Add Medicine</a>
-                <a href="/medicine/allmedicine" class="nav-link text-dark">📃 View All Medicines</a>
-            </div>
-        </li>
-
-        <!-- Logout -->
-        <li class="nav-item mt-3">
-            <a href="/doctor/logout" class="nav-link text-danger">🚪 Logout</a>
-        </li>
-
-    </ul>
+        </div>
+    </div>
 </div>

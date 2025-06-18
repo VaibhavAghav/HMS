@@ -1,28 +1,54 @@
-<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #d7eadd;">
+<!-- navbar.html -->
+<nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
         <a class="navbar-brand fw-bold d-flex align-items-center" href="/doctor">
-            <h3>Global Care Hospital</h3>
+            <div class="hospital-logo me-2">
+                <i class="fas fa-hospital-alt text-primary"></i>
+            </div>
+            <h4 class="mb-0">Global Care <span class="text-primary">Hospital</span></h4>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/add-admin">Add Admin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/add-doctor">Add Doctor</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/add-receptionist">Add Receptionist</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-outline-danger ms-3" href="/logout">Logout</a>
-                </li>
-            </ul>
+        <div class="d-flex align-items-center">
+            <!-- Notification Bell -->
+            <div class="dropdown me-3">
+                <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-bell fa-lg text-secondary"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill mt-3 bg-danger">
+                        3
+                    </span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end p-0">
+                    <li class="dropdown-header bg-light py-2 px-3">You have 3 notifications</li>
+                    <li><a class="dropdown-item" href="#">New patient assigned</a></li>
+                    <li><a class="dropdown-item" href="#">Appointment reminder</a></li>
+                    <li><a class="dropdown-item" href="#">New message</a></li>
+                </ul>
+            </div>
+
+            <!-- User Profile -->
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button"
+                    data-bs-toggle="dropdown">
+                    <div class="profile-pic me-2">
+                        <i class="fas fa-user-md fa-xl text-primary"></i>
+                    </div>
+                    <span class="d-none d-sm-inline">Doctor</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="/logout"><i
+                                class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+
+            <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
+
     </div>
 </nav>
