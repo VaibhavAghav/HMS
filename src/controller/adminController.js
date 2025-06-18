@@ -1,6 +1,7 @@
 //adminController.js
 
 const adminModel = require("../model/adminModel");
+const patientsModel = require("../model/patientModel");
 
 // Controller for admin homepage
 exports.adminHomePage = (req, res) => {
@@ -316,5 +317,28 @@ exports.deleteReceptionistPage = (req, res) => {
       return res.status(500).send("Internal server error");
     }
     res.redirect("/admin/view-receptionists");
+  });
+};
+
+// View all patients
+exports.viewAllPatients = (req, res) => {
+  console.log("Fetching all patients");
+
+  patientsModel.getAllPatients((err, patients) => {
+    if (err) {
+      console.error("Error fetching patients:", err);
+      return res.status(500).send("Error fetching patients");
+    }
+    console.log("Patients fetched successfully:", patients);
+
+    const message = req.query.message;
+    const type = req.query.type;
+
+    // Pass to view
+    res.render("Admin/viewPatients", {
+      patients: patients,
+      message: message,
+      type: type,
+    });
   });
 };

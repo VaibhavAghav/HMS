@@ -42,47 +42,235 @@
     <!-- Navbar -->
     <%- include('adminNavbar.ejs') %>
 
-    <!-- Main wrapper -->
-    <div class="d-flex" style="min-height: calc(100vh - 56px);">
+        <!-- Main wrapper -->
+        <div class="d-flex" style="min-height: calc(100vh - 56px);">
 
-        <!-- Sidebar -->
-        <div class="sidebar shadow">
-            <%- include('adminSidebar.ejs') %>
-        </div>
+            <!-- Sidebar -->
+            <div class="sidebar shadow">
+                <%- include('adminSidebar.ejs') %>
+            </div>
 
-        <!-- Main content -->
-        <div class="main-content d-flex flex-column">
+            <!-- Main content -->
+            <div class="main-content m-3 d-flex flex-column">
 
-            <!-- Content body -->
-            <div class="flex-grow-1">
-                <div class="container-fluid my-4">
+                <!-- Content body -->
+                <div class="flex-grow-1">
+                    <div class="container-fluid py-4">
 
-                    <div class="card shadow-lg p-4" style="background-color: #f8f9fa;">
-                        <div class="card-body text-center">
-                            <h1 class="mb-4">Welcome, Admin!</h1>
-                            <p class="lead mb-4">Manage your hospital team efficiently with the options below.</p>
+                        <!-- Welcome Card -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card welcome-card">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">
+                                                <h2 class="mb-3">Welcome back, Admin!</h2>
+                                                <p class="lead text-muted">Here's what's happening with your hospital
+                                                    today.</p>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <a href="/admin/add-doctor" class="btn btn-primary">
+                                                        <i class="fas fa-user-md me-2"></i> Add Doctor
+                                                    </a>
+                                                    <a href="/admin/view-patients" class="btn btn-success">
+                                                        <i class="fas fa-procedures me-2"></i> View Patients
+                                                    </a>
+                                                    <a href="/admin/settings" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-cog me-2"></i> Settings
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 d-none d-md-block">
+                                                <img src="/images/admin-dashboard.svg" alt="Dashboard"
+                                                    class="img-fluid">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="d-flex flex-wrap justify-content-center gap-3">
-                                <a href="/admin/add-admin" class="btn btn-primary btn-lg">Add Admin</a>
-                                <a href="/admin/add-doctor" class="btn btn-success btn-lg">Add Doctor</a>
-                                <a href="/admin/add-receptionist" class="btn btn-warning btn-lg text-white">Add
-                                    Receptionist</a>
-                                <a href="/admin/logout" class="btn btn-danger btn-lg">Logout</a>
+                        <!-- Stats Cards -->
+                        <div class="row mb-4">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card stat-card-primary">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="stat-title">Total Doctors</h6>
+                                                <h2 class="stat-value">142</h2>
+                                            </div>
+                                            <div class="stat-icon">
+                                                <i class="fas fa-user-md"></i>
+                                            </div>
+                                        </div>
+                                        <div class="stat-progress mt-3">
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar" style="width: 75%"></div>
+                                            </div>
+                                            <small class="text-muted">+12% from last month</small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                        </div>
-                    </div>
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card stat-card-success">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="stat-title">Active Patients</h6>
+                                                <h2 class="stat-value">1,248</h2>
+                                            </div>
+                                            <div class="stat-icon">
+                                                <i class="fas fa-procedures"></i>
+                                            </div>
+                                        </div>
+                                        <div class="stat-progress mt-3">
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar" style="width: 68%"></div>
+                                            </div>
+                                            <small class="text-muted">+8% from last month</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card stat-card-warning">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="stat-title">Appointments Today</h6>
+                                                <h2 class="stat-value">86</h2>
+                                            </div>
+                                            <div class="stat-icon">
+                                                <i class="fas fa-calendar-check"></i>
+                                            </div>
+                                        </div>
+                                        <div class="stat-progress mt-3">
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar" style="width: 45%"></div>
+                                            </div>
+                                            <small class="text-muted">+5% from yesterday</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card stat-card-danger">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="stat-title">Pending Tasks</h6>
+                                                <h2 class="stat-value">9</h2>
+                                            </div>
+                                            <div class="stat-icon">
+                                                <i class="fas fa-tasks"></i>
+                                            </div>
+                                        </div>
+                                        <div class="stat-progress mt-3">
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar" style="width: 30%"></div>
+                                            </div>
+                                            <small class="text-muted">3 overdue</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity and Quick Actions -->
+                        <div class="row">
+                            <div class="col-lg-8 mb-4">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Recent Activity</h5>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="activity-list">
+                                            <div class="activity-item">
+                                                <div class="activity-icon bg-primary">
+                                                    <i class="fas fa-user-plus"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <h6>New Doctor Added</h6>
+                                                    <p class="text-muted mb-0">Dr. Sarah Johnson joined Cardiology</p>
+                                                    <small class="text-muted">2 hours ago</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="activity-item">
+                                                <div class="activity-icon bg-success">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <h6>Appointment Completed</h6>
+                                                    <p class="text-muted mb-0">Patient #12345 saw Dr. Smith</p>
+                                                    <small class="text-muted">5 hours ago</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="activity-item">
+                                                <div class="activity-icon bg-warning">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <h6>System Notification</h6>
+                                                    <p class="text-muted mb-0">Scheduled maintenance this weekend</p>
+                                                    <small class="text-muted">Yesterday</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Quick Actions</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="quick-actions">
+                                            <a href="/admin/add-doctor" class="quick-action">
+                                                <div class="action-icon bg-primary">
+                                                    <i class="fas fa-user-md"></i>
+                                                </div>
+                                                <span>Add Doctor</span>
+                                            </a>
+                                            <a href="/admin/add-receptionist" class="quick-action">
+                                                <div class="action-icon bg-info">
+                                                    <i class="fas fa-headset"></i>
+                                                </div>
+                                                <span>Add Receptionist</span>
+                                            </a>
+                                            <a href="/admin/" class="quick-action">
+                                                <div class="action-icon bg-success">
+                                                    <i class="fas fa-file-alt"></i>
+                                                </div>
+                                                <span>Generate Report</span>
+                                            </a>
+                                            <a href="/admin/" class="quick-action">
+                                                <div class="action-icon bg-secondary">
+                                                    <i class="fas fa-cog"></i>
+                                                </div>
+                                                <span>Settings</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <%- include('adminFotter.ejs') %>
-
         </div>
 
-    </div>
-
 </body>
+
 
 </html>
