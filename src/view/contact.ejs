@@ -1,46 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us | HMS</title>
+  <title>Contact Us | GlobalCare Hospital</title>
 
   <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --primary-color: #0d6efd;
+      --secondary-color: #00bcd4;
+      --accent-color: #ff6b6b;
+      --dark-color: #2c3e50;
+      --light-color: #f8f9fa;
+    }
+
     body {
       background-color: #f9f9f9;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
     }
 
     .contact-hero {
-      background: linear-gradient(to right, #0d6efd, #00bcd4);
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
       color: white;
-      padding: 60px 20px;
+      padding: 80px 20px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://img.freepik.com/free-vector/medical-background-with-abstract-shapes_53876-93773.jpg') center/cover;
+      opacity: 0.1;
     }
 
     .contact-hero h1 {
       font-weight: 700;
-      font-size: 2.8rem;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      position: relative;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     }
 
-    .contact-info, .contact-form {
+    .contact-hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      position: relative;
+    }
+
+    .contact-info,
+    .contact-form {
       background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.08);
-      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      padding: 35px;
       margin-bottom: 40px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    .contact-form input, .contact-form textarea {
+    .contact-info:hover,
+    .contact-form:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-form h4,
+    .contact-info h4 {
+      color: var(--dark-color);
+      font-weight: 600;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .contact-form h4::after,
+    .contact-info h4::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      border-radius: 3px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
       border-radius: 8px;
+      padding: 12px 15px;
+      border: 1px solid #e0e0e0;
+      transition: all 0.3s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.25);
     }
 
     .contact-info h5 {
-      margin-top: 20px;
+      margin-top: 25px;
       font-weight: 600;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .contact-info h5 i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .contact-info p {
+      margin-left: 28px;
     }
 
     .map-placeholder {
@@ -52,75 +140,179 @@
       justify-content: center;
       color: #888;
       font-size: 1.1rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .map-placeholder::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://maps.googleapis.com/maps/api/staticmap?center=GlobalCare+Hospital&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7CGlobalCare+Hospital&key=YOUR_API_KEY') center/cover;
+      opacity: 0.7;
+    }
+
+    .map-placeholder span {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      border: none;
+      padding: 12px 25px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+    }
+
+    .contact-method {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, rgba(13, 110, 253, 0.1), rgba(0, 188, 212, 0.1));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .contact-hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .contact-hero {
+        padding: 60px 20px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<%- include('navbar') %>
+  <%- include('navbar') %>
 
-<!-- Hero Banner -->
-<section class="contact-hero">
-  <div class="container">
-    <h1>Contact GlobalCare Multispecialty Hospital</h1>
-    <p>We are here to serve with care and commitment</p>
-  </div>
-</section>
-
-<!-- Contact Content -->
-<div class="container my-5">
-  <div class="row g-4">
-    <!-- Contact Form -->
-    <div class="col-md-6">
-      <div class="contact-form">
-        <h4>Send Us a Message</h4>
-        <form action="/send-message" method="POST">
-          <div class="mb-3">
-            <label for="name" class="form-label">Your Name</label>
-            <input type="text" id="name" name="name" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email Address</label>
-            <input type="email" id="email" name="email" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label for="subject" class="form-label">Subject</label>
-            <input type="text" id="subject" name="subject" class="form-control" />
-          </div>
-          <div class="mb-3">
-            <label for="message" class="form-label">Your Message</label>
-            <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Send Message</button>
-        </form>
+    <!-- Hero Banner -->
+    <section class="contact-hero">
+      <div class="container">
+        <h1>Contact GlobalCare Multispecialty Hospital</h1>
+        <p>We're here to provide exceptional care and support around the clock</p>
       </div>
-    </div>
+    </section>
 
-    <!-- Contact Info -->
-    <div class="col-md-6">
-      <div class="contact-info">
-        <h4>Get in Touch</h4>
-        <p>We are located in the heart of the city and open 24/7 for emergencies.</p>
-        
-        <h5>Address</h5>
-        <p>GlobalCare Multispecialty Hospital<br>123 Health Avenue, Medical City, State 456789</p>
+    <!-- Contact Content -->
+    <div class="container my-5">
+      <div class="row g-4">
+        <!-- Contact Form -->
+        <div class="col-md-6">
+          <div class="contact-form">
+            <h4><i class="fas fa-paper-plane me-2"></i> Send Us a Message</h4>
+            <form action="/send-message" method="POST">
+              <div class="mb-4">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" id="name" name="name" class="form-control" required
+                  placeholder="Enter your full name" />
+              </div>
+              <div class="mb-4">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required
+                  placeholder="Enter your email address" />
+              </div>
+              <div class="mb-4">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control" placeholder="What's this about?" />
+              </div>
+              <div class="mb-4">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea id="message" name="message" class="form-control" rows="5" required
+                  placeholder="Type your message here..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 py-3">
+                <i class="fas fa-paper-plane me-2"></i> Send Message
+              </button>
+            </form>
+          </div>
+        </div>
 
-        <h5>Phone</h5>
-        <p>Main: +1 (555) 123-4567<br>Emergency: +1 (555) 999-9111</p>
+        <!-- Contact Info -->
+        <div class="col-md-6">
+          <div class="contact-info">
+            <h4><i class="fas fa-map-marker-alt me-2"></i> Get in Touch</h4>
+            <p class="mb-4">Our dedicated team is available 24/7 to assist you with any inquiries or emergencies.</p>
 
-        <h5>Email</h5>
-        <p>info@globalcarehospital.com</p>
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h5>Address</h5>
+                <p>123 Health Avenue, Medical City, State 456789</p>
+              </div>
+            </div>
 
-        <h5>Find Us on the Map</h5>
-        <div class="map-placeholder">
-          [ Google Map Embed Placeholder ]
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <div>
+                <h5>Phone</h5>
+                <p>Main: +1 (555) 123-4567<br>Emergency: +1 (555) 999-9111</p>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <h5>Email</h5>
+                <p>info@globalcarehospital.com<br>support@globalcarehospital.com</p>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div>
+                <h5>Working Hours</h5>
+                <p>24/7 Emergency Services<br>OPD: 8:00 AM - 8:00 PM (Mon-Sat)</p>
+              </div>
+            </div>
+
+            <h5 class="mt-4"><i class="fas fa-map-marked-alt me-2"></i> Find Us on the Map</h5>
+            <div class="map-placeholder mt-3">
+              <span><i class="fas fa-map-marker-alt me-2"></i> GlobalCare Hospital Location</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<%- include('fotter') %>
+    <%- include('fotter') %>
 
+      <!-- Bootstrap JS Bundle with Popper -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
