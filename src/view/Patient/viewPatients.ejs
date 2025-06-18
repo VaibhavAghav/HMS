@@ -13,165 +13,276 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        :root {
+            --primary-color: #2c7be5;
+            --secondary-color: #6e84a3;
+            --sidebar-width: 250px;
+            --navbar-height: 56px;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .sidebar {
-            width: 250px;
-            background-color: #f8f9fa;
-            min-height: 100vh;
-            overflow-y: auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #12263f;
         }
 
         .navbar {
-            position: sticky;
+            height: var(--navbar-height);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1030;
+            background: white;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            position: fixed;
+            top: var(--navbar-height);
+            left: 0;
+            bottom: 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+            transition: all 0.3s;
+            color: white;
         }
 
         .main-content {
-            flex-grow: 1;
-            padding: 20px;
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 25px;
+            min-height: calc(100vh - var(--navbar-height));
+            overflow-y: auto;
+            background-color: #f5f7fa;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: #2c3e50;
+            color: white;
+            border-bottom: none;
+            padding: 12px 15px;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(44, 123, 229, 0.05);
+        }
+
+        .table tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+        }
+
+        .search-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1040;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
         }
     </style>
-
-    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-
     <!-- Navbar -->
     <%- include('../Reception/receptionNavbar') %>
 
         <!-- Main Wrapper -->
-        <div class="d-flex" style="min-height: calc(100vh - 56px);">
-
+        <div class="d-flex">
             <!-- Sidebar -->
-            <div class="sidebar shadow">
+            <div class="sidebar">
                 <%- include('../Reception/receptionSidebar') %>
             </div>
 
             <!-- Main Content -->
-            <div class="main-content d-flex flex-column">
+            <div class="main-content">
+                <div class="container-fluid">
+                    <!-- Patients List Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="mb-0"><i class="fas fa-procedures me-2"></i> All Patients</h3>
 
-                <div class="flex-grow-1">
-                    <div class="container-fluid my-4">
+                                <div class="d-flex gap-3">
+                                    <a href="/receptionist/add-patient" class="btn btn-success btn-sm">
+                                        <i class="fa-solid fa-plus me-1"></i> Add Patient
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
-                        <!-- Patients List Card -->
-                        <div class="card shadow-lg p-4" style="background-color: #f8f9fa;">
-                            <div class="card-body">
-
-                                <!-- Title and Actions -->
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h2 class="mb-0">All Patients</h2>
-
-                                    <div class="d-flex gap-2">
-                                        <a href="add-patient" class="btn btn-success">
-                                            <i class="fa-solid fa-plus"></i> Add Patient
-                                        </a>
-
-                                        <select id="searchCategory" class="form-select" style="width: 160px;">
+                        <div class="card-body">
+                            <!-- Search and Filter Section -->
+                            <div class="search-container mb-4">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                            <input type="text" id="searchInput" onkeyup="searchPatients()"
+                                                class="form-control" placeholder="Search patients...">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="searchCategory" class="form-select">
                                             <option value="1">Name</option>
+                                            <option value="2">Disease</option>
                                             <option value="3">Doctor</option>
                                             <option value="4">Room</option>
                                             <option value="5">Nurse</option>
                                             <option value="7">Status</option>
                                         </select>
-
-                                        <input type="text" id="searchInput" onkeyup="searchPatients()"
-                                            class="form-control" placeholder="Search" style="width: 220px;">
-
-                                        <button class="btn btn-secondary" onclick="clearSearch()">
-                                            <i class="fa-solid fa-xmark"></i>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-outline-secondary w-100" onclick="clearSearch()">
+                                            <i class="fas fa-undo me-1"></i> Reset
                                         </button>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Patients Table -->
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped align-middle" id="patientTable">
-                                        <thead class="table-dark">
+                            <!-- Patients Table -->
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="patientTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Patient Name</th>
+                                            <th>Disease</th>
+                                            <th>Doctor</th>
+                                            <th>Room</th>
+                                            <th>Nurse</th>
+                                            <th>Admission</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% patients.forEach((patient, index)=> { %>
                                             <tr>
-                                                <th>Sr No</th>
-                                                <th>Name</th>
-                                                <th>Disease</th>
-                                                <th>Doctor</th>
-                                                <th>Room Type (No)</th>
-                                                <th>Nurse</th>
-                                                <th>Time</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% patients.forEach((patient, index)=> { %>
-                                                <tr>
-                                                    <td>
-                                                        <%= index + 1 %>
-                                                    </td>
-                                                    <td>
-                                                        <%= patient.patient_name %>
-                                                    </td>
-                                                    <td>
-                                                        <%= patient.patient_disease %>
-                                                    </td>
-                                                    <td>
-                                                        <%= patient.doctor_name %>
-                                                    </td>
-                                                    <td>
-                                                        <%= patient.room_type %> (No: <%= patient.room_id %>)
-                                                    </td>
-                                                    <td>
-                                                        <%= patient.nurse_name %>
-                                                    </td>
-                                                    <td>
-                                                        <%= patient.time_allocate ? new
-                                                            Date(patient.time_allocate).toLocaleString('en-GB', {
-                                                            weekday: 'short' , day: '2-digit' , month: 'short' ,
-                                                            year: 'numeric' , hour: '2-digit' , minute: '2-digit' ,
-                                                            second: '2-digit' , hour12: false }).replace(/,/g, '' )
-                                                            : '-' %>
-                                                    </td>
-                                                    <td>
-                                                        <% if (patient.status==='Visited' ) { %>
-                                                            <a href="bill/<%= patient.patient_id %>"
-                                                                class="text-success" title="Generate Bill">
-                                                                <i class="fa-solid fa-file-invoice-dollar"></i>
-                                                            </a>
-                                                            <% } else if (patient.status==='Admitted' ) { %>
-                                                                <i class="fa-solid fa-bed-pulse text-primary"
-                                                                    title="Admitted"></i>
-                                                                <% } else if (patient.status==='Not Visited' ) { %>
-                                                                    <i class="fa-solid fa-circle-xmark text-secondary"
-                                                                        title="Not Visited"></i>
-                                                                    <% } else if (patient.status==='Billed' ) { %>
-                                                                        <a href="show-bill/<%= patient.patient_id %>"
-                                                                            class="text-success" title="Billed">
-                                                                            <i
-                                                                                class="fa-solid fa-money-check-dollar text-success"></i>
-                                                                        </a>
-                                                                        <% } else { %>
+                                                <td class="fw-bold">
+                                                    <%= index + 1 %>
+                                                </td>
+                                                <td>
+                                                    <%= patient.patient_name %>
+                                                </td>
+                                                <td>
+                                                    <%= patient.patient_disease %>
+                                                </td>
+                                                <td>
+                                                    <%= patient.doctor_name %>
+                                                </td>
+                                                <td>
+                                                    <%= patient.room_type %> (No: <%= patient.room_id %>)
+                                                </td>
+                                                <td>
+                                                    <%= patient.nurse_name %>
+                                                </td>
+                                                <td>
+                                                    <% if (patient.time_allocate) { %>
+                                                        <%= new Date(patient.time_allocate).toLocaleString('en-GB', {
+                                                            day: '2-digit' , month: 'short' , year: 'numeric' ,
+                                                            hour: '2-digit' , minute: '2-digit' }).replace(/,/g, '' ) %>
+                                                            <% } else { %>
+                                                                -
+                                                                <% } %>
+                                                </td>
+                                                <td>
+                                                    <% if (patient.status==='Visited' ) { %>
+                                                        <a href="bill/<%= patient.patient_id %>"
+                                                            class="btn-action text-success" title="Generate Bill">
+                                                            <i class="fa-solid fa-file-invoice-dollar status-icon"></i>
+                                                        </a>
+                                                        <% } else if (patient.status==='Admitted' ) { %>
+                                                            <span class="btn-action text-primary" title="Admitted">
+                                                                <i class="fa-solid fa-bed-pulse status-icon"></i>
+                                                            </span>
+                                                            <% } else if (patient.status==='Not Visited' ) { %>
+                                                                <span class="btn-action text-secondary"
+                                                                    title="Not Visited">
+                                                                    <i class="fa-solid fa-circle-xmark status-icon"></i>
+                                                                </span>
+                                                                <% } else if (patient.status==='Billed' ) { %>
+                                                                    <a href="show-bill/<%= patient.patient_id %>"
+                                                                        class="btn-action text-success" title="Billed">
+                                                                        <i
+                                                                            class="fa-solid fa-money-check-dollar status-icon"></i>
+                                                                    </a>
+                                                                    <% } else { %>
+                                                                        <span class="badge bg-light text-dark">
                                                                             <%= patient.status %>
-                                                                                <% } %>
-                                                    </td>
-                                                </tr>
-                                                <% }) %>
-                                        </tbody>
-                                    </table>
-                                </div>
-
+                                                                        </span>
+                                                                        <% } %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-                <!-- Footer -->
-                <%- include('../fotter') %>
-
             </div>
         </div>
 
@@ -190,7 +301,7 @@
 
                         // If status column, also check title attributes inside the cell
                         if (category === 7) {
-                            let icon = cell.querySelector("i, a");
+                            let icon = cell.querySelector("i, a, span");
                             let titleValue = icon ? icon.getAttribute("title")?.toLowerCase() : "";
                             textValue = (textValue + " " + titleValue).trim();
                         }
@@ -200,13 +311,17 @@
                 }
             }
 
-
             function clearSearch() {
                 document.getElementById("searchInput").value = "";
+                document.getElementById("searchCategory").value = "1";
                 searchPatients();
             }
-        </script>
 
+            // Mobile sidebar toggle
+            document.querySelector('.navbar-toggler').addEventListener('click', function () {
+                document.querySelector('.sidebar').classList.toggle('show');
+            });
+        </script>
 </body>
 
 </html>

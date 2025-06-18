@@ -5,101 +5,259 @@
     <meta charset="UTF-8">
     <title>Reception Panel - Global Care Hospital</title>
     <!-- Bootstrap 5 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #2c7be5;
+            --secondary-color: #6e84a3;
+            --sidebar-width: 250px;
+            --navbar-height: 56px;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .sidebar {
-            width: 250px;
-            background-color: #f8f9fa;
-            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #12263f;
         }
 
         .navbar {
-            position: sticky;
+            height: var(--navbar-height);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1030;
+            background: white;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            position: fixed;
+            top: var(--navbar-height);
+            left: 0;
+            bottom: 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+            transition: all 0.3s;
         }
 
         .main-content {
-            flex-grow: 1;
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
             padding: 20px;
+            min-height: calc(100vh - var(--navbar-height));
+            overflow-y: auto;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            background: var(--primary-color);
+        }
+
+        .list-group-item {
+            border-left: 0;
+            border-right: 0;
+            padding: 15px 20px;
+        }
+
+        .list-group-item:first-child {
+            border-top: 0;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+        }
+
+        .nav-link {
+            color: var(--secondary-color);
+            font-weight: 500;
+            border-radius: 6px;
+            margin-bottom: 3px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(44, 123, 229, 0.1);
+        }
+
+        .collapse.show {
+            background-color: rgba(44, 123, 229, 0.05);
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #2c7be5 0%, #5a9cf8 100%);
+            color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .welcome-card .card-body {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        footer {
+            background: white;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
         }
     </style>
-    <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
-
     <!-- Navbar -->
     <%- include('receptionNavbar.ejs') %>
 
-        <div class="d-flex" style="min-height: calc(100vh - 56px);">
-
+        <div class="d-flex">
             <!-- Sidebar -->
-            <div class="sidebar shadow">
+            <div class="sidebar">
                 <%- include('receptionSidebar.ejs') %>
             </div>
 
             <!-- Main content -->
-            <div class="main-content d-flex flex-column">
-
-                <div class="container-fluid my-4">
-
-                    <div class="card shadow-lg p-4 bg-light">
-                        <div class="card-body text-center">
-                            <h1 class="mb-4">Welcome, <%= reception.reception_name %>!</h1>
-                            <p class="lead mb-4">Manage your hospital team and patient records efficiently.</p>
+            <div class="main-content flex-grow-1">
+                <div class="container-fluid py-4">
+                    <!-- Welcome Card -->
+                    <div class="card welcome-card mb-4 border-0">
+                        <div class="card-body text-center p-4">
+                            <h1 class="mb-3 fw-bold">Welcome, <%= reception.reception_name %>!</h1>
+                            <p class="lead mb-0">Manage patient records and hospital operations efficiently</p>
+                            <i class="fas fa-user-md fa-4x opacity-10 mt-3"></i>
                         </div>
                     </div>
 
-                    <div class="card mt-4 shadow-sm">
-                        <div class="card-header bg-primary text-white">
-                            <h4>Your Profile Details</h4>
+                    <!-- Profile Card -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4 class="mb-0 text-white"><i class="fas fa-user-circle me-2"></i>Your Profile Details</h4>
                         </div>
                         <div class="card-body">
-                            <ul class="list-group mb-3">
-                                <li class="list-group-item"><strong>Reception ID:</strong>
-                                    <%= reception.reception_id %>
-                                </li>
-                                <li class="list-group-item"><strong>Name:</strong>
-                                    <%= reception.reception_name %>
-                                </li>
-                                <li class="list-group-item"><strong>Contact:</strong>
-                                    <%= reception.reception_contact %>
-                                </li>
-                                <li class="list-group-item"><strong>Username:</strong>
-                                    <%= reception.username %>
-                                </li>
-                            </ul>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-group mb-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-id-card me-2 text-primary"></i><strong>Reception
+                                                    ID:</strong></span>
+                                            <span class="badge bg-primary rounded-pill">
+                                                <%= reception.reception_id %>
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i
+                                                    class="fas fa-user me-2 text-primary"></i><strong>Name:</strong></span>
+                                            <span>
+                                                <%= reception.reception_name %>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-group mb-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i
+                                                    class="fas fa-phone me-2 text-primary"></i><strong>Contact:</strong></span>
+                                            <span>
+                                                <%= reception.reception_contact %>
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i
+                                                    class="fas fa-at me-2 text-primary"></i><strong>Username:</strong></span>
+                                            <span>
+                                                <%= reception.username %>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
 
-                            <h5 class="mt-4">Additional Information:</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item">Assigned Shifts: <span class="text-muted">Morning,
-                                        Evening</span></li>
-                                <li class="list-group-item">Patients Registered Today: <span class="text-muted">8</span>
-                                </li>
-                                <li class="list-group-item">Appointments Scheduled: <span class="text-muted">5</span>
-                                </li>
-                            </ul>
+                            <h5 class="mt-4 mb-3"><i class="fas fa-info-circle me-2 text-primary"></i>Additional
+                                Information</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card bg-light mb-3">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-secondary">Assigned Shifts</h6>
+                                            <h4 class="text-primary">Morning, Evening</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light mb-3">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-secondary">Patients Registered Today</h6>
+                                            <h4 class="text-primary">8</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light mb-3">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-secondary">Appointments Scheduled</h6>
+                                            <h4 class="text-primary">5</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Footer -->
                 <%- include('receptionFotter') %>
-
             </div>
-
         </div>
 
+        <script>
+            // Toggle sidebar on mobile
+            document.querySelector('.navbar-toggler').addEventListener('click', function () {
+                document.querySelector('.sidebar').classList.toggle('show');
+            });
+        </script>
 </body>
 
 </html>

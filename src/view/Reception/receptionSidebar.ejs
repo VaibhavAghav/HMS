@@ -1,70 +1,218 @@
-<div class="d-flex flex-column p-3 bg-light shadow"
-    style="width: 250px; height: 100vh; position: fixed; top: 56px; left: 0; overflow-y: auto;">
-    <h4 class="mb-4">Reception Panel</h4>
+<div class="sidebar-inner">
+    <div class="sidebar-header p-3 d-flex align-items-center">
+        <div class="sidebar-logo me-2">
+            <i class="fas fa-clipboard-user text-white"></i>
+        </div>
+        <h5 class="mb-0 text-white">Reception Panel</h5>
+    </div>
 
-    <ul class="nav nav-pills flex-column mb-auto">
-
-        <li class="nav-item mb-2">
-            <a href="/receptionist" class="nav-link active">Dashboard</a>
-        </li>
-
-        <!-- Patient Dropdown -->
-        <li class="nav-item mb-2">
-            <a class="nav-link text-dark" data-bs-toggle="collapse" href="#patientMenu" role="button"
-                aria-expanded="false" aria-controls="patientMenu">
-                🧑‍⚕️ Patient
-            </a>
-            <div class="collapse ps-3" id="patientMenu">
-                <a href="/receptionist/add-patient" class="nav-link text-dark">➕ Add Patient</a>
-                <a href="/receptionist/view-patients" class="nav-link text-dark">📃 View All Patients</a>
-                <a href="/receptionist/view-billed-patients" class="nav-link text-dark">
-                    💵 Bill Completed
+    <div class="sidebar-menu p-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="/receptionist" class="nav-link active">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
                 </a>
-                <a href="/receptionist/view-unbilled-patients" class="nav-link text-dark">
-                    📝 Bill Pending
+            </li>
+
+            <!-- Patient Menu -->
+            <li class="nav-item menu-group">
+                <a class="nav-link menu-toggle" data-bs-toggle="collapse" href="#patientMenu">
+                    <i class="fas fa-procedures me-2"></i> Patients
+                    <i class="fas fa-chevron-down menu-arrow"></i>
                 </a>
+                <div class="collapse show" id="patientMenu">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a href="/receptionist/add-patient" class="nav-link">
+                                <i class="fas fa-plus-circle me-2"></i> Add Patient
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/receptionist/view-patients" class="nav-link">
+                                <i class="fas fa-list me-2"></i> View All
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/receptionist/view-billed-patients" class="nav-link">
+                                <i class="fas fa-receipt me-2"></i> Bill Completed
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/receptionist/view-unbilled-patients" class="nav-link">
+                                <i class="fas fa-clock me-2"></i> Bill Pending
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- Room Menu -->
+            <li class="nav-item menu-group">
+                <a class="nav-link menu-toggle" data-bs-toggle="collapse" href="#roomMenu">
+                    <i class="fas fa-bed me-2"></i> Rooms
+                    <i class="fas fa-chevron-down menu-arrow"></i>
+                </a>
+                <div class="collapse" id="roomMenu">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a href="/receptionist/add-room" class="nav-link">
+                                <i class="fas fa-plus-circle me-2"></i> Add Room
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/receptionist/view-rooms" class="nav-link">
+                                <i class="fas fa-list me-2"></i> View Rooms
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- Nurse Menu -->
+            <li class="nav-item menu-group">
+                <a class="nav-link menu-toggle" data-bs-toggle="collapse" href="#nurseMenu">
+                    <i class="fas fa-user-nurse me-2"></i> Nurses
+                    <i class="fas fa-chevron-down menu-arrow"></i>
+                </a>
+                <div class="collapse" id="nurseMenu">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a href="/receptionist/add-nurse" class="nav-link">
+                                <i class="fas fa-plus-circle me-2"></i> Add Nurse
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/receptionist/view-nurses" class="nav-link">
+                                <i class="fas fa-list me-2"></i> View Nurses
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- Medicine Menu -->
+            <li class="nav-item menu-group">
+                <a class="nav-link menu-toggle" data-bs-toggle="collapse" href="#medicineMenu">
+                    <i class="fas fa-pills me-2"></i> Medicines
+                    <i class="fas fa-chevron-down menu-arrow"></i>
+                </a>
+                <div class="collapse" id="medicineMenu">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a href="/medicine/add-medicine" class="nav-link">
+                                <i class="fas fa-plus-circle me-2"></i> Add Medicine
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/medicine/allmedicine" class="nav-link">
+                                <i class="fas fa-list me-2"></i> View All
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="sidebar-footer p-3">
+        <div class="d-flex align-items-center">
+            <div class="user-avatar me-2">
+                <i class="fas fa-user-circle fa-xl"></i>
             </div>
-        </li>
-
-        <!-- Room Dropdown -->
-        <li class="nav-item mb-2">
-            <a class="nav-link text-dark" data-bs-toggle="collapse" href="#roomMenu" role="button" aria-expanded="false"
-                aria-controls="roomMenu">
-                🏥 Room
-            </a>
-            <div class="collapse ps-3" id="roomMenu">
-                <a href="/receptionist/add-room" class="nav-link text-dark">➕ Add Room</a>
-                <a href="/receptionist/view-rooms" class="nav-link text-dark">📃 View Rooms</a>
+            <div class="user-info">
+                <small class="d-block text-muted">Logged in as</small>
+                <strong>
+                    Receptionist
+                </strong>
             </div>
-        </li>
-
-        <!-- Nurse Dropdown -->
-        <li class="nav-item mb-2">
-            <a class="nav-link text-dark" data-bs-toggle="collapse" href="#nurseMenu" role="button"
-                aria-expanded="false" aria-controls="nurseMenu">
-                👩‍⚕️ Nurse
-            </a>
-            <div class="collapse ps-3" id="nurseMenu">
-                <a href="/receptionist/add-nurse" class="nav-link text-dark">➕ Add Nurse</a>
-                <a href="/receptionist/view-nurses" class="nav-link text-dark">📃 View Nurses</a>
-            </div>
-        </li>
-
-        <!-- Medicine Dropdown -->
-        <li class="nav-item mb-2">
-            <a class="nav-link text-dark" data-bs-toggle="collapse" href="#medicineMenu" role="button"
-                aria-expanded="false" aria-controls="medicineMenu">
-                💊 Medicine
-            </a>
-            <div class="collapse ps-3" id="medicineMenu">
-                <a href="/medicine/add-medicine" class="nav-link text-dark">➕ Add Medicine</a>
-                <a href="/medicine/allmedicine" class="nav-link text-dark">📃 View All Medicines</a>
-            </div>
-        </li>
-
-        <li class="nav-item mt-3">
-            <!-- <a href="/admin/logout" class="nav-link text-danger">🚪 Logout</a> -->
-        </li>
-
-    </ul>
+        </div>
+    </div>
 </div>
+
+<style>
+    .sidebar {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        color: white;
+    }
+
+    .sidebar-inner {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar-header {
+        background: rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-logo {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sidebar-menu {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        margin-bottom: 2px;
+        transition: all 0.3s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link.active {
+        font-weight: 500;
+    }
+
+    .menu-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu-arrow {
+        font-size: 0.8rem;
+        transition: transform 0.3s;
+    }
+
+    .menu-toggle[aria-expanded="true"] .menu-arrow {
+        transform: rotate(180deg);
+    }
+
+    .sub-menu {
+        padding-left: 1.5rem;
+        margin-top: 5px;
+    }
+
+    .sub-menu .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .sidebar-footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-avatar {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .user-info {
+        line-height: 1.2;
+    }
+</style>

@@ -3,72 +3,245 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Confirm Delete</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css" />
+    <title>Delete Medicine - Global Care Hospital</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
     <style>
+        :root {
+            --primary-color: #2c7be5;
+            --secondary-color: #6e84a3;
+            --sidebar-width: 260px;
+            --navbar-height: 80px;
+            --danger-color: #dc3545;
+        }
+
         body {
-            margin-top: 80px;
-            padding-left: 260px;
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #12263f;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar styling */
+        .navbar-custom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            z-index: 1030;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            position: fixed;
+            top: var(--navbar-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 1020;
+        }
+
+        /* Main content styling */
+        .main-content {
+            margin-top: var(--navbar-height);
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            min-height: calc(100vh - var(--navbar-height));
+            background-color: #f5f7fa;
+        }
+
+        /* Confirmation card styling */
+        .confirmation-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+            border-top: 4px solid var(--danger-color);
+        }
+
+        .confirmation-card .card-header {
+            background-color: #fff;
+            border-bottom: none;
+            padding: 20px;
+            color: var(--danger-color);
+            text-align: center;
+        }
+
+        .confirmation-card .card-body {
+            padding: 30px;
+        }
+
+        /* List group styling */
+        .detail-list .list-group-item {
+            border-left: none;
+            border-right: none;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-list .list-group-item:first-child {
+            border-top: none;
+        }
+
+        .detail-list .list-group-item strong {
+            color: #2c3e50;
+        }
+
+        /* Button styling */
+        .btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .confirmation-card .card-body {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Dynamically include navbar and sidebar based on role -->
-    <% if (session.user && session.user.role==='doctor' ) { %>
-        <%- include('../Doctor/doctorNavbar') %>
-            <%- include('../Doctor/doctorSidebar') %>
+    <!-- Navbar -->
+    <div class="navbar-custom">
+        <% if (session.user && session.user.role==='doctor' ) { %>
+            <%- include('../Doctor/doctorNavbar') %>
                 <% } else if (session.user && session.user.role==='receptionist' ) { %>
                     <%- include('../Reception/receptionNavbar') %>
-                        <%- include('../Reception/receptionSidebar') %>
-                            <% } else { %>
-                                <%- include('../navbar') %>
-                                    <% } %>
+                        <% } else { %>
+                            <%- include('../navbar') %>
+                                <% } %>
+    </div>
 
-                                        <div class="container">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <div class="card shadow-sm">
-                                                        <div class="card-header bg-danger text-white">
-                                                            <h3 class="mb-0">Confirm Deletion</h3>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <p class="text-danger fw-bold">Are you sure you want to
-                                                                delete this medicine?</p>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <% if (session.user && session.user.role==='doctor' ) { %>
+            <%- include('../Doctor/doctorSidebar') %>
+                <% } else if (session.user && session.user.role==='receptionist' ) { %>
+                    <%- include('../Reception/receptionSidebar') %>
+                        <% } %>
+    </div>
 
-                                                            <ul class="list-group mb-4">
-                                                                <li class="list-group-item"><strong>Name:</strong>
-                                                                    <%= medicine.medicine_name %>
-                                                                </li>
-                                                                <li class="list-group-item"><strong>Price:</strong> ₹<%=
-                                                                        medicine.price_medicine %>
-                                                                </li>
-                                                            </ul>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="container">
+            <div class="confirmation-card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                        <h3 class="mb-0">Delete Medicine - <%= medicine.medicine_name %>
+                        </h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger d-flex align-items-center">
+                        <i class="fas fa-exclamation-circle me-3 fs-4"></i>
+                        <div>
+                            <h5 class="alert-heading">Warning!</h5>
+                            <p class="mb-0">Are you sure you want to permanently delete this medicine? This action
+                                cannot be undone.</p>
+                        </div>
+                    </div>
 
-                                                            <form action="/medicine/delete-medicine" method="POST">
-                                                                <input type="hidden" name="medical_id"
-                                                                    value="<%= medicine.medical_id %>">
+                    <div class="detail-list mb-4">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <strong>Medicine Name:</strong>
+                                <span><i class="fas fa-pills me-1"></i>
+                                    <%= medicine.medicine_name %>
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Price:</strong>
+                                <span class="fw-semibold text-danger">₹<%= medicine.price_medicine %></span>
+                            </li>
+                        </ul>
+                    </div>
 
-                                                                <div class="d-grid gap-2">
-                                                                    <button type="submit" class="btn btn-danger">Yes,
-                                                                        Delete</button>
-                                                                    <a href="/medicine/allmedicine"
-                                                                        class="btn btn-secondary">Cancel</a>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <form action="/medicine/delete-medicine" method="POST">
+                        <input type="hidden" name="medical_id" value="<%= medicine.medical_id %>">
+                        <div class="d-grid gap-3">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt me-2"></i> Confirm Delete
+                            </button>
+                            <a href="/medicine/allmedicine" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                                        <%- include('../fotter') %>
+    <!-- Footer -->
+    <%- include('../fotter') %>
 
-                                            <script
-                                                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            // Mobile sidebar toggle
+            document.querySelector('.navbar-toggler').addEventListener('click', function () {
+                document.querySelector('.sidebar').classList.toggle('show');
+            });
+        </script>
 </body>
 
 </html>

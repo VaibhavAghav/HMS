@@ -5,7 +5,7 @@ let router = express.Router();
 
 const adminController = require("../controller/adminController");
 const isAdminAuthenticated = require("../middleware/adminAuthentication"); // adjust path if needed
-
+const patientController = require("../controller/patientController");
 // admin homepage after login — PROTECTED
 router.get("/", isAdminAuthenticated, adminController.adminHomePage);
 
@@ -43,6 +43,8 @@ router.post("/edit-receptionist/:id", isAdminAuthenticated, adminController.edit
 // delete receptionist — PROTECTED
 router.get("/delete-receptionist/:id", isAdminAuthenticated, adminController.deleteReceptionistPage); //*
 
+
+router.get("/view-patients", isAdminAuthenticated, patientController.viewAllPatients);
 
 
 // admin login page — PUBLIC

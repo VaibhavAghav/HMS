@@ -3,109 +3,308 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>All Nurses</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css" />
+    <title>All Nurses - Global Care Hospital</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
     <style>
-        body {
-            margin-top: 80px;
-            padding-left: 260px;
-            overflow-x: hidden;
+        :root {
+            --primary-color: #2c7be5;
+            --secondary-color: #6e84a3;
+            --sidebar-width: 260px;
+            --navbar-height: 80px;
         }
 
-        #searchInput {
-            max-width: 300px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #12263f;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar styling */
+        .navbar-custom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            z-index: 1030;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            position: fixed;
+            top: var(--navbar-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 1020;
+        }
+
+        /* Main content styling */
+        .main-content {
+            margin-top: var(--navbar-height);
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            min-height: calc(100vh - var(--navbar-height));
+            background-color: #f5f7fa;
+        }
+
+        /* Data card styling */
+        .data-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .data-card .card-header {
+            background: var(--primary-color);
+            border-bottom: none;
+            padding: 20px;
+            color: white;
+        }
+
+        /* Table styling */
+        .table-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: #2c3e50;
+            color: white;
+            border-bottom: none;
+            padding: 12px 15px;
+            font-weight: 500;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(44, 123, 229, 0.05);
+        }
+
+        .table tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            border-top: 1px solid #f0f4f8;
+        }
+
+        /* Shift badges */
+        .shift-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .shift-day {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .shift-night {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        /* Action buttons */
+        .btn-action {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Search and filter */
+        .search-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .table-responsive {
+                border-radius: 0;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Receptionist navbar and sidebar -->
-    <%- include('../Reception/receptionNavbar') %>
+    <!-- Navbar -->
+    <div class="navbar-custom">
+        <%- include('../Reception/receptionNavbar') %>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
         <%- include('../Reception/receptionSidebar') %>
+    </div>
 
-            <div class="container">
-
-                <!-- Title, Add button and Search in one row -->
-                <div class="row mb-3 align-items-center">
-                    <div class="col">
-                        <h2 class="mb-0">All Nurses</h2>
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" id="searchInput" onkeyup="searchNurse()" class="form-control"
-                            placeholder="Search nurse by name...">
-                    </div>
-                    <div class="col-auto">
-                        <a href="add-nurse" class="btn btn-primary">+ Add Nurse</a>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user-nurse me-3 fs-4"></i>
+                            <h3 class="mb-0">Nurse Management</h3>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="input-group" style="width: 250px;">
+                                <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                <input type="text" id="searchInput" onkeyup="searchNurse()" class="form-control"
+                                    placeholder="Search nurses...">
+                            </div>
+                            <a href="add-nurse" class="btn btn-light">
+                                <i class="fas fa-plus me-1"></i> Add Nurse
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Success / Error message -->
-                <% if (typeof message !=='undefined' ) { %>
-                    <div class="alert alert-<%= messageType === 'success' ? 'success' : 'danger' %> alert-dismissible fade show"
-                        role="alert">
-                        <%= message %>
+                <div class="card-body p-4">
+                    <!-- Flash Message (if any) -->
+                    <% if (typeof message !=='undefined' ) { %>
+                        <div class="alert alert-<%= messageType === 'success' ? 'success' : 'danger' %> alert-dismissible fade show d-flex align-items-center mb-4"
+                            role="alert">
+                            <i
+                                class="fas <%= messageType === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle' %> me-2"></i>
+                            <div>
+                                <%= message %>
+                            </div>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <% } %>
+                        </div>
+                        <% } %>
 
-                        <!-- Nurses Table -->
-                        <table class="table table-bordered table-hover shadow-sm">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Nurse Name</th>
-                                    <th>Contact</th>
-                                    <th>Shift</th>
-                                    <th style="width: 160px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="nurseTable">
-                                <% nurses.forEach(nurse=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= nurse.nurse_name %>
-                                        </td>
-                                        <td>
-                                            <%= nurse.nurse_contact %>
-                                        </td>
-                                        <td>
-                                            <%= nurse.nurse_shift %>
-                                        </td>
-                                        <td>
-                                            <a href="/nurse/update-nurse/<%= nurse.nurse_id %>"
-                                                class="btn btn-sm btn-warning">Edit</a>
-                                            <a href="/nurse/delete-nurse/<%= nurse.nurse_id %>"
-                                                class="btn btn-sm btn-danger">Delete</a>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-
+                            <div class="table-container">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Nurse Name</th>
+                                                <th>Contact</th>
+                                                <th>Shift</th>
+                                                <th style="width: 140px;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="nurseTable">
+                                            <% nurses.forEach(nurse=> { %>
+                                                <tr>
+                                                    <td class="fw-semibold">
+                                                        <i class="fas fa-user-nurse me-2 text-primary"></i>
+                                                        <%= nurse.nurse_name %>
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-phone me-2 text-secondary"></i>
+                                                        <%= nurse.nurse_contact %>
+                                                    </td>
+                                                    <td>
+                                                        <% if(nurse.nurse_shift==='Day' ) { %>
+                                                            <span class="shift-badge shift-day">
+                                                                <i class="fas fa-sun me-1"></i> Day Shift
+                                                            </span>
+                                                            <% } else { %>
+                                                                <span class="shift-badge shift-night">
+                                                                    <i class="fas fa-moon me-1"></i> Night Shift
+                                                                </span>
+                                                                <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="edit-nurse/<%= nurse.nurse_id %>"
+                                                                class="btn btn-action btn-warning btn-sm">
+                                                                <i class="fas fa-edit me-1"></i> Edit
+                                                            </a>
+                                                            <a href="delete-nurse/<%= nurse.nurse_id %>"
+                                                                class="btn btn-action btn-danger btn-sm">
+                                                                <i class="fas fa-trash me-1"></i> Delete
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                </div>
             </div>
+        </div>
+    </div>
 
-            <%- include('../fotter') %>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-                <script>
-                    function searchNurse() {
-                        const input = document.getElementById("searchInput");
-                        const filter = input.value.toLowerCase();
-                        const table = document.getElementById("nurseTable");
-                        const tr = table.getElementsByTagName("tr");
+        <script>
+            // Mobile sidebar toggle
+            document.querySelector('.navbar-toggler').addEventListener('click', function () {
+                document.querySelector('.sidebar').classList.toggle('show');
+            });
 
-                        for (let i = 0; i < tr.length; i++) {
-                            const td = tr[i].getElementsByTagName("td")[0];
-                            if (td) {
-                                const txtValue = td.textContent || td.innerText;
-                                tr[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
-                            }
-                        }
+            function searchNurse() {
+                const input = document.getElementById("searchInput");
+                const filter = input.value.toLowerCase();
+                const table = document.getElementById("nurseTable");
+                const tr = table.getElementsByTagName("tr");
+
+                for (let i = 0; i < tr.length; i++) {
+                    const td = tr[i].getElementsByTagName("td")[0]; // Search by Nurse Name
+                    if (td) {
+                        const txtValue = td.textContent || td.innerText;
+                        tr[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
                     }
-                </script>
-
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+                }
+            }
+        </script>
 </body>
 
 </html>
