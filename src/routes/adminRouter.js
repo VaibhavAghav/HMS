@@ -44,7 +44,7 @@ router.post("/edit-receptionist/:id", isAdminAuthenticated, adminController.edit
 router.get("/delete-receptionist/:id", isAdminAuthenticated, adminController.deleteReceptionistPage); //*
 
 
-router.get("/view-patients", isAdminAuthenticated, patientController.viewAllPatients);
+router.get("/view-patients", isAdminAuthenticated, adminController.viewAllPatients);
 
 
 // admin login page — PUBLIC

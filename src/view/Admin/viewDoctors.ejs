@@ -3,62 +3,145 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Doctor List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor List | Global Care Hospital</title>
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="/css/style.css" />
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #2c7be5;
+            --secondary-color: #6e84a3;
+            --sidebar-width: 250px;
+            --navbar-height: 56px;
+        }
+
         body {
-            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #12263f;
             margin: 0;
-            padding-top: 70px;
+            padding: 0;
+        }
+
+        .navbar {
+            height: var(--navbar-height);
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            position: fixed;
+            top: var(--navbar-height);
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px;
+            min-height: calc(100vh - var(--navbar-height));
+        }
+
+        .doctors-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 2px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .status-badge {
+            font-size: 0.85rem;
+            padding: 0.35em 0.65em;
+        }
+
+        .search-box {
+            max-width: 300px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
 
 <body>
-
     <!-- Navbar -->
     <%- include('adminNavbar.ejs') %>
 
-        <div class="d-flex flex-column min-vh-100">
+        <!-- Sidebar -->
+        <%- include('adminSidebar.ejs') %>
 
-            <div class="flex-grow-1 container-fluid my-4">
-
-                <div class="row">
-                    <!-- Sidebar -->
-                    <div class="col-md-3 mb-4">
-                        <%- include('adminSidebar.ejs') %>
-                    </div>
-
-                    <!-- Main Content -->
-                    <div class="col-md-9">
-                        <div class="card shadow-lg p-4" style="background-color: #f8f9fa;">
-                            <div class="card-body">
-
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h2 class="mb-0">Doctor List</h2>
-
-                                    <div>
-                                        <a href="/admin/add-doctor" class="btn btn-success me-2">
-                                            <i class="bi bi-plus-lg"></i> Add Doctor
-                                        </a>
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="container-fluid">
+                    <!-- Doctors Card -->
+                    <div class="doctors-card mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="mb-0"><i class="fas fa-user-md me-2"></i> Doctor List</h3>
+                                <div class="d-flex">
+                                    <div class="input-group search-box me-3">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
                                         <input type="text" id="searchInput" onkeyup="searchDoctors()"
-                                            class="form-control d-inline-block" placeholder="Search Doctor"
-                                            style="width: 200px;">
+                                            class="form-control" placeholder="Search doctors...">
                                     </div>
+                                    <a href="/admin/add-doctor" class="btn btn-success action-btn">
+                                        <i class="fas fa-plus me-2"></i> Add Doctor
+                                    </a>
                                 </div>
+                            </div>
 
-                                <table class="table table-striped table-hover" id="doctorTable">
-                                    <thead class="table-dark">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover" id="doctorTable">
+                                    <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Experience (yrs)</th>
+                                            <th>Experience</th>
                                             <th>Status</th>
                                             <th>Specialization</th>
                                             <th>Actions</th>
@@ -74,59 +157,71 @@
                                                     <%= doctor.doctor_name %>
                                                 </td>
                                                 <td>
-                                                    <%= doctor.doctor_experience %>
+                                                    <%= doctor.doctor_experience %> years
                                                 </td>
                                                 <td>
-                                                    <%= doctor.status %>
+                                                    <span
+                                                        class="badge bg-<%= doctor.status === 'Active' ? 'success' : doctor.status === 'In-Active' ? 'danger' : 'warning' %> status-badge">
+                                                        <%= doctor.status %>
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <%= doctor.spelization %>
                                                 </td>
                                                 <td>
                                                     <a href="/admin/edit-doctor/<%= doctor.doctor_id %>"
-                                                        class="btn btn-sm btn-warning me-2">
-                                                        <i class="bi bi-pencil-square"></i>
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                     <a href="/admin/delete-doctor/<%= doctor.doctor_id %>"
                                                         class="btn btn-sm btn-danger"
                                                         onclick="return confirm('Are you sure you want to delete this doctor?');">
-                                                        <i class="bi bi-trash"></i>
+                                                        <i class="fas fa-trash"></i>
                                                     </a>
                                                 </td>
                                             </tr>
                                             <% }); %>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <!-- Footer -->
-            <%- include('adminFotter') %>
+            <footer class="mt-5 py-3 bg-light border-top">
+                <div class="container text-center">
+                    <p class="mb-0">&copy; 2023 Global Care Hospital. All rights reserved.</p>
+                </div>
+            </footer>
 
-        </div>
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                // Mobile sidebar toggle
+                document.querySelector('.navbar-toggler').addEventListener('click', function () {
+                    document.querySelector('.sidebar').classList.toggle('show');
+                });
 
-        <!-- Search Functionality Script -->
-        <script>
-            function searchDoctors() {
-                let input = document.getElementById("searchInput").value.toLowerCase();
-                let table = document.getElementById("doctorTable");
-                let rows = table.getElementsByTagName("tr");
+                // Search functionality
+                function searchDoctors() {
+                    let input = document.getElementById("searchInput").value.toLowerCase();
+                    let table = document.getElementById("doctorTable");
+                    let rows = table.getElementsByTagName("tr");
 
-                for (let i = 1; i < rows.length; i++) {
-                    let nameCell = rows[i].getElementsByTagName("td")[1];
-                    if (nameCell) {
-                        let name = nameCell.textContent || nameCell.innerText;
-                        rows[i].style.display = name.toLowerCase().includes(input) ? "" : "none";
+                    for (let i = 1; i < rows.length; i++) {
+                        let nameCell = rows[i].getElementsByTagName("td")[1];
+                        let specCell = rows[i].getElementsByTagName("td")[4];
+                        if (nameCell && specCell) {
+                            let name = nameCell.textContent || nameCell.innerText;
+                            let spec = specCell.textContent || specCell.innerText;
+                            rows[i].style.display = (name.toLowerCase().includes(input)) ||
+                                (spec.toLowerCase().includes(input)) ? "" : "none";
+                        }
                     }
                 }
-            }
-        </script>
-
+            </script>
 </body>
 
 </html>
