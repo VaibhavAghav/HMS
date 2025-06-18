@@ -2,6 +2,35 @@ const db = require("../config/db");
 
 const bcrypt = require("bcrypt");
 
+// Get patient count
+// Get total patient count
+exports.getPatientCount = (callback) => {
+  const query = "SELECT COUNT(*) AS count FROM patient";
+  db.query(query, (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results[0].count);
+  });
+};
+
+// Get total doctor count
+exports.getDoctorCount = (callback) => {
+  const query = "SELECT COUNT(*) AS count FROM doctor";
+  db.query(query, (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results[0].count);
+  });
+};
+
+// Get count of patients without discharge
+exports.getAdmittedPatientCount = (callback) => {
+  const query =
+    "SELECT COUNT(*) AS count FROM patient WHERE discharge_status IS NULL";
+  db.query(query, (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results[0].count);
+  });
+};
+
 exports.addAdmin = (adminData, callback) => {
   // Generate hashed password first
   const saltRounds = 10;
@@ -130,7 +159,7 @@ exports.getDoctorById = (doctorId, callback) => {
     }
     callback(null, results[0]);
   });
-};      
+};
 
 // update doctor editDoctor
 exports.updateDoctor = (doctorId, updatedData, callback) => {
@@ -151,7 +180,7 @@ exports.updateDoctor = (doctorId, updatedData, callback) => {
       doctorId,
     ],
     (err, result) => {
-      if (err) {  
+      if (err) {
         console.error("Error updating doctor:", err);
         callback(err, null);
         return;
@@ -160,29 +189,28 @@ exports.updateDoctor = (doctorId, updatedData, callback) => {
         callback(new Error("Doctor not found"), null);
       } else {
         callback(null, result);
-      } 
+      }
     }
-  );  
+  );
 };
 // delete doctor deleteDoctor
 exports.deleteDoctor = (doctorId, callback) => {
   const deleteDoctorQuery = `
     DELETE FROM doctor WHERE doctor_id = ?
-  `;  
+  `;
   db.query(deleteDoctorQuery, [doctorId], (err, result) => {
     if (err) {
       console.error("Error deleting doctor:", err);
       callback(err, null);
       return;
     }
-    if (result.affectedRows === 0) {  
+    if (result.affectedRows === 0) {
       callback(new Error("Doctor not found"), null);
-    } else {  
+    } else {
       callback(null, result);
     }
   });
 };
-
 
 exports.addDoctor = (doctorData, callback) => {
   // Step 1: Insert into users table
@@ -263,7 +291,7 @@ exports.addReceptionist = (receptionistData, callback) => {
         [
           receptionistData.reception_name,
           receptionistData.reception_contact,
-          user_id
+          user_id,
         ],
         (err, receptionResult) => {
           if (err) {
@@ -352,6 +380,3 @@ exports.deleteReceptionist = (receptionistId, callback) => {
     }
   });
 };
-
-
-

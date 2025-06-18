@@ -16,12 +16,12 @@
             <div class="menu-title">Management</div>
 
             <div class="menu-group">
-                <div class="menu-group-header" data-bs-toggle="collapse" href="#adminMenu">
+                <div class="menu-group-header">
                     <i class="bi bi-person-gear me-2"></i>
                     <span>Patient</span>
                     <i class="bi bi-chevron-down ms-auto"></i>
                 </div>
-                <div class="menu-group-items collapse show" id="adminMenu">
+                <div class="menu-group-items">
                     <a href="/admin/view-patients" class="menu-item">
                         <i class="bi bi-people me-2"></i>
                         <span>View Patients</span>
@@ -30,12 +30,12 @@
             </div>
 
             <div class="menu-group">
-                <div class="menu-group-header" data-bs-toggle="collapse" href="#doctorMenu">
+                <div class="menu-group-header">
                     <i class="bi bi-heart-pulse me-2"></i>
                     <span>Doctors</span>
                     <i class="bi bi-chevron-down ms-auto"></i>
                 </div>
-                <div class="menu-group-items collapse show" id="doctorMenu">
+                <div class="menu-group-items">
                     <a href="/admin/add-doctor" class="menu-item">
                         <i class="bi bi-plus-circle me-2"></i>
                         <span>Add Doctor</span>
@@ -48,12 +48,12 @@
             </div>
 
             <div class="menu-group">
-                <div class="menu-group-header" data-bs-toggle="collapse" href="#receptionistMenu">
+                <div class="menu-group-header">
                     <i class="bi bi-headset me-2"></i>
                     <span>Receptionists</span>
                     <i class="bi bi-chevron-down ms-auto"></i>
                 </div>
-                <div class="menu-group-items collapse show" id="receptionistMenu">
+                <div class="menu-group-items">
                     <a href="/admin/add-receptionist" class="menu-item">
                         <i class="bi bi-plus-circle me-2"></i>
                         <span>Add Receptionist</span>
@@ -130,6 +130,10 @@
         font-weight: 500;
     }
 
+    .menu-group {
+        position: relative;
+    }
+
     .menu-group-header {
         display: flex;
         align-items: center;
@@ -147,5 +151,62 @@
 
     .menu-group-items {
         padding-left: 1.5rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .menu-group:hover .menu-group-items {
+        max-height: 500px;
+        /* Adjust based on your content */
+    }
+
+    /* Chevron rotation */
+    .menu-group-header i.bi-chevron-down {
+        transition: transform 0.3s;
+    }
+
+    .menu-group:hover .menu-group-header i.bi-chevron-down {
+        transform: rotate(180deg);
+    }
+
+    /* Add smooth transition for the menu items */
+    .menu-group-items a {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .menu-group:hover .menu-group-items a {
+        opacity: 1;
     }
 </style>
+
+<!-- Add this JavaScript for better mobile experience -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // For mobile devices, keep the click functionality
+        if (window.innerWidth <= 768) {
+            const menuGroups = document.querySelectorAll('.menu-group');
+
+            menuGroups.forEach(group => {
+                const header = group.querySelector('.menu-group-header');
+                const items = group.querySelector('.menu-group-items');
+
+                header.addEventListener('click', function () {
+                    const isOpen = items.style.maxHeight && items.style.maxHeight !== '0px';
+                    items.style.maxHeight = isOpen ? '0' : '500px';
+
+                    // Toggle chevron icon
+                    const chevron = this.querySelector('.bi-chevron-down');
+                    chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+
+                    // Toggle menu items visibility
+                    const menuItems = items.querySelectorAll('a');
+                    menuItems.forEach(item => {
+                        item.style.opacity = isOpen ? '0' : '1';
+                    });
+                });
+            });
+        }
+    });
+</script>

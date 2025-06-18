@@ -5,8 +5,32 @@ const patientsModel = require("../model/patientModel");
 
 // Controller for admin homepage
 exports.adminHomePage = (req, res) => {
-  console.log("Inside admin homepage");
-  res.render("Admin/adminHomePage");
+  adminModel.getDoctorCount((err, doctorCount) => {
+    if (err) {
+      console.error("Error fetching doctor count:", err);
+      return res.status(500).send("Internal server error");
+    }
+
+    adminModel.getPatientCount((err, patientCount) => {
+      if (err) {
+        console.error("Error fetching patient count:", err);
+        return res.status(500).send("Internal server error");
+      }
+
+      adminModel.getAdmittedPatientCount((err, admittedCount) => {
+        if (err) {
+          console.error("Error fetching admitted patient count:", err);
+          return res.status(500).send("Internal server error");
+        }
+
+        res.render("Admin/adminHomePage", {
+          doctorCount,
+          patientCount,
+          admittedCount,
+        });
+      });
+    });
+  });
 };
 
 // admin login page
