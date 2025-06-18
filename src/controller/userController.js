@@ -4,7 +4,8 @@ const doctorModel = require("../model/doctorModel");
 const receptionModel = require("../model/receptionModel");
 
 exports.LoginPage = (req, res) => {
-  res.render("userLogin");
+  const error = req.query.error;
+  res.render("userLogin", { error });
 };
 
 exports.UserLogin = (req, res) => {
@@ -12,7 +13,7 @@ exports.UserLogin = (req, res) => {
 
   if (!username || !password || !role) {
     // return res.status(400).send("Username, password, and role are required");
-     return res.redirect("/login");
+    return res.redirect("/login");
   }
 
   if (role === "admin" && username === "admin" && password === "admin") {
