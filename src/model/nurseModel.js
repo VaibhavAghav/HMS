@@ -20,10 +20,7 @@ exports.addNurse = (nurseData, callback) => {
 // Fetch nurses not assigned to any active (not discharged) patient
 exports.getAllNurses = (callback) => {
   const query = `
-    SELECT * FROM nurse 
-    WHERE nurse_id NOT IN (
-      SELECT nurse_id FROM patient WHERE status != 'Discharged'
-    )
+    SELECT * FROM nurse
   `;
   db.query(query, (err, results) => {
     if (err) return callback(err, null);
