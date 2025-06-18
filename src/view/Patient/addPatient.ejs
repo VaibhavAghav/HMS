@@ -6,187 +6,404 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Patient</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css" />
   <style>
     body {
       margin-top: 80px;
       padding-left: 260px;
       overflow-x: hidden;
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card {
+      border-radius: 15px;
+      border: none;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      border-radius: 15px 15px 0 0 !important;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      padding: 1.5rem;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 8px;
+      padding: 10px 15px;
+      border: 1px solid #e0e0e0;
+      transition: all 0.3s;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #3a7bd5;
+      box-shadow: 0 0 0 0.25rem rgba(58, 123, 213, 0.25);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #757575, #424242);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #424242;
+      margin-bottom: 8px;
+    }
+
+    .input-group-text {
+      background-color: #e9ecef;
+      border-radius: 8px 0 0 8px;
+    }
+
+    .form-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #e0e0e0;
+    }
+
+    .section-title {
+      color: #3a7bd5;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .suggested-time {
+      font-weight: 500;
+      padding: 5px 10px;
+      background-color: #e8f5e9;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 992px) {
+      body {
+        padding-left: 0;
+      }
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 80px;
+      /* matches your body's margin-top */
+      left: 0;
+      width: 240px;
+      height: calc(100% - 80px);
+      background-color: #343a40;
+      padding: 20px 10px;
+      overflow-y: auto;
+      color: #fff;
+    }
+
+    .main-content {
+      margin-left: 100px;
+      padding: 20px;
+      width: calc(100% - 260px);
+    }
+
+    /* Make sure this is removed from your body — it's redundant if main-content has margin-left */
+    body {
+      margin-top: 80px;
+      overflow-x: hidden;
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    @media (max-width: 992px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- Navbar -->
   <%- include('../Reception/receptionNavbar') %>
-    <%- include('../Reception/receptionSidebar') %>
 
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-8">
-            <div class="card shadow-sm">
-              <div class="card-header bg-primary text-white">
-                <h3 class="mb-0">Add New Patient</h3>
-              </div>
-              <div class="card-body">
-                <form action="add-patient" method="POST">
+    <div class="d-flex">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <%- include('../Reception/receptionSidebar') %>
+      </div>
 
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="mb-0"><i class="fas fa-user-plus me-2"></i> Add New Patient</h3>
+            </div>
+            <div class="card-body p-4">
+              <!-- Your form content here -->
+              <form action="add-patient" method="POST">
+
+                <div class="form-section">
+                  <h5 class="section-title"><i class="fas fa-user-circle"></i> Personal Information</h5>
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="patient_name" class="form-label">Patient Name</label>
-                      <input type="text" class="form-control" id="patient_name" name="patient_name" required>
+                      <label for="patient_name" class="form-label">Full Name</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" class="form-control" id="patient_name" name="patient_name"
+                          placeholder="Enter patient's full name" required>
+                      </div>
                     </div>
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-md-3">
                       <label for="patient_age" class="form-label">Age</label>
-                      <input type="number" class="form-control" id="patient_age" name="patient_age" required>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+                        <input type="number" class="form-control" id="patient_age" name="patient_age" placeholder="Age"
+                          required>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-md-3">
                       <label for="patient_gender" class="form-label">Gender</label>
-                      <select class="form-select" id="patient_gender" name="patient_gender" required>
-                        <option value="">Select</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                      </select>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                      <label for="room_id" class="form-label">Room</label>
-                      <select class="form-select" id="room_id" name="room_id">
-                        <option value="">Select Room</option>
-                        <% availableRooms.forEach(function(room){ %>
-                          <option value="<%= room.room_no %>">
-                            <%= room.room_type %> (₹<%= room.room_price %>)
-                          </option>
-                          <% }) %>
-                      </select>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                        <select class="form-select" id="patient_gender" name="patient_gender" required>
+                          <option value="">Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                </div>
 
+                <div class="form-section">
+                  <h5 class="section-title"><i class="fas fa-notes-medical"></i> Medical Information</h5>
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="specialization" class="form-label">Specialization</label>
-                      <select class="form-select" id="specialization" name="specialization" required>
-                        <option value="">Select</option>
-                        <% specializations.forEach(function(spec){ %>
-                          <option value="<%= spec.spelization %>">
-                            <%= spec.spelization %>
-                          </option>
-                          <% }) %>
-                      </select>
+                      <label for="patient_disease" class="form-label">Primary Diagnosis</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-disease"></i></span>
+                        <input type="text" class="form-control" id="patient_disease" name="patient_disease"
+                          placeholder="Enter patient's condition" required>
+                      </div>
                     </div>
                     <div class="mb-3 col-md-6">
-                      <label for="nurse_id" class="form-label">Nurse</label>
-                      <select class="form-select" id="nurse_id" name="nurse_id">
-                        <option value="">Select Nurse</option>
-                        <% nurses.forEach(function(nurse){ %>
-                          <option value="<%= nurse.nurse_id %>">
-                            <%= nurse.nurse_name %>
-                          </option>
-                          <% }) %>
-                      </select>
+                      <label for="specialization" class="form-label">Specialization Required</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
+                        <select class="form-select" id="specialization" name="specialization" required>
+                          <option value="">Select Specialization</option>
+                          <% specializations.forEach(function(spec){ %>
+                            <option value="<%= spec.spelization %>">
+                              <%= spec.spelization %>
+                            </option>
+                            <% }) %>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                </div>
 
+                <div class="form-section">
+                  <h5 class="section-title"><i class="fas fa-user-md"></i> Treatment Team</h5>
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="doctor_id" class="form-label">Doctor</label>
-                      <select class="form-select" id="doctor_id" name="doctor_id" required>
-                        <option value="">Select Doctor</option>
-                      </select>
+                      <label for="doctor_id" class="form-label">Attending Physician</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user-md"></i></span>
+                        <select class="form-select" id="doctor_id" name="doctor_id" required>
+                          <option value="">Select Doctor</option>
+                        </select>
+                      </div>
                     </div>
                     <div class="mb-3 col-md-6">
-                      <label for="patient_disease" class="form-label">Disease / Problem</label>
-                      <input type="text" class="form-control" id="patient_disease" name="patient_disease" required>
+                      <label for="nurse_id" class="form-label">Primary Nurse</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user-nurse"></i></span>
+                        <select class="form-select" id="nurse_id" name="nurse_id">
+                          <option value="">Select Nurse</option>
+                          <% nurses.forEach(function(nurse){ %>
+                            <option value="<%= nurse.nurse_id %>">
+                              <%= nurse.nurse_name %>
+                            </option>
+                            <% }) %>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                </div>
 
+                <div class="form-section">
+                  <h5 class="section-title"><i class="fas fa-procedures"></i> Accommodation</h5>
                   <div class="row">
                     <div class="mb-3 col-md-6">
-                      <label for="time_allocate" class="form-label">Date & Time Allocated</label>
-                      <input type="datetime-local" class="form-control" id="time_allocate" name="time_allocate"
-                        required>
-                      <div id="suggested_time" class="form-text text-success mt-1"></div>
+                      <label for="room_id" class="form-label">Room Assignment</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-bed"></i></span>
+                        <select class="form-select" id="room_id" name="room_id">
+                          <option value="">Select Room</option>
+                          <% availableRooms.forEach(function(room){ %>
+                            <option value="<%= room.room_no %>">
+                              <%= room.room_type %> (₹<%= room.room_price %>)
+                            </option>
+                            <% }) %>
+                        </select>
+                      </div>
                     </div>
                     <div class="mb-3 col-md-6">
-                      <label for="status" class="form-label">Status</label>
-                      <select class="form-select" id="status" name="status" required>
-                        <option value="">Select Status</option>
-                        <option value="Not Visited">Not Visited</option>
-                        <option value="Billed">Billed</option>
-                      </select>
+                      <label for="status" class="form-label">Admission Status</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
+                        <select class="form-select" id="status" name="status" required>
+                          <option value="">Select Status</option>
+                          <option value="Not Visited">Not Visited</option>
+                          <option value="Billed">Billed</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                </div>
 
-                  <!-- Action Buttons -->
-                  <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success">Save Patient</button>
-                    <a href="/patient/allpatients" class="btn btn-secondary">Cancel</a>
+                <div class="form-section">
+                  <h5 class="section-title"><i class="fas fa-calendar-alt"></i> Schedule</h5>
+                  <div class="row">
+                    <div class="mb-3 col-md-6">
+                      <label for="time_allocate" class="form-label">Appointment Date & Time</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                        <input type="datetime-local" class="form-control" id="time_allocate" name="time_allocate"
+                          required>
+                      </div>
+                      <div id="suggested_time" class="suggested-time mt-2"></div>
+                    </div>
                   </div>
+                </div>
 
-                </form>
+                <div class="d-grid gap-3 d-md-flex justify-content-md-end mt-4">
+                  <a href="/patient/allpatients" class="btn btn-secondary me-md-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                  </a>
+                  <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save me-1"></i> Register Patient
+                  </button>
+                </div>
 
-              </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <%- include('../fotter') %>
+    <%- include('../fotter') %>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
-        <script>
-          // Dependent Doctor dropdown based on Specialization
-          document.getElementById("specialization").addEventListener("change", function () {
-            const specialization = this.value;
+      <script>
+        // Dependent Doctor dropdown based on Specialization
+        document.getElementById("specialization").addEventListener("change", function () {
+          const specialization = this.value;
 
-            if (specialization) {
-              fetch(`/receptionist/doctors/${specialization}`)
-                .then(response => response.json())
-                .then(doctors => {
-                  const doctorSelect = document.getElementById("doctor_id");
-                  doctorSelect.innerHTML = `<option value="">Select Doctor</option>`;
+          if (specialization) {
+            fetch(`/receptionist/doctors/${specialization}`)
+              .then(response => response.json())
+              .then(doctors => {
+                const doctorSelect = document.getElementById("doctor_id");
+                doctorSelect.innerHTML = `<option value="">Select Doctor</option>`;
 
-                  const suggestedTimeDiv = document.getElementById("suggested_time");
-                  suggestedTimeDiv.innerHTML = ""; // clear any previous
+                const suggestedTimeDiv = document.getElementById("suggested_time");
+                suggestedTimeDiv.innerHTML = ""; // clear any previous
 
-                  doctors.forEach(doc => {
-                    const option = document.createElement("option");
-                    option.value = doc.doctor_id;
+                doctors.forEach(doc => {
+                  const option = document.createElement("option");
+                  option.value = doc.doctor_id;
 
-                    if (doc.next_time === "Unavailable") {
-                      option.text = `${doc.doctor_name} (Unavailable today)`;
-                      option.disabled = true;
-                    } else {
-                      option.text = `${doc.doctor_name} (Next: ${doc.next_time.substring(11, 16)})`; // show only HH:mm
-                      option.setAttribute("data-next-time", doc.next_time);
-                    }
+                  if (doc.next_time === "Unavailable") {
+                    option.text = `${doc.doctor_name} (Unavailable today)`;
+                    option.disabled = true;
+                  } else {
+                    option.text = `${doc.doctor_name} (Next available: ${doc.next_time.substring(11, 16)})`;
+                    option.setAttribute("data-next-time", doc.next_time);
+                  }
 
-                    doctorSelect.appendChild(option);
-                  });
+                  doctorSelect.appendChild(option);
+                });
 
-                  // On doctor change, update suggested time
-                  doctorSelect.addEventListener("change", function () {
-                    const selectedOption = this.options[this.selectedIndex];
-                    const nextTime = selectedOption.getAttribute("data-next-time");
-                    if (nextTime && nextTime !== "Unavailable") {
-                      document.getElementById("time_allocate").value = nextTime;
-                      suggestedTimeDiv.innerHTML = `Suggested: ${nextTime.replace("T", " ")}`;
-                    } else {
-                      document.getElementById("time_allocate").value = "";
-                      suggestedTimeDiv.innerHTML = "";
-                    }
-                  });
-                })
-                .catch(error => console.error("Error fetching doctors:", error));
-            } else {
-              document.getElementById("doctor_id").innerHTML = `<option value="">Select Doctor</option>`;
-            }
+                // On doctor change, update suggested time
+                doctorSelect.addEventListener("change", function () {
+                  const selectedOption = this.options[this.selectedIndex];
+                  const nextTime = selectedOption.getAttribute("data-next-time");
+                  if (nextTime && nextTime !== "Unavailable") {
+                    document.getElementById("time_allocate").value = nextTime;
+                    suggestedTimeDiv.innerHTML = `<i class="fas fa-lightbulb me-1"></i> Suggested appointment time: ${formatDateTime(nextTime)}`;
+                  } else {
+                    document.getElementById("time_allocate").value = "";
+                    suggestedTimeDiv.innerHTML = "";
+                  }
+                });
+              })
+              .catch(error => console.error("Error fetching doctors:", error));
+          } else {
+            document.getElementById("doctor_id").innerHTML = `<option value="">Select Doctor</option>`;
+          }
+        });
+
+        // Format datetime for display
+        function formatDateTime(datetimeString) {
+          const date = new Date(datetimeString);
+          return date.toLocaleString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
           });
-        </script>
+        }
+      </script>
 
 </body>
 
