@@ -17,7 +17,7 @@ exports.addPatientPage = (req, res) => {
     room.getVacantRooms((err, availableRooms) => {
       if (err) return res.status(500).send("Error loading rooms");
       console.log("Available rooms:", availableRooms);
-      
+
       nurse.getAllNurses((err, nursesList) => {
         if (err) return res.status(500).send("Error loading nurses");
 
@@ -280,5 +280,79 @@ exports.viewUnbilledPatients = (req, res) => {
     console.log("Unbilled patients fetched successfully:", patients);
 
     res.render("Patient/viewPatients", { patients });
+  });
+};
+
+// Update Patient Page
+exports.updatePatientPage = (req, res) => {
+  // Get patient ID from URL
+  const patientId = req.params.id;
+  console.log("Fetching patient for update with ID:", patientId);
+  Patient.getPatientById(patientId, (err, patient) => {
+    if (err) {
+      console.error("Error fetching patient by ID:", err);
+      return res.status(500).send("Error fetching patient");
+    }
+
+    // Get all specializations
+    doctor.getAllSpecializations((err, specializations) => {
+      if (err) {
+        console.error("Error fetching specializations:", err);
+        return res.status(500).send("Error fetching specializations");
+      }
+
+      // Get all vacant rooms
+      room.getVacantRoomsAndPatientPreviousRoom(patientId,(err, availableRooms) => {
+        if (err) {
+          console.error("Error fetching rooms:", err);
+          return res.status(500).send("Error fetching rooms");
+        }
+
+        // Get all nurses
+        nurse.getAllNurses((err, nursesList) => {
+          if (err) {
+            console.error("Error fetching nurses:", err);
+            return res.status(500).send("Error fetching nurses");
+          }
+
+          // Render update page with patient data
+          res.render("Patient/updatePatient", {
+            patient,
+            specializations,
+            availableRooms,
+            nurses: nursesList,
+          });
+        });
+      });
+    });
+  });
+};
+
+//updatePatient
+// controllers/patientController.js
+exports.updatePatient = (req, res) => {
+  const patientId = req.params.id;
+  console.log("Updating patient with ID:", patientId);
+
+  const updatedPatient = {
+    patient_name: req.body.patient_name,
+    patient_age: req.body.patient_age,
+    patient_gender: req.body.patient_gender,
+    patient_disease: req.body.patient_disease,
+    doctor_id: req.body.doctor_id,
+    nurse_id: req.body.nurse_id,
+    room_id: req.body.room_id,
+    status: req.body.status,
+    time_allocate: req.body.time_allocate
+  };
+
+  Patient.updatePatient(patientId, updatedPatient, (err, result) => {
+    if (err) {
+      console.error("Error updating patient:", err);
+      return res.status(500).send("Error updating patient record.");
+    }
+
+    // Redirect to patient list with success message
+    res.redirect('/receptionist/view-patients');
   });
 };

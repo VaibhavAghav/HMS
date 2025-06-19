@@ -134,7 +134,9 @@
                             <div class="col-md-8">
                                 <h1 class="display-5 fw-bold">Welcome, Dr. <%= doctor.doctor_name %>
                                 </h1>
-                                <p class="lead">You have <strong>5 appointments</strong> today and <strong>3
+                                <p class="lead">You have <strong>
+                                        <%= patientCounts.notVisitedPatients %> appointments
+                                    </strong> today and <strong>3
                                         patients</strong>
                                     to visit.</p>
                             </div>
@@ -150,8 +152,10 @@
                             <div class="stat-card bg-white p-4 shadow-sm">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted mb-2">Today's Appointments</h6>
-                                        <h3 class="mb-0">5</h3>
+                                        <h6 class="text-muted mb-2">Total Patient</h6>
+                                        <h3 class="mb-0">
+                                            <%= patientCounts.totalPatients %>
+                                        </h3>
                                     </div>
                                     <div class="bg-primary bg-opacity-10 p-3 rounded">
                                         <i class="fas fa-calendar-check fa-2x text-primary"></i>
@@ -163,8 +167,10 @@
                             <div class="stat-card bg-white p-4 shadow-sm">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted mb-2">Pending Visits</h6>
-                                        <h3 class="mb-0">3</h3>
+                                        <h6 class="text-muted mb-2">Visited Patient</h6>
+                                        <h3 class="mb-0">
+                                            <%= patientCounts.visitedPatients %>
+                                        </h3>
                                     </div>
                                     <div class="bg-warning bg-opacity-10 p-3 rounded">
                                         <i class="fas fa-clock fa-2x text-warning"></i>
@@ -177,7 +183,9 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="text-muted mb-2">Admitted Patients</h6>
-                                        <h3 class="mb-0">2</h3>
+                                        <h3 class="mb-0">
+                                            <%= patientCounts.admittedPatients %>
+                                        </h3>
                                     </div>
                                     <div class="bg-danger bg-opacity-10 p-3 rounded">
                                         <i class="fas fa-bed fa-2x text-danger"></i>

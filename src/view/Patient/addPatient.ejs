@@ -193,22 +193,21 @@
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                         <input type="text" class="form-control" id="patient_name" name="patient_name"
-                          placeholder="Enter patient's full name" required>
+                          placeholder="Enter patient's full name">
                       </div>
                     </div>
                     <div class="mb-3 col-md-3">
                       <label for="patient_age" class="form-label">Age</label>
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
-                        <input type="number" class="form-control" id="patient_age" name="patient_age" placeholder="Age"
-                          required>
+                        <input type="number" class="form-control" id="patient_age" name="patient_age" placeholder="Age">
                       </div>
                     </div>
                     <div class="mb-3 col-md-3">
                       <label for="patient_gender" class="form-label">Gender</label>
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
-                        <select class="form-select" id="patient_gender" name="patient_gender" required>
+                        <select class="form-select" id="patient_gender" name="patient_gender">
                           <option value="">Select Gender</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
@@ -227,14 +226,14 @@
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-disease"></i></span>
                         <input type="text" class="form-control" id="patient_disease" name="patient_disease"
-                          placeholder="Enter patient's condition" required>
+                          placeholder="Enter patient's condition">
                       </div>
                     </div>
                     <div class="mb-3 col-md-6">
                       <label for="specialization" class="form-label">Specialization Required</label>
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
-                        <select class="form-select" id="specialization" name="specialization" required>
+                        <select class="form-select" id="specialization" name="specialization">
                           <option value="">Select Specialization</option>
                           <% specializations.forEach(function(spec){ %>
                             <option value="<%= spec.spelization %>">
@@ -254,7 +253,7 @@
                       <label for="doctor_id" class="form-label">Attending Physician</label>
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user-md"></i></span>
-                        <select class="form-select" id="doctor_id" name="doctor_id" required>
+                        <select class="form-select" id="doctor_id" name="doctor_id">
                           <option value="">Select Doctor</option>
                         </select>
                       </div>
@@ -297,10 +296,9 @@
                       <label for="status" class="form-label">Admission Status</label>
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
-                        <select class="form-select" id="status" name="status" required>
+                        <select class="form-select" id="status" name="status">
                           <option value="">Select Status</option>
                           <option value="Not Visited">Not Visited</option>
-                          <option value="Billed">Billed</option>
                         </select>
                       </div>
                     </div>
@@ -314,8 +312,7 @@
                       <label for="time_allocate" class="form-label">Appointment Date & Time</label>
                       <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                        <input type="datetime-local" class="form-control" id="time_allocate" name="time_allocate"
-                          required>
+                        <input type="datetime-local" class="form-control" id="time_allocate" name="time_allocate">
                       </div>
                       <div id="suggested_time" class="suggested-time mt-2"></div>
                     </div>
@@ -339,6 +336,9 @@
     </div>
 
     <%- include('../fotter') %>
+
+      <script src="/js/addPatientValidation.js"></script>
+
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>

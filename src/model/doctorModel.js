@@ -2,6 +2,28 @@
 
 const db = require("../config/db");
 
+exports.getPatientCountsByDoctorId = (doctorId, callback) => {
+  const query = `
+    SELECT 
+      COUNT(*) AS totalPatients,
+      SUM(CASE WHEN status = 'Visited' THEN 1 ELSE 0 END) AS visitedPatients,
+      SUM(CASE WHEN status = 'Admitted' THEN 1 ELSE 0 END) AS admittedPatients,
+      SUM(CASE WHEN status = 'Not Visited' THEN 1 ELSE 0 END) AS notVisitedPatients
+    FROM 
+      patient
+    WHERE 
+      doctor_id = ?
+  `;
+
+  db.query(query, [doctorId], (err, results) => {
+    if (err) {
+      console.log("Error fetching patient counts:", err);
+      return callback(err, null);
+    }
+    callback(null, results[0]);
+  });
+};
+
 // Check if user is doctor
 exports.DoctorLogin = (username, password, callback) => {
   const query = `
@@ -17,7 +39,7 @@ exports.DoctorLogin = (username, password, callback) => {
       return callback(err, null);
     }
     if (result.length > 0) {
-      // doctor found
+      // doctor found (active or inactive)
       return callback(null, result[0]);
     } else {
       // no matching doctor
@@ -55,7 +77,8 @@ exports.getAllSpecializations = (callback) => {
 
 // Get doctors by specialization
 exports.getDoctorsBySpecialization = (specialization, callback) => {
-  const query = "SELECT * FROM doctor WHERE spelization = ? ";
+  const query =
+    "SELECT * FROM doctor WHERE spelization = ? AND status = 'Active' ";
   db.query(query, [specialization], (err, results) => {
     if (err) return callback(err, null);
     callback(null, results);

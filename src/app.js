@@ -31,6 +31,10 @@ app.set("views", path.join(__dirname, "view"));
 
 const session = require("express-session");
 
+const methodOverride = require("method-override");
+// Configure method override
+app.use(methodOverride("_method"));
+
 app.use(
   session({
     secret: "your_secret_key",
