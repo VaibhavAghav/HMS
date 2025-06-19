@@ -16,6 +16,10 @@ router.get("/doctors/:specialization", isReceptionAuthenticated, patientControll
 router.get("/view-billed-patients", isReceptionAuthenticated, patientController.viewBilledPatients);
 router.get("/view-unbilled-patients", isReceptionAuthenticated, patientController.viewUnbilledPatients);
 router.get("/last-patient-time/:doctor_id", isReceptionAuthenticated, patientController.getLastPatientTime);
+//update-patient/27
+router.get("/update-patient/:id", isReceptionAuthenticated, patientController.updatePatientPage);
+router.post("/update-patient/:id", isReceptionAuthenticated, patientController.updatePatient);
+
 
 router.get("/", isReceptionAuthenticated, receptionistController.ReceptionHomePage);
 

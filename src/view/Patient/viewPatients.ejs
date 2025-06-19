@@ -226,7 +226,14 @@
                                                 </td>
                                                 <td>
                                                     <%= patient.patient_name %>
+                                                        <% if (patient.status==='Not Visited' ) { %>
+                                                            <a href="/receptionist/update-patient/<%= patient.patient_id %>"
+                                                                class="text-primary ms-2" title="Update">
+                                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                            </a>
+                                                            <% } %>
                                                 </td>
+
                                                 <td>
                                                     <%= patient.patient_disease %>
                                                 </td>

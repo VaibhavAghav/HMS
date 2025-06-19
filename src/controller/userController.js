@@ -26,16 +26,25 @@ exports.UserLogin = (req, res) => {
   } else if (role === "doctor") {
     doctorModel.DoctorLogin(username, password, (err, doctor) => {
       if (err) return res.status(500).send("Internal server error");
+
       if (doctor) {
-        req.session.user = {
-          user_id: doctor.user_id,
-          username,
-          role,
-          doctor_id: doctor.doctor_id,
-        };
-        return res.redirect("/doctor");
+        if (doctor.status === "Active") {
+          req.session.user = {
+            user_id: doctor.user_id,
+            username,
+            role,
+            doctor_id: doctor.doctor_id,
+          };
+          return res.redirect("/doctor");
+        } else {
+          return res
+            .status(403)
+            .render("userLogin", { error: "You are not authorized to login now" });
+        }
       } else {
-        return res.status(400).send("Invalid doctor credentials");
+        return res
+          .status(400)
+          .render("userLogin", { error: "Invalid username or password" });
       }
     });
   } else if (role === "receptionist") {

@@ -28,8 +28,20 @@ exports.DoctorHomePage = (req, res) => {
 
     // ✅ Pass doctorInfo to the view
     console.log(doctorInfo);
+    doctorModel.getPatientCountsByDoctorId(doctorId, (err, patientCounts) => {
+      if (err) {
+        console.log("Error fetching patient counts:", err);
+        return res.status(500).send("Internal server error.");
+      }
 
-    res.render("Doctor/doctorHomePage", { doctor: doctorInfo });
+      console.log("Patient counts:", patientCounts);
+
+      // Pass both doctor info and counts to the view
+      res.render("Doctor/doctorHomePage", {
+        doctor: doctorInfo,
+        patientCounts: patientCounts,
+      });
+    });
   });
 };
 

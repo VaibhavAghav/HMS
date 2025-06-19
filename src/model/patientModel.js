@@ -65,6 +65,46 @@ exports.getLastAppointmentTime = (doctorId, callback) => {
     callback(null, results[0]);
   });
 };
+// models/Patient.js
+
+
+exports.updatePatient = (patientId, updatedData, callback) => {
+  const sql = `
+    UPDATE patient SET 
+      patient_name = ?, 
+      patient_age = ?, 
+      patient_gender = ?, 
+      patient_disease = ?, 
+      doctor_id = ?, 
+      nurse_id = ?, 
+      room_id = ?, 
+      status = ?, 
+      time_allocate = ?
+    WHERE patient_id = ?
+  `;
+
+  const values = [
+    updatedData.patient_name,
+    updatedData.patient_age,
+    updatedData.patient_gender,
+    updatedData.patient_disease,
+    updatedData.doctor_id,
+    updatedData.nurse_id,
+    updatedData.room_id,
+    updatedData.status,
+    updatedData.time_allocate,
+    patientId
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(null, result);
+  });
+};
+
+
 
 // Get last appointment for doctor today
 exports.getLastAppointmentTimeForToday = (doctorId, today, callback) => {
