@@ -108,3 +108,22 @@ exports.deleteRoom = (roomId, callback) => {
     callback(null, result);
   });
 };
+
+//getVacantRoomsAndPatientPreviousRoom
+exports.getVacantRoomsAndPatientPreviousRoom = (patientId, callback) => {
+  const query = `
+    SELECT * 
+    FROM room 
+    WHERE room_status = 'Available'
+    OR room_no = (
+      SELECT room_id 
+      FROM patient 
+      WHERE patient_id = ?
+    )
+  `;
+
+  db.query(query, [patientId], (err, results) => {
+    if (err) return callback(err, null);
+    callback(null, results);
+  });
+};
