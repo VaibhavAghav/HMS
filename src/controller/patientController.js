@@ -8,7 +8,11 @@ const billModel = require("../model/billModel");
 const moment = require("moment");
 
 const patientService = require("../services/patientService");
-
+//** */
+const formatDateTimeForMySQL = (input) => {
+  return moment(input).format("YYYY-MM-DD HH:mm:ss");
+};
+//***/
 // Load Add Patient Page
 exports.addPatientPage = (req, res) => {
   doctor.getAllSpecializations((err, specializations) => {
@@ -134,8 +138,9 @@ exports.savePatient = (req, res) => {
     patient_disease: req.body.patient_disease,
     room_id: req.body.room_id,
     nurse_id: req.body.nurse_id,
-    time_allocate: req.body.time_allocate,
+    // time_allocate: req.body.time_allocate,
     status: req.body.status,
+    time_allocate: formatDateTimeForMySQL(req.body.time_allocate),
   };
 
   //patientService
